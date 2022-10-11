@@ -1,0 +1,45 @@
+<!-- auction Vertical card -->
+<div class="auction-vcard-wrap">
+  <div class="auction-scroll">
+      <div class="auction-vcard">
+          <div class="auction-img">
+              <img src="{{urlService.productDocumentUrl(auctionDetail?.image)}}" alt="auction-img">
+          </div>
+          <div class="auction-content w-100">
+              <div class="content-top">
+                  <h3 class="d-flex justify-content-between">
+                    <div>
+                      {{auctionDetail?.name}}
+                    </div>
+                    <div class="font-small">
+                      <span class="px-4"><span class="text-secondary font-weight-light">Auction No : </span> {{auctionDetail?.auction_number}} </span>
+                      <span><span class="text-secondary font-weight-light"> Lot Size : </span> <b>{{auctionDetail?.lot_size}} tons</b></span>
+                    </div>
+                  </h3>
+                  <div class="content-wrap justify-content-between align-items-center">
+                      <div class="lft-text">
+                          <span>
+                            {{auctionDetail?.description}}
+                          </span>
+                          <div class="days">
+                              <span>Delivery Within : {{auctionDetail?.delivery_days}} days</span>
+                              <span>Payment Terms : {{auctionDetail?.payment_days}} days</span>
+                              <span>Security Deposit : ₹ {{auctionDetail?.security_deposit}}</span>
+                              <!-- <span>Silt(%): {{auctionDetail?.silt}}</span> -->
+                          </div>
+                      </div>
+                  </div>
+
+              </div>
+              <div class="content-btm">
+                <span>Grade : <b>{{auctionDetail?.grade}} (FM {{auctionDetail?.fineness_modulus}})</b></span>
+                  <!-- <span>FM Value : <b>{{auctionDetail?.fineness_modulus}}</b></span>
+                  <span>Lot Size : <b>{{auctionDetail?.lot_size}} tons ({{auctionDetail?.lot_size/auctionDetail?.truck_size | number }} tons/truck)</b></span> -->
+                <span>Silt : <b>{{auctionDetail?.silt ? auctionDetail?.silt + '%' : '-'}}</b></span>
+                <span>Source : <b>{{auctionDetail?.source_of_sand}}</b></span>
+              </div>
+          </div>
+      </div>
+
+  </div>
+</div>

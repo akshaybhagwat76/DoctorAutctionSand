@@ -1,0 +1,207 @@
+.winner-head{
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    margin-top: 20px;
+    margin-bottom: 0;
+}
+.winner-head h4{
+    font-size: 20px;
+}
+.winner-head span{
+    color: #2B2B2B;
+}
+
+
+/* Bid winner */
+.res-card .starting-range{
+    padding: 0 8px;
+    margin-bottom: 10px;
+    font-size: 13px;
+}
+.res-card .rang-input{
+    position: relative;
+}
+.res-card .rang-input input{
+    outline: none;
+    border: 1px solid #D0D0D8;
+    width: calc(100% - 16px);
+    padding: 6px 45px 6px 15px;
+    margin: 0px 8px 10px 8px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 17px;
+    height: 40px;
+}
+.res-card .rang-input i{
+    position: absolute;
+    background-color: #D0D0D8;
+    height: 40px;
+    width: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: gray;
+    top: 0px;
+    right: 8px;
+    border-radius: 0px 4px 4px 0px;
+    font-style: normal;
+}
+.res-card .radio-select span{
+    padding: 0 8px;
+    margin-right: 11px;
+}
+.res-card .radio-select span input{
+    margin-right: 5px;
+}
+.res-card .bid-details{
+    margin: 10px 0;
+    background-color: #f8f8f8;
+    padding: 10px 8px;
+    width: 100%;
+}
+.res-card .bid-details td,
+.res-card .bid-details th{
+    padding: 8px;
+}
+
+.res-card .bid-details td:first-child{
+    width: 140px;
+}
+
+.res-card .bid-details td:first-child img{
+    float: right;
+    margin-top: 6px;
+}
+.res-card .bid-details td:last-child,
+.res-card .bid-details th:last-child{
+    text-align: right;
+}
+.res-card .bid-details tr:last-child{
+    border-top: 1px dashed #D0D0D8;
+}
+.res-wrap .res-bdr{
+    border-radius: 5px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    padding: 30px 10px 5px 10px;
+    max-width: 560px;
+    box-shadow: 0px 0px 25px #e8e8e8;
+}
+.res-wrap .top-img{
+    background-color: #FEF7EA;
+    border: 1px solid #F2B844;
+    padding: 10px 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80px;
+    color: #0988CE;
+    font-size: 16px;
+    margin-bottom: 25px;
+}
+.res-wrap .top-img img{
+    margin-right: 9px;
+    width: 26px;
+}
+.res-wrap .res-card{
+    max-width: 282px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.res-wrap .cong-msg{
+    font-size: 19px;
+    text-align: center;
+    margin-bottom: 29px;
+}
+.res-wrap .btm-btns{
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.res-wrap .btm-btns .confirm{
+    background-color: #0988CE;
+    padding: 7px 20px;
+    color: #fff;
+    width: 160px;
+    display: inline-block;
+    text-align: center;
+    margin: 20px 10px;
+    text-decoration: none;
+    cursor: pointer;
+    margin-right: 50px;
+}
+.res-wrap .btm-btns .not-won{
+    color: #E30011;
+    font-size: 14px;
+    margin: 0 22px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Thank you msg */
+
+.thankmsg-wrap{
+    border-radius: 5px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 25px;
+    margin-bottom: 40px;
+    padding: 30px 10px 25px 10px;
+    max-width: 560px;
+    box-shadow: 0px 0px 25px #e8e8e8;
+}
+.thankmsg-wrap .thankmsg-bdr{
+    max-width: 282px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+.thankmsg-card{
+    text-align: center;
+}
+.thankmsg-wrap .position{
+    background-color: #0988CE0F;
+    border: 1px solid #0988CE;
+    padding: 10px 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80px;
+    color: #0988CE;
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+.thankmsg-wrap .cong-msg{
+    font-weight: bold;
+    color: #24243A;
+    margin-bottom: 15px;
+    font-size: 20px;
+}
+.thankmsg-wrap .you-bid{
+    color: #0988CE;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+.thankmsg-wrap .winning-bid{
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 35px;
+}
+.thankmsg-wrap .okbtn{
+    background-color: #0988CE;
+    padding: 10px;
+    width: 160px;
+    height: 40px;
+    display: inline-block;
+    border: 1px solid #00000000;
+    color: #fff;
+    cursor: pointer;
+    line-height: 20px;
+    text-decoration: none;
+}
+

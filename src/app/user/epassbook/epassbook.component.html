@@ -1,0 +1,142 @@
+<div class="epassbook-wrapper">
+     <!-- breadcrumbs -->
+     <div class="breadcrumbs">
+        <div class="container">
+            <a [routerLink]="['/user/auction/']">Dashboard</a>
+            <i> > </i>
+            <a href="javascript:void(0)">ePassbook</a>
+        </div>
+    </div>
+
+    <!-- Top E-passbook -->
+    <div class="back-btn-wrap">
+        <div class="container">
+            <div class="back-btn">
+                <i class="b-arrow">ePassbook</i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Balance -->
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-lg-8" [ngClass]="{'col-lg-12': isBuyer}">
+                <div class="balance-bdr">
+                    <div class="balance-card bdr-r" [ngClass]="{'d-none' : isBuyer}">
+                        <p>Membership Fees Paid</p>
+                        <span><i>₹ </i> {{currentAccount?.total_amount ? currentAccount?.total_amount : 0}}</span>
+                    </div>
+                    <div class="balance-card" [ngClass]="{'d-none' : !isBuyer}">
+                        <!-- <p>Security Deposit Balance</p> -->
+                        <p>Credit Limit</p>
+                        <span><i>₹ </i> {{creditAccount?.total_amount ? creditAccount?.total_amount : 0}}</span>
+                    </div>
+                    <div class="balance-card" [ngClass]="{'d-none' : !isBuyer}">
+                        <!-- <p>Security Deposit Balance</p> -->
+                        <p>Security Deposit Balance</p>
+                        <span><i>₹ </i> {{nodalAccount?.total_amount ? nodalAccount?.total_amount : 0}}</span>
+                    </div>
+                    <a class="add-amt-btn" (click)="addAmount()">Add Amount</a>
+                </div>
+            </div>
+            <div class="col-xs-12 col-lg-4" [ngClass]="{'d-none': isBuyer}">
+                <div class="extend-btn-bg">
+                    <div class="extend-logo">
+                        <div><b>doctor</b><span>sand</span></div>
+                        <a>Extend Now</a>
+                    </div>
+                    <div class="duration-wrap">
+                        <div class="subs">
+                            <label>Duration</label><br>
+                            <span>1 year subscription</span>
+                        </div>
+                        <div class="expires">
+                            <label>Expires</label><br>
+                            <span>{{currentAccount?.valid_till| date: "dd/MM/YYYY" }}</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Table -->
+    <div class="auction-tbl-warappr">
+        <div class="container">
+            <!-- <h4 class="auction-head">Action</h4> -->
+            <div class="auction-tbl-scroll">
+                <table class="auction-tbl">
+                    <tr>
+                        <!-- <th>Auction No.</th> -->
+                        <!-- <th>Sand Type</th> -->
+                        <th>Transaction ID</th>
+                        <th>Amount</th>
+                        <!-- <th>GST</th> -->
+                        <th>Type</th>
+                        <th>Remark</th>
+                        <th>Date</th>
+                            <!-- <span class="dot-circle">
+                                <i></i>
+                                <i></i>
+                                <i></i>
+                            </span> -->
+                        <!-- </th> -->
+                    </tr>
+
+                    <tr *ngFor="let item of transactionList">
+                        <!-- <td>{{item?.auction_number ? item?.auction_number : '-'}}</td> -->
+                        <!-- <td class="type-td">{{item?.product_name ? item?.product_name : '-'}}</td> -->
+                        <td>{{item?.transaction_id ? item?.transaction_id : '-'}}</td>
+                        <td>₹ {{item?.amount}}</td>
+                        <!-- <td>{{item?.gst}}</td> -->
+                        <td>{{item?.type == 1 ? 'Credit':'Debit'}}</td>
+                        <td class="w-25">{{item?.remark ? item?.remark : '-'}}</td>
+                        <td>{{ item?.created_on | date: "dd/MM/YYYY hh:mm aa" }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="modal fade" id="confirmModel" tabindex="-1" role="dialog" aria-labelledby="confirmModel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header py-2">
+          <h6 class="modal-title font-weight-bold" id="confirmModel-title">Add Amount</h6>
+          <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button> -->
+        </div>
+        <div class="modal-body pt-0">
+          <div class="row p-3">
+            <div class="col-md-12">
+                <div class="rang-input">
+                    <input type="number"  placeholder="Enter amount" value="" id="inputAmt">
+                </div>
+                <div class="rang-input">
+                    <span *ngIf="amtError" style="color: red;">{{amtError}}</span>
+                </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="row">
+              <div class="col-md-6">
+                <button class="btn btn-outline-primary w-100" data-dismiss="modal" aria-label="Close">CANCEL</button>
+              </div>
+              <div class="col-md-6">
+                <button class="btn btn-primary w-100" (click)="Pay()">PAY</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="onSellerChange($event)">Save changes</button>
+        </div> -->
+      </div>
+    </div>
+  </div>

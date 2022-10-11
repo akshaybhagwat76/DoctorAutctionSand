@@ -1,0 +1,205 @@
+.main-bg{
+    background-color: #0988CE;
+}
+.whole-container{
+    font-size: 14px;
+    max-width: 950px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.whole-container .logo{
+    max-width: 180px;
+    height: auto;
+    padding: 30px 0px 20px 0;
+}
+.form-container{
+    background-color: #fff;
+}
+.form-container .top-steps{
+    background-color: #F9F9F9;
+}
+.form-container .top-steps .steps-wrap{
+    max-width: 550px;
+    margin-right: auto;
+    margin-left: auto;
+    padding: 25px 10px;
+    display: flex;
+    justify-content: space-between;
+}
+.form-container .top-steps .steps-wrap span.active{
+    font-weight: bold;
+}
+.form-container .top-steps .steps-wrap span{
+    display: flex;
+    align-items: start;
+    flex-flow: nowrap;
+    margin-right: 10px;
+}
+.form-container .top-steps .steps-wrap img{
+    max-width: 20px;
+    margin-right: 10px;
+}
+
+
+
+/* Right Form */
+.rf-bg{
+    background-color: #F9F9F9;
+}
+.form-container .form-wrap{
+    padding-top: 65px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+  .rgt-form{
+    max-width: 550px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .rgt-form .register-user{
+    margin-bottom: 25px;
+  }
+  .rgt-form .register-user p{
+    font-size: 11.8px;
+    color: #535D79;
+  }
+  .rgt-form .register-user h4{
+    margin-bottom: 12px;
+  }
+  .rgt-form .contact-info{
+    display: flex;
+    justify-content: space-between;
+    flex-flow: nowrap row;
+  }
+  .rgt-form .contact-info > div:first-child{
+    margin-right: 5px;
+    min-width: 100px;
+    width: fit-content;
+  }
+  .verify-cont img{
+    margin-bottom: 25px;
+    max-width: 18px;
+    height: auto;
+    margin-top: 10px;
+  }
+  .rgt-form .otp-btn{
+    background-color: #0988CE;
+    display: inline-block;
+    font-size: 14px;
+    height: 34px;
+    padding: 5px 8px;
+    text-align: center;
+    color: #fff;
+    border: 1px solid #0988ce;
+    cursor: pointer;
+  }
+  .rgt-form .otp-btn:hover{
+    background-color: #0276b6;
+  }
+  .rgt-form .phone-otp{
+    margin-bottom: 25px;
+  }
+  .rgt-form .verify-wrap {
+    display: flex;
+    justify-content: space-between;
+    flex-flow: nowrap row;
+  }
+  
+  
+  .rgt-form .erro-red{
+    color: red;
+  }
+  .rgt-form .erro-blue{
+    color: #0988CE;
+  }
+  .rgt-form .doc-wrap .input-wrap{
+    font-size: 10px;
+    margin-bottom: 5px;
+  }
+  .rgt-form .doc-wrap h3{
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 25px;
+    border-bottom: 1px solid #e0e0e1;
+    padding-bottom: 10px;
+  }
+  .rgt-form .doc-wrap p{
+    font-size: 8px;
+    color: #000;
+  }
+
+.errors{
+  color:red;
+  border-color: red;
+}
+.policy-text input{
+  margin-right: 8px;
+  margin-top: 3px;
+  cursor: pointer;
+  display: inline;
+}
+#checkDiv{
+  display: inline;
+}
+.address_proof_img{
+  max-width: 80px;
+  max-height: 80px;
+}
+.policy-error{
+  font-size: 12px;
+  margin-left: 12px;
+}
+.addErr{
+  font-size: 12px !important;
+  color: red !important;
+}
+
+/* Register success modal */
+#reg-succ-modal .modal-content{
+  border-radius: 0px;
+}
+.reg-wrap{
+  text-align: center;
+  padding: 30px 30px;
+  margin-bottom: 15px;
+}
+.reg-wrap img{
+  max-width: 62px;
+    height: auto;
+    margin-bottom: 18px;
+}
+
+.reg-wrap h3{
+  font-size: 23px;
+  margin-bottom: 15px;
+}
+.reg-wrap p{
+  max-width: 360px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 40px;
+  font-size: 15px;
+}
+.reg-wrap button{
+    color: #fff;
+    background-color: #0988CE;
+    border: 0px;
+    outline: none;
+    padding: 12px;
+    font-size: 14px;
+    min-width: 120px;
+    text-align: center;
+}
+.reg-wrap button:hover{
+  background-color: #0276b6;
+}
+  /****** Media Query  *****/
+
+/* 1: Mobile */
+@media (max-width: 768px){
+    .whole-container{
+        padding: 10px;
+    }
+}
+
+ 

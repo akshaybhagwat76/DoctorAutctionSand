@@ -1,0 +1,566 @@
+
+<app-modal-confirm modalId="confirmModal" [mdata]="modalData" (confirm)="confirmModalResponse($event)"></app-modal-confirm>
+<app-modal-confirm [modalId]="dcModalId" [mdata]="dcModalData" (confirm)="confirmDCModalResponse($event)"></app-modal-confirm>
+<app-modal-confirm modalId="confirmApproveOCModal" [mdata]="approveOCModalData" (confirm)="confirmApproveOCModalResponse($event)"></app-modal-confirm>
+<app-modal-confirm modalId="confirmReleaseSDModal" [mdata]="releaseSDModalData" (confirm)="confirmSDReleaseModalResponse($event)"></app-modal-confirm>
+
+<app-modal [isOpen]="isModalOpen" [fullscreen]='true' class="aside-panel" [ngClass]="{'modal-open': isModalOpen}"
+(onClose)="handleModalClose($event)">
+<app-modal-body>
+    <app-accepted-dc *ngIf="isModalOpen" [consignmentId]="selectedConsignmentId" (backToList)="handleModalClose($event)">
+    </app-accepted-dc>
+</app-modal-body>
+</app-modal>
+
+<app-modal [isOpen]="isModalOpen2" [fullscreen]='true' class="aside-panel" [ngClass]="{'modal-open': isModalOpen2}"
+(onClose)="handleModalClose2($event)">
+<app-modal-body>
+    <app-consignment-invoice *ngIf="isModalOpen2" [consignmentId]="selectedConsignmentId" [consignmentNo]="consignmentNo" (backToList)="handleModalClose2($event)">
+    </app-consignment-invoice>
+</app-modal-body>
+</app-modal>
+
+<section id="auction-list" class="container-fluid pt-3">
+  <div class="top-head d-flex justify-content-between align-item-center py-3 sticky-top bg-white">
+    <a routerLink="/admin/auctions/list" routerLinkActive="active"></a>
+    <span class="float-right">Auction No. : {{sellerObj?.auction_number}}</span>
+  </div>
+  <div class="row p-3 content-wrap">
+    <div class="col-md-9 px-3">
+      <div class="row p-3">
+        <!-- Lot Details -->
+        <div class="lot-details w-100">
+          <div class="container">
+              <div class="row">
+                  <div class="col-lg-12">
+                      <div class="aution-tab">
+                          <ul class="nav nav-tabs">
+                              <li><a class="active" data-toggle="tab" href="#l-details">Lot Details</a></li>
+                              <li><a data-toggle="tab" href="#payment">Delivery and payment terms</a></li>
+                              <li><a data-toggle="tab" href="#tnc">Terms and conditions</a></li>
+                              <li><a data-toggle="tab" href="#history">Auction bid history</a></li>
+                          </ul>
+
+                          <div class="tab-content">
+
+                          <!-- Tab: 1 : Lot Details -->
+                          <div id="l-details" class="tab-pane fade in active show">
+                              <!-- auction Vertical card -->
+                              <app-auction-hcard-admin [auctionDetail]="auctionDetails"></app-auction-hcard-admin>
+
+                              <!-- PDF -->
+                              <div class="sieve-pdf">
+                                  <div class="file-wrap" *ngIf="analysisReport">
+                                      <img src="assets/img/file-icon.png" alt="file">
+                                      <a href="{{urlService.productDocumentUrl(analysisReport)}}" target="_blank">Sieve Analysis Report.pdf</a>
+                                  </div>
+                                  <div class="file-wrap" *ngIf="concertReport">
+                                      <img src="assets/img/file-icon.png" alt="file">
+                                      <a href="{{urlService.productDocumentUrl(concertReport)}}" target="_blank">Concrete Test Report.pdf</a>
+                                  </div>
+                              </div>
+                          </div>
+
+                          <!-- Tab: 2 : Payment terms -->
+                          <div id="payment" class="tab-pane fade">
+                              <div class="payment-wrap">
+                                  <h2 class="head">Delivery and payment terms</h2>
+                                  <!-- <div class="theme-cont">Updated December 2020</div> -->
+                                  <div class="pay-cont">
+                                      <h5 class="hl-head">Delivery terms<i></i></h5>
+                                      <div [innerHTML]="deliveryText"></div>
+                                      <h5 class="hl-head">Payment terms<i></i></h5>
+                                      <div [innerHTML]="paymentText"></div>
+                                  </div>
+                              </div>
+                          </div>
+
+                          <!-- Tab: 3 : T&C -->
+                          <div id="tnc" class="tab-pane fade">
+                              <div class="payment-wrap">
+                                  <h2 class="head">Terms & Condition Of Service</h2>
+                                  <!-- <div class="theme-cont">Updated December 2020</div> -->
+                                  <div class="pay-cont">
+                                      <h5 class="hl-head">Accepting the terms<i></i></h5>
+                                      <div [innerHTML]="tncText"></div>
+                                  </div>
+                              </div>
+                          </div>
+
+                          <!-- Tab: 4 : My bid History -->
+                          <div id="history" class="tab-pane fade">
+                            <ng-container style="padding: 10px 80px;" *ngIf="auctionId">
+                              <app-bid-table [auctionId]="auctionId" [isLive]="false"></app-bid-table>
+                            </ng-container>
+                          </div>
+
+
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="form-group-wrap">
+        <!-- Auction Details -->
+          <div class="fg-head">
+              Auction Details
+          </div>
+          <div class="fg-data">
+              <span>Security Deposit Reqd.</span>
+              <span>₹ {{sellerObj?.security_deposit | number: '1.2-2'}}</span>
+          </div>
+          <!-- Company Details -->
+          <div class="fg-head">
+              Company Details
+          </div>
+          <div class="fg-data">
+              <span>Company Name</span>
+              <span>{{sellerObj?.name}}</span>
+          </div>
+          <div class="fg-data">
+              <span>Phone</span>
+              <span>{{sellerObj?.mobile}}</span>
+          </div>
+          <div class="fg-data">
+              <span>Email</span>
+              <span>{{sellerObj?.email}}</span>
+          </div>
+          <div class="fg-data">
+              <span>Location</span>
+              <span>{{sellerObj?.city_name}}</span>
+          </div>
+
+
+          <ng-container *ngFor="let item of buyerList">
+            <div class="fg-head buyer-detail">
+              <span>H{{item.position}} Details ({{item?.is_exworks ? 'EX-WORKS' : 'FOR'}})</span>
+              <span class="text-danger" *ngIf="rejectedBuyers.includes(item?.buyer_id)">OC rejected by seller</span>
+              <span>Bid amount : ₹ {{item.bid | number: '1.2-2'}}</span>
+          </div>
+          <div class="fg-data">
+            <span>Company Name</span>
+            <span>{{item.name}}</span>
+          </div>
+          <div class="fg-data">
+              <span>Phone</span>
+              <span>{{item.mobile}}</span>
+          </div>
+          <div class="fg-data">
+              <span>Email</span>
+              <span>{{item.email}}</span>
+          </div>
+          <div class="fg-data">
+            <span>Location</span>
+            <span>{{item.city_name}}</span>
+          </div>
+          <div class="fg-data" *ngIf="!item?.is_exworks">
+            <span>Delivery Pincode</span>
+            <span>{{item.delivery_pincode}}</span>
+          </div>
+          <div class="fg-data" *ngIf="!item?.is_exworks">
+            <span>Logistic Price</span>
+            <span>₹ {{item.logistic_price | number: '1.2-2'}}</span>
+          </div>
+          <div class="fg-data" *ngIf="item?.is_exworks">
+            <span>Pickup Address</span>
+            <span>{{sellerObj?.city_name ? sellerObj?.city_name + ',' : ''}}
+              {{sellerObj?.state_name ? sellerObj?.state_name + ' - ' : ''}}
+              {{sellerObj?.pincode ? sellerObj?.pincode + ',' : ''}}
+            </span>
+          </div>
+          <div class="fg-data">
+            <span>Security Deposit</span>
+            <span>₹ {{item.security_amount | number: '1.2-2'}}</span>
+            <span><a href="javascript:void(0)" *ngIf="selectedBuyerId == item?.buyer_id && !item.is_credit && isSDEnabled && isOrderRequestComplete" (click)="openConfirmModalSDRelease(item.security_amount)">Release Security Deposit</a></span>
+          </div>
+          </ng-container>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="text-right">
+        <img src="assets/img/refresh.png" (click)="getAuctionWinners()" class="pointer" title="Refresh"/>
+      </div>
+      <div class="side-wrap p-3" *ngIf="buyerList && buyerList.length && buyerList.length > 0">
+        <div class="" *ngIf="showGenerateOR">
+          <div class="border bg-light w-100 p-2">
+            Order Request
+          </div>
+          <div class="border-bottom border-left border-right w-100 p-2 mb-2 text-muted">
+            No file generated
+          </div>
+          <button class="btn btn-xsm btn-primary w-100 mb-2" data-toggle="modal" data-target="#buyerModal">GENERATE ORDER REQUEST</button>
+          <!-- <button class="btn btn-xsm btn-outline-primary w-100" data-toggle="modal" data-target="#uploadOrModal">UPLOAD ORDER REQUEST</button> -->
+        </div>
+
+        <div class="" *ngIf="showAwaitingForSellerToAcceptOR">
+          <div class="border bg-light w-100 p-2">
+            Order Request
+          </div>
+          <div class="border-bottom border-left border-right w-100 p-2 mb-2 files">
+            <a href="{{urlService.OROCUrl(ORUrl, auctionDetails?.auction_number)}}" target="_blank"><img src="assets/img/file-icon.png"/>View Order Request</a>
+          </div>
+          <h6 class="text-center font-weight-bold mt-4">AWAITING ACCEPTANCE</h6>
+          <i class="text-danger">Awaiting seller to accept order request</i>
+        </div>
+
+        <div class="" *ngIf="showSendOR">
+          <div class="border bg-light w-100 p-2">
+            Order Request
+          </div>
+          <div class="border-bottom border-left border-right w-100 p-2 mb-2 files">
+            <a class="pb-2" href="{{urlService.OROCUrl(ORUrl, auctionDetails?.auction_number)}}" target="_blank"><img src="assets/img/file-icon.png"/>View Order Request</a>
+            <div class="text-success pb-2">
+              <img src="assets/img/Check.png" style="width: 20px;" /> Accepted by seller
+            </div>
+          </div>
+          <button class="btn btn-xsm btn-primary w-100" data-toggle="modal" data-target="#sendprModal">SEND ORDER REQUEST</button>
+        </div>
+
+        <div class="" *ngIf="showAwaitingForBuyerToAcceptOR">
+          <div class="border bg-light w-100 p-2">
+            Order Request
+          </div>
+          <div class="border-bottom border-left border-right w-100 p-2 mb-2 files">
+            <a href="{{urlService.OROCUrl(ORUrl, auctionDetails?.auction_number)}}" target="_blank" class="pb-2"><img src="assets/img/file-icon.png"/> View order request</a>
+            <div class="text-success pb-2">
+              <img src="assets/img/Check.png" style="width: 20px;" /> Accepted by seller
+            </div>
+          </div>
+          <h6 class="text-center font-weight-bold mt-4">AWAITING ACCEPTANCE</h6>
+          <i class="text-danger">Awaiting buyer to accept order request</i>
+        </div>
+
+        <div class="" *ngIf="isOrderRequestComplete">
+          <div class="border bg-light w-100 p-2">
+            Order Request
+          </div>
+          <div class="border-bottom border-left border-right w-100 p-2 mb-2 files">
+            <a href="{{urlService.OROCUrl(ORUrl, auctionDetails?.auction_number)}}" target="_blank" class="pb-2"><img src="assets/img/file-icon.png"/> View order request</a>
+            <div class="text-success pb-2">
+              <img src="assets/img/Check.png" style="width: 20px;" /> Accepted by seller
+            </div>
+            <div class="text-success pb-2">
+              <img src="assets/img/Check.png" style="width: 20px;" /> Accepted by buyer
+            </div>
+          </div>
+        </div>
+
+        <div class="" *ngIf="showGenerateOC">
+          <div class="border bg-light w-100 p-2">
+            Order Confirmation
+          </div>
+          <div class="border-bottom border-left border-right w-100 p-2 mb-2 text-muted">
+            No file generated
+          </div>
+          <button class="btn btn-xsm btn-primary w-100 mb-2" (click)="openConfirmModalOC()">GENERATE ORDER CONFIRMATION</button>
+          <button class="btn btn-xsm btn-outline-primary w-100" data-toggle="modal" data-target="#uploadOcModal">UPLOAD ORDER CONFIRMATION</button>
+        </div>
+
+        <div class="" *ngIf="showSendOC">
+          <div class="border bg-light w-100 p-2">
+            Order Confirmation
+          </div>
+          <div class="border-bottom border-left border-right w-100 p-2 mb-2 text-muted files">
+            <a href="{{urlService.OROCUrl(OCUrl, auctionDetails?.auction_number)}}" target="_blank"><img src="assets/img/file-icon.png"/>View Order Confirmation</a>
+          </div>
+          <!-- <button class="btn btn-xsm btn-primary w-100 mb-2" (click)="sendOC()">SEND ORDER CONFIRMATION TO SELLER</button> -->
+        </div>
+
+        <div class="" *ngIf="buyerOCUrl">
+          <div class="border bg-light w-100 p-2">
+            Buyer Order Confirmation
+          </div>
+          <div class="border-bottom border-left border-right w-100 p-2 mb-2 text-muted files">
+            <a href="{{urlService.buyerOCUrl(buyerOCUrl, auctionDetails?.auction_number)}}" target="_blank"><img src="assets/img/file-icon.png"/>Buyer Order Confirmation</a>
+            <div class="text-success pb-2" *ngIf="buyerOCApproved">
+              <img src="assets/img/Check.png" style="width: 20px;" /> Approved
+            </div>
+            <button class="btn btn-xsm btn-primary w-100 mb-2" (click)="openConfirmModalApproveOC()" *ngIf="!buyerOCApproved">APPROVE</button>
+          </div>
+        </div>
+        <button *ngIf="showSendOC" class="btn btn-xsm btn-primary w-100 mb-2" (click)="sendOC()">SEND ORDER CONFIRMATION TO SELLER</button>
+
+        <div class="" *ngIf="showAwaitingForSellerToAcceptOC">
+          <div class="border bg-light w-100 p-2">
+            Order Confirmation
+          </div>
+          <div class="border-bottom border-left border-right w-100 p-2 mb-2 text-muted files">
+            <a href="{{urlService.OROCUrl(OCUrl, auctionDetails?.auction_number)}}" target="_blank"><img src="assets/img/file-icon.png"/>View Order Confirmation</a>
+          </div>
+          <h6 class="text-center font-weight-bold mt-4">AWAITING ACCEPTANCE</h6>
+          <i class="text-danger">Awaiting seller to accept order confirmation</i>
+        </div>
+
+        <div class="" *ngIf="isOrderConfirmationComplete">
+          <div class="border bg-light w-100 p-2">
+            Order Confirmation
+          </div>
+          <div class="border-bottom border-left border-right w-100 p-2 mb-2 text-muted files">
+            <a href="{{urlService.OROCUrl(OCUrl, auctionDetails?.auction_number)}}" target="_blank" class="pb-2"><img src="assets/img/file-icon.png"/>View Order Confirmation</a>
+            <div class="text-success pb-2">
+              <img src="assets/img/Check.png" style="width: 20px;" /> Accepted
+            </div>
+          </div>
+        </div>
+
+        <div class="" *ngIf="isOrderRequestComplete && isOrderConfirmationComplete && consignmentList?.length == 0">
+          <div class="border bg-light w-100 p-2">
+            Logistic details
+          </div>
+          <div class="border-bottom border-left border-right w-100 p-2 mb-2 text-muted">
+            logistics details not entered
+          </div>
+          <button class="btn btn-xsm btn-primary w-100 mb-2" routerLink="/admin/auctions/consignment/{{auctionId}}" routerLinkActive="active" >ENTER LOGISTICS DETAILS</button>
+        </div>
+
+        <div class="" *ngIf="isOrderRequestComplete && isOrderConfirmationComplete && consignmentList?.length && consignmentList?.length > 0">
+          <div class="border bg-light w-100 p-2">
+            <span>Logistic details</span>
+            <span class="float-right pointer" routerLink="/admin/auctions/consignment/{{auctionId}}" routerLinkActive="active">edit</span>
+          </div>
+          <div *ngFor="let item of consignmentList; let i = index;">
+            <div class="mt-2 border">
+              <!-- <div class="border-bottom px-2 pt-2">Consignment {{i+1}}</div>
+              <div class="py-3 px-2">
+                  <p>Date : {{item?.date | date: 'dd-MM-YYYY'}}</p>
+                  <p>Number of trucks : {{item?.no_of_trucks}}</p>
+                  <p>Total tonnage : {{item?.tonnage}}</p>
+              </div>
+              <a *ngIf="item?.dc_path" href="{{urlService.DCUrl(item?.dc_path, auctionDetails?.auction_number, item?.dc_number)}}" target="_blank" class="pb-2"><img src="assets/img/file-icon.png"/> View delivery challan</a>
+            </div>
+            <button class="btn btn-xsm btn-primary w-100 mt-2" *ngIf="item?.status == consignmentAdded" (click)="openConfirmModalDC(item?.id)">GENERATE DC</button>
+            <button class="btn btn-xsm btn-primary w-100 mt-2" *ngIf="item?.status == dcGenerated" (click)="handleEnterAcceptedDCClick(item?.id)">ENTER ACCEPTED DC</button>
+            <button class="btn btn-xsm btn-primary w-100 mt-2" *ngIf="item?.status == dcAccepted" (click)="handleGenerateInvoiceClick(item?.id, i+1)">GENERATE INVOICE</button>
+            <button class="btn btn-xsm btn-primary w-100 mt-2" *ngIf="item?.status == invoiceGenerated" (click)="handleGenerateInvoiceClick(item?.id, i+1)">VIEW INVOICE</button> -->
+              <div class="p-2">
+                <h6 class="">Consignment {{i+1}}</h6>
+                <hr class="mb-2 mt-2">
+                <div class="">
+                  <p class="mb-1">Date : {{item?.date | date: 'dd-MM-YYYY'}}</p>
+                  <p class="mb-1">Number of trucks : {{item?.no_of_trucks}}</p>
+                  <p class="mb-1">Total tonnage : {{item?.tonnage}}</p>
+                </div>
+                <hr class="mb-2 mt-2">
+                <div class="" *ngIf="item?.accepted_tonnage">
+                  <p class="mb-1">Accepted date : {{item?.accepted_dc_date | date: 'dd-MM-YYYY'}}</p>
+                  <p class="mb-1">Number of trucks : {{item?.no_of_trucks}}</p>
+                  <p class="mb-1">Accepted tonnage : {{item?.accepted_tonnage}}</p>
+                </div>
+                <hr class="mb-2 mt-2" *ngIf="item?.accepted_tonnage">
+
+                <div class="files">
+                <a *ngIf="item?.dc_path"
+                  href="{{urlService.DCUrl(item?.dc_path, auctionDetails?.auction_number, item?.dc_number)}}"
+                  target="_blank">
+                  <img src="assets/img/file-icon.png" alt="file" />View Delivery Challan
+                </a>
+
+
+                  <a href="javascript:void(0)" class="" *ngIf="item?.status == invoiceGenerated"
+                  (click)="handleGenerateInvoiceClick(item?.id, i+1)">
+                    <img src="assets/img/file-icon.png" alt="file" />View Invoices
+                  </a>
+                </div>
+              </div>
+              <button class="btn btn-xsm btn-primary w-100 mt-2" *ngIf="item?.status == consignmentAdded" (click)="openConfirmModalDC(item?.id)">GENERATE DC</button>
+              <button class="btn btn-xsm btn-primary w-100 mt-2" *ngIf="item?.status == dcGenerated" (click)="handleEnterAcceptedDCClick(item?.id)">ENTER ACCEPTED DC</button>
+              <button class="btn btn-xsm btn-primary w-100 mt-2" *ngIf="item?.status == dcAccepted" (click)="handleGenerateInvoiceClick(item?.id, i+1)">GENERATE INVOICE</button>
+              <!-- <button class="btn btn-xsm btn-primary w-100 mt-2" *ngIf="item?.status == invoiceGenerated" (click)="handleGenerateInvoiceClick(item?.id, i+1)">VIEW INVOICE</button> -->
+            </div>
+
+          </div>
+          <button class="btn btn-xsm btn-outline-primary w-100 mt-2" routerLink="/admin/auctions/consignment/{{auctionId}}" routerLinkActive="active">ADD CONSIGNMENT</button>
+        </div>
+
+      </div>
+
+      <div class="side-wrap p-3" *ngIf="(buyerList && buyerList.length == 0) || !buyerList">
+        <div class="">
+          <div class="border bg-light w-100 p-2">
+            No bids placed.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="modal fade" id="buyerModal" tabindex="-1" role="dialog" aria-labelledby="buyerModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header py-2">
+        <h6 class="modal-title font-weight-bold" id="buyerModal-title">Generate order request</h6>
+        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button> -->
+      </div>
+      <div class="modal-body pt-0">
+        <div class="row p-4">
+          <div class="col-md-12">
+
+            <div class="mb-3">
+              <h6 class="font-weight-bold">Selected Seller</h6>
+              <a href="#">{{sellerObj?.name}}</a>
+            </div>
+
+            <div>
+              <h6 class="font-weight-bold">Select Buyer</h6>
+              <div class="form-check" *ngFor="let item of buyerList;let i = index" title="{{rejectedBuyers.includes(item?.buyer_id) ? 'OC rejected by seller' : ''}}">
+                <input class="form-check-input" type="radio" name="buyer" id="buyer{{i+1}}" value="{{item?.buyer_id}}" [disabled]="rejectedBuyers.includes(item?.buyer_id)">
+                <label class="form-check-label" for="buyer1" [ngClass]="{'text-muted': rejectedBuyers.includes(item?.buyer_id)}">
+                  <b>H{{i+1}} - </b>{{item?.name}}
+                </label>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-6">
+              <button class="btn btn-xsm btn-outline-primary w-100" data-dismiss="modal" aria-label="Close">CANCEL</button>
+            </div>
+            <div class="col-md-6">
+              <button class="btn btn-xsm btn-primary w-100" (click)="generateOR()">GENERATE ORDER REQUEST</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-xsm btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-xsm btn-primary" data-dismiss="modal" (click)="onSellerChange($event)">Save changes</button>
+      </div> -->
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="sendprModal" tabindex="-1" role="dialog" aria-labelledby="sendprModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header py-2">
+        <h6 class="modal-title font-weight-bold" id="sendprModal-title">SEND ORDER REQUEST</h6>
+        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button> -->
+      </div>
+      <div class="modal-body pt-0">
+        <div class="row p-4">
+          <div class="col-md-12">
+
+            <div class="mb-3">
+              <h6 class="font-weight-bold">Selected Buyer</h6>
+              <span>{{buyerName}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-6">
+              <button class="btn btn-xsm btn-outline-primary w-100" data-dismiss="modal" aria-label="Close">CANCEL</button>
+            </div>
+            <div class="col-md-6">
+              <button class="btn btn-xsm btn-primary w-100" (click)="sendOR()">SEND ORDER REQUEST</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-xsm btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-xsm btn-primary" data-dismiss="modal" (click)="onSellerChange($event)">Save changes</button>
+      </div> -->
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="uploadOrModal" tabindex="-1" role="dialog" aria-labelledby="uploadOrModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header py-2">
+        <h6 class="modal-title font-weight-bold" id="uploadOrModal-title">UPLOAD ORDER REQUEST</h6>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body pt-0">
+        <div class="row p-4">
+          <div class="col-md-12">
+
+            <div class="mb-3">
+              <!-- <h6 class="font-weight-bold">Order Request</h6> -->
+              <h6 class="font-weight-bold">Select Buyer</h6>
+              <div class="form-check pb-4" *ngFor="let item of buyerList;let i = index">
+                <input class="form-check-input" type="radio" name="up-buyer" id="up-buyer{{i+1}}" value="{{item?.buyer_id}}">
+                <label class="form-check-label" for="up-buyer1">
+                  {{item?.name}}
+                </label>
+              </div>
+              <div class="input-wrap">
+                <input type="file" (change)="fileBrowseHandlerOR($event)" placeholder=" ">
+                <label class="placeholder">Order request</label>
+              </div>
+              <div class="input-wrap">
+                <input type="text" id="or_number" placeholder=" " #or>
+                <label class="placeholder">Order request number</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-6">
+              <button class="btn btn-xsm btn-outline-primary w-100" data-dismiss="modal" aria-label="Close" (click)="onCancelOCOR()">CANCEL</button>
+            </div>
+            <div class="col-md-6">
+              <button class="btn btn-xsm btn-primary w-100" (click)="uploadOR()" [disabled]="!ORFile">UPLOAD ORDER REQUEST</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="uploadOcModal" tabindex="-1" role="dialog" aria-labelledby="uploadOcModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header py-2">
+        <h6 class="modal-title font-weight-bold" id="uploadOcModal-title">UPLOAD ORDER CONFIRMATION</h6>
+        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button> -->
+      </div>
+      <div class="modal-body pt-0">
+        <div class="row p-4">
+          <div class="col-md-12">
+
+            <div class="mb-3">
+              <!-- <h6 class="font-weight-bold">Order Confirmation</h6> -->
+              <div class="input-wrap">
+                <input type="file" (change)="fileBrowseHandlerOC($event)" placeholder=" ">
+                <label class="placeholder">Order Confirmation</label>
+              </div>
+              <div class="input-wrap">
+                <input type="text" id="oc_number" placeholder=" ">
+                <label class="placeholder">Order confirmation number</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-6">
+              <button class="btn btn-xsm btn-outline-primary w-100" data-dismiss="modal" aria-label="Close" (click)="onCancelOCOR()">CANCEL</button>
+            </div>
+            <div class="col-md-6">
+              <button class="btn btn-xsm btn-primary w-100" (click)="uploadOC()" [disabled]="!OCFile">UPLOAD ORDER CONFIRMATION</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

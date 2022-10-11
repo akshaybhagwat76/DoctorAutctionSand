@@ -1,0 +1,278 @@
+<app-modal [isOpen]="isModalOpen" [fullscreen]='true' class="aside-panel" [ngClass]="{'modal-open': isModalOpen}"
+(onClose)="handleModalClose($event)">
+<app-modal-body>
+    <app-auction-view-edit *ngIf="isModalOpen" [selectedData]="selectedData" (backToList)="handleModalClose($event)">
+    </app-auction-view-edit>
+</app-modal-body>
+</app-modal>
+
+<app-modal [isOpen]="isModalOpen2" [fullscreen]='true' class="aside-panel" [ngClass]="{'modal-open': isModalOpen2}"
+(onClose)="handleModalClose($event)">
+<app-modal-body>
+    <app-auction-details-live *ngIf="isModalOpen2" [selectedData]="selectedData" (backToList)="handleModalClose($event)">
+    </app-auction-details-live>
+</app-modal-body>
+</app-modal>
+
+<section id="auction-list" class="container-fluid pt-3">
+  <div class="d-flex justify-content-between align-item-center border-bottom pb-2">
+    <h4 class="font-weight-bold">Auctions</h4>
+    <a class="btn btn-primary float-right" routerLink="/admin/auctions/create" routerLinkActive="active">Create Auction</a>
+  </div>
+  <div class="pt-2">
+    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+      <li class="nav-item" role="presentation">
+        <a class="nav-link text-dark active" id="pills-ongoing-tab" data-toggle="pill" href="#pills-ongoing" role="tab" aria-controls="pills-ongoing" aria-selected="true" (click)="onUpcoming()">Upcoming</a>
+      </li>
+      <li class="nav-item" role="presentation">
+        <a class="nav-link text-dark" id="pills-live-tab" data-toggle="pill" href="#pills-live" role="tab" aria-controls="pills-live" aria-selected="false" (click)="onLive()">Live</a>
+      </li>
+      <li class="nav-item" role="presentation">
+        <a class="nav-link text-dark" id="pills-completed-tab" data-toggle="pill" href="#pills-completed" role="tab" aria-controls="pills-completed" aria-selected="false" (click)="onCompleted()">Completed</a>
+      </li>
+      <li class="ml-auto mr-2 w-25">
+        <div class="input-wrap">
+          <ng-select
+            [items]="locationList"
+            bindLabel="location_name"
+            bindValue="id"
+            placeholder="Select Location" dropdownPosition="bottom"
+            [clearable]="false"
+            class="disable-clear-all"
+            [(ngModel)]="selectedLocationId" (change)="fetchAuctionList()">
+          </ng-select>
+        </div>
+      </li>
+      <li class="ml-auto mr-2 w-25">
+        <div class="input-wrap">
+          <ng-select [items]="productList" bindLabel="name" bindValue="id"
+            placeholder="Sand Type" dropdownPosition="bottom" (change)="fetchAuctionList()" [(ngModel)]="selectedProductId"
+            [clearable]="false"
+            class="disable-clear-all">
+          </ng-select>
+        </div>
+      </li>
+      <li>
+        <div class="filter-header dropdown">
+          <a href="javascript:void()" id="filter-dropdown" data-toggle="dropdown" aria-haspopup="true"
+              aria-expanded="false" *ngIf="currentState == COMPLETEDSTATE">
+              <img class="w-75" src="assets/img/icon-more.svg" />
+          </a>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="filter-dropdown">
+              <button class="dropdown-item" [ngClass]="{'active': dateFilter == 'all'}" (click)="handleFilterClick('all')">All</button>
+              <button class="dropdown-item" [ngClass]="{'active': dateFilter == 'pastHour'}" (click)="handleFilterClick('pastHour')">Past hour</button>
+              <button class="dropdown-item" [ngClass]="{'active': dateFilter == 'past24Hour'}" (click)="handleFilterClick('past24Hour')">Past 24 hours</button>
+              <button class="dropdown-item" [ngClass]="{'active': dateFilter == 'pastWeek'}" (click)="handleFilterClick('pastWeek')">Past week</button>
+              <button class="dropdown-item" [ngClass]="{'active': dateFilter == 'pastMonth'}" (click)="handleFilterClick('pastMonth')">Past month</button>
+              <button class="dropdown-item" [ngClass]="{'active': dateFilter == 'pastYear'}" (click)="handleFilterClick('pastYear')">Past year</button>
+              <!-- <button class="dropdown-item" (click)="handleFilterClick($event, 'customRange')">Custom range</button> -->
+          </div>
+        </div>
+      </li>
+    </ul>
+    <div class="tab-content" id="pills-tabContent">
+      <div class="tab-pane fade show active" id="pills-ongoing" role="tabpanel" aria-labelledby="pills-ongoing-tab">
+        <div class="col-12 table-responsive p-0">
+          <table class="list-table table">
+              <thead>
+                  <tr>
+                      <th>Auction No. :</th>
+                      <th>Sand Type</th>
+                      <th>Grade</th>
+                      <th>Lot Size</th>
+                      <th>Auction Start Date</th>
+                      <th>Auction End Date</th>
+                      <th>Action</th>
+                      <!-- <th>Status</th> -->
+                  </tr>
+              </thead>
+
+              <tbody class="text-center" *ngIf="isListLoading">
+                  <tr>
+                      <td colspan="6">Loading...</td>
+                  </tr>
+              </tbody>
+
+              <tbody class="text-center" *ngIf="!isListLoading && auctionList?.length === 0">
+                  <tr>
+                      <td colspan="6">No result found</td>
+                  </tr>
+              </tbody>
+
+              <tbody *ngIf="!isListLoading && auctionList?.length !== 0">
+                  <tr *ngFor="let item of auctionList">
+                      <td class="cell-registration-id">{{item?.auction_number}}</td>
+                      <td class="cell-company">{{item?.product_name}}</td>
+                      <td class="cell-phone">{{item?.grade}}</td>
+                      <td class="cell-email">{{item?.lot_size}}</td>
+                      <td class="cell-date">{{ item?.from_datetime | date: "DD/MM/YYYY" }}
+                        <br/>
+                        {{ item?.from_datetime | date: "hh:mm aa" }}
+                      </td>
+
+                      <td class="cell-date">{{ item?.to_datetime | date: "dd/MM/YYYY" }}
+                        <br/>
+                        {{ item?.to_datetime | date: "hh:mm aa" }}
+                      </td>
+                      <td>
+                        <!-- <a style="text-decoration: underline;" (click)="showExtendPopUp(item?.id)"><img src="assets/img/Add_timer_blue.png" /></a> -->
+                        <a title="View/Edit details" class="ml-2" (click)="handleViewClick(item)"><img src="assets/img/icon_view.svg"/></a>
+                      </td>
+                      <!-- <td class="cell-date">{{ item?.from_datetime | date: "hh:mm aa" }} - {{ item?.to_datetime | date: "hh:mm aa" }}</td> -->
+                      <!-- <td class="cell-status">
+                          <span>Ends in 30 min</span>
+                      </td> -->
+                  </tr>
+              </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="pills-live" role="tabpanel" aria-labelledby="pills-live-tab">
+        <div class="col-12 table-responsive p-0">
+          <table class="list-table table">
+              <thead>
+                  <tr>
+                      <th>Auction No.</th>
+                      <th>Sand Type</th>
+                      <th>Grade</th>
+                      <th>Lot Size</th>
+                      <th>Auction Start Date</th>
+                      <th>Auction End Date</th>
+                      <th>Action</th>
+                      <!-- <th>Status</th> -->
+                  </tr>
+              </thead>
+
+              <tbody class="text-center" *ngIf="isListLoading">
+                  <tr>
+                      <td colspan="6">Loading...</td>
+                  </tr>
+              </tbody>
+
+              <tbody class="text-center" *ngIf="!isListLoading && auctionList?.length === 0">
+                  <tr>
+                      <td colspan="6">No result found</td>
+                  </tr>
+              </tbody>
+
+              <tbody *ngIf="!isListLoading && auctionList?.length !== 0">
+                  <tr *ngFor="let item of auctionList">
+                      <td class="cell-registration-id">{{item?.auction_number}}</td>
+                      <td class="cell-company">{{item?.product_name}}</td>
+                      <td class="cell-phone">{{item?.grade}}</td>
+                      <td class="cell-email">{{item?.lot_size}}</td>
+                      <td class="cell-date">{{ item?.from_datetime | date: "dd/MM/YYYY" }}
+                        <br/>
+                        {{ item?.from_datetime | date: "hh:mm aa" }}
+                      </td>
+
+                      <td class="cell-date">{{ item?.to_datetime | date: "dd/MM/YYYY" }}
+                        <br/>
+                        {{ item?.to_datetime | date: "hh:mm aa" }}
+                      </td>
+                      <td>
+                        <a style="text-decoration: underline;" (click)="showExtendPopUp(item?.id)"><img src="assets/img/Add_timer_blue.png" /></a>
+                        <a class="ml-2" title="View live bidding" (click)="handleLiveViewClick(item)"><img src="assets/img/H1.png"/></a>
+                        <a class="ml-2" title="View/Edit auction details" (click)="handleViewClick(item)"><img src="assets/img/icon_view.svg"/></a>
+                      </td>
+                      <!-- <td class="cell-date">{{ item?.from_datetime | date: "hh:mm aa" }} - {{ item?.to_datetime | date: "hh:mm aa" }}</td> -->
+                      <!-- <td class="cell-status">
+                          <span>Ends in 30 min</span>
+                      </td> -->
+                  </tr>
+              </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="pills-completed" role="tabpanel" aria-labelledby="pills-completed-tab">
+        <div class="col-12 table-responsive p-0">
+          <table class="list-table table">
+              <thead>
+                  <tr>
+                      <th>Auction No.</th>
+                      <th>Sand Type</th>
+                      <th>Grade</th>
+                      <th>Lot Size</th>
+                      <th>Auction Start Date</th>
+                      <th>Auction End Date</th>
+                      <!-- <th>Status</th> -->
+                  </tr>
+              </thead>
+
+              <tbody class="text-center" *ngIf="isListLoading">
+                  <tr>
+                      <td colspan="6">Loading...</td>
+                  </tr>
+              </tbody>
+
+              <tbody class="text-center" *ngIf="!isListLoading && auctionList?.length === 0">
+                  <tr>
+                      <td colspan="6">No result found</td>
+                  </tr>
+              </tbody>
+
+              <tbody *ngIf="!isListLoading && auctionList?.length !== 0">
+                  <tr *ngFor="let item of auctionList" routerLink="/admin/auctions/detail/{{item?.id}}" routerLinkActive="active">
+                      <td class="cell-registration-id">{{item?.auction_number}}</td>
+                      <td class="cell-company">{{item?.product_name}}</td>
+                      <td class="cell-phone">{{item?.grade}}</td>
+                      <td class="cell-email">{{item?.lot_size}}</td>
+                      <td class="cell-date">{{ item?.from_datetime | date: "dd/MM/YYYY" }}
+                        <br/>
+                        {{ item?.from_datetime | date: "hh:mm aa" }}
+                      </td>
+
+                      <td class="cell-date">{{ item?.to_datetime | date: "dd/MM/YYYY" }}
+                        <br/>
+                        {{ item?.to_datetime | date: "hh:mm aa" }}
+                      </td>
+                      <!-- <td class="cell-date">{{ item?.date | date: "dd/MM/YYYY" }}</td>
+                      <td class="cell-date">{{ item?.from_datetime | date: "hh:mm aa" }} - {{ item?.to_datetime | date: "hh:mm aa" }}</td>
+                      <td class="cell-status">
+                          <span>Complete</span>
+                      </td> -->
+                  </tr>
+              </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="modal fade" id="confirmModel" tabindex="-1" role="dialog" aria-labelledby="confirmModel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header py-2">
+        <h6 class="modal-title font-weight-bold" id="confirmModel-title">Extend Time</h6>
+        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button> -->
+      </div>
+      <div class="modal-body pt-0">
+        <div class="row p-4">
+          <div class="col-md-12">
+
+            <div class="mb-3">
+              <!-- <h6 class="font-weight-bold">Selected Buyer</h6> -->
+              <span>Are you sure you want to extend time by 5 minutes?</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-6">
+              <button class="btn btn-outline-primary w-100" data-dismiss="modal" aria-label="Close">No</button>
+            </div>
+            <div class="col-md-6">
+              <button class="btn btn-primary w-100" (click)="extendTime()">YES</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="onSellerChange($event)">Save changes</button>
+      </div> -->
+    </div>
+  </div>
+</div>

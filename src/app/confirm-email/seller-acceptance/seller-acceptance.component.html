@@ -1,0 +1,20 @@
+<app-modal-confirm [modalId]="modalId" [mdata]="modalData" (confirm)="confirmBuyer($event)"></app-modal-confirm>
+<app-modal-confirm [modalId]="modalId2" [mdata]="modalData" (confirm)="confirmBuyerOrder($event)"></app-modal-confirm>
+
+<div class="main-bg">
+    <div class="whole-container">
+        <div class="logo">
+            <img src="assets/img/logo1-doctor-sand.svg" alt="ss-logo">
+        </div>
+        <div class="form-container">
+            <div class="top-steps">
+                <div class="steps-wrap justify-content-center">
+                    <span>
+                        <img src="assets/img/Icon-check-circle.svg" alt="circle">
+                        {{(type && type == 'OR') ? 'Order Request Acceptance' : 'Order Confirmation Acceptance'}}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

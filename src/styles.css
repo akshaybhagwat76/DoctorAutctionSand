@@ -1,0 +1,348 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~@danielmoncada/angular-datetime-picker/assets/style/picker.min.css";
+:root {
+  --primary-bg-color: #0988cd;
+  --primary-bg-dark-color: #0988ce;
+  --secondary-bg-color: #00a79d;
+  --text-info: #63c1ed;
+  /* --text-primary: #0988ce; */
+  --success-color: #155724;
+  --error-color: #721c24;
+}
+
+*,
+html {
+  font-family: "Nunito Sans", sans-serif;
+}
+
+.primaryBackground {
+  background-color: var(--primary-bg-color);
+}
+
+.textInfo {
+  color: var(--text-info);
+}
+
+.textPrimary {
+  color: #0988ce;
+}
+
+/* Removed input number arrow */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* ng-select Custom */
+.ng-select {
+  border: 0px !important;
+}
+.ng-select .ng-select-container {
+  border-radius: 0px;
+}
+.ng-select .ng-arrow-wrapper .ng-arrow {
+  border-color: #0988ce transparent transparent;
+}
+.ng-select.ng-select-opened > .ng-select-container .ng-arrow {
+  border-color: transparent transparent #0988ce;
+}
+.ng-select.ng-select-single .ng-select-container .ng-value-container,
+.ng-select.ng-select-single .ng-select-container .ng-value-container .ng-value {
+  font-size: 13px;
+}
+.ng-option {
+  font-size: 11px;
+}
+
+
+  /* admin view */
+  .fg-data ng-select{
+    padding: 0px;
+  }
+  .fg-data ng-select > .ng-select-container{
+    border: 0px !important;
+  }
+
+/* Custom Radio button */
+.radio-wrap {
+  margin-bottom: 25px;
+}
+.radio-btn {
+  display: inline-block;
+}
+.radio-btn:not(:first-child) {
+  margin-left: 20px;
+}
+.radio-btn > span {
+  padding: 5px 22px;
+  border: 1px solid #dae0f4;
+  cursor: pointer;
+  color: #535d79;
+  transition: all 0.3s ease-in-out;
+  display: inline-block;
+}
+
+.radio-btn > span:hover {
+  background-color: #0988ce;
+  border: 1px solid transparent;
+  color: #fff;
+}
+.radio-btn > input {
+  display: none;
+}
+
+.radio-btn > input:checked + span {
+  background-color: #0988ce;
+  border: 1px solid transparent;
+  color: #fff;
+}
+
+/* Input */
+.input-wrap {
+  margin-bottom: 25px;
+  position: relative;
+  font-size: 14px;
+  width: 100%;
+}
+.input-wrap > i,
+.input-wrap > .input-info,
+.input-wrap > .input-error {
+  position: absolute;
+  bottom: -14px;
+  width: 100%;
+  font-style: normal;
+  font-size: 9px;
+  left: 2px;
+  z-index: 2;
+}
+.input-wrap input {
+  width: 100%;
+  border: 1px solid #dae0f4;
+  padding: 5px 10px;
+  outline: none;
+}
+.input-wrap input:focus {
+  border-color: #0988ce !important;
+  box-shadow: 0px 2px 4px #dff4ff;
+}
+
+.ng-value-label, .ng-option-label, .ng-input > input {
+  text-transform: uppercase;
+}
+
+/* input Placeholder */
+.input-wrap > input,
+.input-wrap > .ng-select {
+  border: 1px solid #e0e0e1;
+  width: 100%;
+  height: 35px;
+  outline: 0;
+}
+
+.placeholder {
+  margin-bottom: 2px;
+  font-size: 9pt;
+  position: absolute;
+  bottom: 0px;
+  left: 10px;
+  color: #929293;
+  transition: bottom 225ms cubic-bezier(0.25, 0.8, 0.25, 1) 0s,
+    top 225ms cubic-bezier(0.25, 0.8, 0.25, 1) 0s,
+    font-size 225ms cubic-bezier(0.25, 0.8, 0.25, 1) 0s,
+    color 225ms cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
+  pointer-events: none;
+  transform: translateY(-8px);
+  white-space: nowrap;
+}
+
+.input-wrap > input:focus ~ .placeholder,
+.input-wrap input:not(:placeholder-shown) ~ .placeholder {
+  font-size: 8pt;
+  padding: 0px 5px;
+  left: 5px;
+  bottom: 19px;
+  background-color: white;
+}
+.placeholder-focused {
+  font-size: 12px;
+  left: 0px;
+  bottom: 23px;
+}
+
+/* Form Steps cont & prev button */
+.continue-btn {
+  background-color: #f9f9f9;
+  margin-left: -15px;
+  margin-right: -15px;
+  padding: 10px 30px;
+  margin-top: 15px;
+}
+.continue-btn button {
+  background-color: #f9f9f9;
+  display: inline-block;
+  font-size: 14px;
+  text-align: center;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  outline: none;
+  color: #0988ce;
+  font-weight: bold;
+}
+.continue-btn button.next {
+  float: right;
+  padding: 8px 65px 8px 19px;
+}
+.continue-btn button.prev {
+  padding: 8px 19px 8px 65px;
+}
+.continue-btn button.prev::after {
+  transform: rotate(180deg);
+  left: -31px;
+}
+.continue-btn button::after {
+  content: "\279D";
+  display: block;
+  position: absolute;
+  top: 50%;
+  line-height: 0;
+  right: 30px;
+  font-size: 20px;
+  color: #0988ce;
+  transition: all 0.5s ease-in-out;
+}
+.continue-btn button.next:hover::after {
+  transform: translateX(5px);
+}
+.continue-btn button.prev:hover::after {
+  transform: rotate(180deg) translateX(5px);
+}
+
+/* button theme */
+.btn.btn-primary {
+  background-color: var(--primary-bg-color) !important;
+  font-weight: 700 !important;
+  font-size: 0.875rem;
+  border-radius: 1px !important;
+}
+
+.btn-outline-primary {
+  color: var(--primary-bg-color);
+  border-color: var(--primary-bg-color);
+  font-weight: 700 !important;
+  font-size: 0.875rem;
+  border-radius: 1px !important;
+}
+
+.btn-outline-primary.disabled, .btn-outline-primary:disabled {
+  color: var(--primary-bg-color);
+  border-color: var(--primary-bg-color);
+}
+
+.btn-outline-primary:hover {
+  color: #FFF;
+  background-color: var(--primary-bg-color);
+}
+
+.btn-outline-primary.disabled:hover, .btn-outline-primary:disabled:hover {
+  color: var(--primary-bg-color);
+  border-color: var(--primary-bg-color);
+  background-color: transparent;
+}
+
+.btn.btn-secondary {
+  font-weight: 700 !important;
+  font-size: 0.875rem !important;
+  border-radius: 1px !important;
+}
+
+  .ng-select.disable-arrow .ng-arrow-wrapper {
+    display: none;
+  }
+  .ng-select.disable-dropdown .ng-dropdown-panel {
+    display: none;
+  }
+  .ng-select.disable-clear-all .ng-clear-wrapper {
+    display: none;
+  }
+.btn.btn-primary.disabled,
+.btn.btn-primary:disabled {
+  background-color: var(--primary-bg-color) !important;
+}
+
+.btn.btn-primary:hover,
+.btn.btn-primary:focus {
+  background-color: var(--primary-bg-dark-color) !important;
+}
+
+
+
+/* Other  */
+app-reg-details{
+  width: 100%
+}
+
+app-auction-list, app-create-auction, app-products, app-grades, app-truck-size, app-lot-size, app-terms, app-delivery-payment-terms,
+app-pincodes, app-locations, app-auction-details, app-consignment, app-auction-details-live, app-fixed-fee-products, app-create-fixed-fee-component,
+app-admin-orders, app-admin-order-details, app-consignment-reports, app-truck-reports, app-enquiries {
+  background-color: white;
+  border-radius: 3px;
+  position: relative;
+  display: flex;
+  flex: 1 1 auto;
+  margin: 15px;
+}
+
+
+app-dashboard .sort-type .ng-select-container{
+  background-color: #f9f9f9;
+  border: 1px solid #E4E4E4;
+  height: 40px !important;
+}
+
+
+#my-toast {
+  position: fixed;
+  z-index: 10000;
+  right: 2%;
+  background-color: #FFF;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container {
+  max-height: 35px;
+  overflow-y: auto;
+}
+
+.select-seller-modal table-responsive, select-buyer-modal table-responsive {
+  max-height: 450px;
+  overflow-y: auto;
+}
+
+.cdk-overlay-container {
+  z-index: 10000;
+}
+
+.btn-xsm {
+  font-size: .7rem !important;
+}
+
+.font-small {
+  font-size: small !important;
+}
+
+.font-smaller {
+  font-size: smaller !important;
+}
+
+.ngb-toasts {
+  z-index: 12000 !important;
+}

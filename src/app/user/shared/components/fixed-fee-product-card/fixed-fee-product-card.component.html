@@ -1,0 +1,71 @@
+<!--
+<div class="auction-vcard-wrap">
+  <div class="auction-scroll">
+      <div class="auction-vcard">
+          <div class="auction-img">
+              <img src="assets/img/product-placeholder.png" alt="product-img">
+          </div>
+          <div class="auction-content w-100">
+              <div class="content-top">
+                  <h3>
+                      Concrete M-Sand
+                  </h3>
+                  <div class="content-wrap justify-content-between align-items-center">
+                      <p>Grade : <b>Very Fine</b> (2.3 to 3.2)</p>
+                      <p>Silt : <b>12 %</b></p>
+                      <p>Source : <b>Granite Stone</b></p>
+                  </div>
+              </div>
+              <div class="content-btm">
+                <button class="btn btn-primary w-100">Buy Now</button>
+              </div>
+          </div>
+      </div>
+
+  </div>
+</div> -->
+
+
+
+
+<div class="auction-vcard-wrap">
+  <div class="">
+    <div class="main-card row m-0">
+      <div class="col-md-5 img-wrap pl-0">
+        <img src="{{urlService.productDocumentUrl(product?.product?.image)}}" alt="product-img" class="w-100">
+      </div>
+      <div class="auction-content col-md-7">
+        <div class="content-top">
+          <h3 class="text-primary">
+            {{product?.product?.name}}
+          </h3>
+          <div class="card-content-text">
+            <p class="mb-2">Grade : <b>{{product?.grade?.grade}}</b> ({{product?.grade?.fineness_modulus}})</p>
+            <p class="mb-2">Silt : <b>{{product?.silt}} %</b></p>
+            <p class="mb-2">Source : <b>{{product?.source}}</b></p>
+          </div>
+          <!-- <div class="card-content-text" *ngIf="product?.product?.product_type == 1">
+                    <p>Parameters :</p>
+                    <p class="mb-1">Classify as</p>
+                    <ul class="pl-3 text-dark">
+                      <li><b>75 micron (silt) < {{product.silt}} %</b></li>
+                    </ul>
+                  </div> -->
+        </div>
+        <div class="content-btm">
+          <a class="btn btn-primary w-100" *ngIf="user && product?.product?.product_type == productType.sand_bulk"
+            [routerLink]="['/user/fixed-fee/product/details/',product.id]">{{product?.price | currency: 'INR': 'symbol'}}/MT
+            | BUY</a>
+          <a class="btn btn-primary w-100" *ngIf="user && product?.product?.product_type == productType.supllementry"
+          [routerLink]="['/user/fixed-fee/product/details/',product.id]">
+          BUY</a>
+          <a class="btn btn-primary w-100" *ngIf="user && product?.product?.product_type == productType.sand_bag"
+          [routerLink]="['/user/fixed-fee/product/details/',product.id]">{{product?.price | currency: 'INR': 'symbol'}}/Bag
+          | BUY</a>
+          <button class="btn btn-primary w-100" *ngIf="!user"> | BUY NOW</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,116 @@
+
+.dash-head{
+  margin-bottom: 11px;
+  margin-top: 15px;
+  font-size: 24px;
+}
+.aution-tab .nav-tabs{
+  padding-bottom: 13px;
+}
+.aution-tab .nav-tabs li{
+  margin-top: 17px;
+}
+.aution-tab .nav-tabs li a{
+  color: #000;
+  padding: 13px 0px;
+  margin-right: 35px;
+  margin-bottom: 10px;
+  font-weight: 500;
+  text-decoration: none;
+}
+.aution-tab .nav-tabs li a.active{
+  border-bottom: 2px solid #0988CE;
+  color: #0988CE;
+}
+
+.text-primary {
+  color: #0988CE !important;
+}
+.top-head, .head {
+  background-color: #F9F9F9;
+}
+.top-head > a:before {
+  content: "\279E";
+  position: absolute;
+  /* left: 10px; */
+  transform: rotate(180deg);
+  font-size: 1.125rem;
+  color: #0988ce;
+  bottom: 12%;
+}
+
+/* list table */
+.list-table thead tr th {
+  font-size: 0.875rem;
+  font-size: 700;
+  border: 0;
+  background-color: #f9f9f9;
+}
+
+.list-table tbody tr td {
+  font-size: 0.875rem;
+  font-weight: 400;
+  vertical-align: middle;
+  padding: 0.75em;
+  background-color: white;
+  transition: background-color 0.3s linear;
+  cursor: pointer;
+}
+
+.list-table tbody tr:hover td {
+  background-color: #f4fbff;
+}
+
+.list-table thead tr th:first-child,
+.list-table tbody tr td:first-child {
+  padding-left: 1.5em;
+}
+
+.list-table thead tr th:last-child,
+.list-table tbody tr td:last-child {
+  padding-right: 1.5em;
+}
+
+.list-table tbody tr:first-child td {
+  border-top: 0;
+}
+
+.list-table .cell-company {
+  font-weight: 700;
+  color: var(--primary-bg-color);
+}
+
+.list-table .cell-status span {
+  background-color: #f2f2f2;
+  display: inline-flex;
+  border-radius: 16px;
+  padding: 6px 10px;
+  font-weight: 700;
+  color: var(--primary-bg-color);
+  font-size: 0.75rem;
+}
+
+.form-group.hidden {
+  width: 0;
+  margin: 0;
+  border: none;
+  padding: 0;
+}
+.custom-day {
+  text-align: center;
+  padding: 0.185rem 0.25rem;
+  display: inline-block;
+  height: 2rem;
+  width: 2rem;
+}
+.custom-day.focused {
+  background-color: #e6e6e6;
+}
+.custom-day.range, .custom-day:hover {
+  background-color: rgb(2, 117, 216);
+  color: white;
+}
+.custom-day.faded {
+  background-color: rgba(2, 117, 216, 0.5);
+}
+

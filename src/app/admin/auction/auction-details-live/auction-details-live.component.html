@@ -1,0 +1,45 @@
+
+<app-modal-confirm modalId="addTimeModal" [mdata]="modalData" (confirm)="confirmModalResponse($event)"></app-modal-confirm>
+<app-modal-confirm modalId="auctionEndModal" [mdata]="modalData" (confirm)="confirmModalResponse($event)"></app-modal-confirm>
+
+
+<div class="main-wrap w-100">
+
+  <div *ngIf="udLoading" class="loading-txt">Loading...</div>
+
+
+  <div *ngIf="!udLoading" class="content-wrap">
+
+      <div class="top-head">
+          <a (click)="back2List()">Auction Details</a>
+
+          <button class="btn btn-white" (click)="showExtendPopUp()"><span *ngIf="auctionId" class="mr-2">{{auctionDetails?.time}}</span><img src="assets/img/Add_timer_blue.png" /></button>
+      </div>
+
+      <div style="padding: 10px 80px;" *ngIf="auctionId">
+        <div class="row">
+          <div class="col-md-12 text-right">
+            <span>Auction No. : {{auctionDetails?.auction_number}}</span>
+          </div>
+        </div>
+        <app-bid-table [auctionId]="auctionId"></app-bid-table>
+      </div>
+
+      <div style="padding: 10px 80px;" *ngIf="selectedData">
+        <app-auction-hcard-admin [auctionDetail]="auctionDetails"></app-auction-hcard-admin>
+
+        <!-- PDF -->
+        <div class="sieve-pdf">
+            <div class="file-wrap" *ngIf="analysisReport">
+                <img src="assets/img/file-icon.png" alt="file">
+                <a href="{{urlService.productDocumentUrl(analysisReport)}}" target="_blank">Sieve Analysis Report.pdf</a>
+            </div>
+            <div class="file-wrap" *ngIf="concertReport">
+                <img src="assets/img/file-icon.png" alt="file">
+                <a href="{{urlService.productDocumentUrl(concertReport)}}" target="_blank">Concrete Test Report.pdf</a>
+            </div>
+        </div>
+      </div>
+
+  </div>
+</div>

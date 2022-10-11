@@ -1,0 +1,133 @@
+/* Bidder Table */
+.bidder-tbl{
+  border: 1px solid #E2E2E2;
+  overflow: auto;
+  margin-top: 20px;
+  height: calc(100% - 20px);
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+  position: relative;
+}
+.bidder-tbl::-webkit-scrollbar {
+  display: none;
+}
+.bidder-tbl table{
+  width: 100%;
+  min-width: 600px;
+}
+.bidder-tbl .tr-head{
+  background-color: #f9f9f9;
+}
+.bidder-tbl th{
+  padding: 14px 8px;
+  font-weight: 500;
+}
+.bidder-tbl td{
+  padding: 15px 8px;
+}
+.bidder-tbl .position-th{
+  padding-left: 40px;
+}
+.bidder-tbl .position-td{
+  position: relative;
+  padding-left: 40px;
+}
+.bidder-tbl .position-td span{
+  background-color: #0988CE;
+  color: #fff;
+  border-radius: 50px;
+  padding: 3px 16px;
+  font-size: 11px;
+  display: inline-block;
+  margin-left: 14px;
+  line-height: 1.5;
+}
+.bidder-tbl .position-td img{
+  position: absolute;
+  left: 15px;
+  /* top: 17px; */
+  width: 17px;
+}
+.scrll-tbl{
+  overflow: auto;
+  max-height: 614px;
+  position: relative;
+  width: 100%;
+  min-width: 600px;
+}
+
+.scrll-tbl::-webkit-scrollbar {
+  width: 7px;
+}
+
+.scrll-tbl::-webkit-scrollbar-thumb {
+background: #b2b2b2;
+border-radius: 20px;
+}
+
+.scrll-tbl::-webkit-scrollbar-track {
+background: #ddd;
+border-radius: 20px;
+}
+
+/* tables width head & data*/
+.bidder-tbl table tr th:nth-child(1),
+.bidder-tbl table tr td:nth-child(1)
+{
+  width: 30%;
+}
+.bidder-tbl table tr th:nth-child(2),
+.bidder-tbl table tr td:nth-child(2)
+{
+  width: 30%;
+}
+.bidder-tbl table tr th:nth-child(3),
+.bidder-tbl table tr td:nth-child(3)
+{
+  width: 15%;
+}
+.bidder-tbl table tr th:nth-child(4),
+.bidder-tbl table tr td:nth-child(4)
+{
+  width: 25%;
+}
+
+/* Awaiting Overlay */
+.overlay{
+  position: absolute;
+  display: flex;
+  top: 50px;
+  left: 0;
+  background-color: #0000006e;
+  color: #fff;
+  bottom: 0;
+  right: 0;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 17px;
+}
+/***** tr - Theme  */
+
+.bidder-tbl .tr-bold{
+  font-weight: bold;
+}
+.tr-red{
+  background-color: #fefafa;
+  border: 1px solid;
+  border-color: #e30011 transparent;
+}
+.tr-orang{
+  background-color: #fff5e2;
+  border: 1px solid;
+  border-color: #f2b844 transparent;
+}
+.tr-blue{
+  background-color: #0988ce;
+  color: #fff;
+}
+.refresh-img{
+  float: right;
+  max-width: 24px;
+  cursor: pointer;
+}

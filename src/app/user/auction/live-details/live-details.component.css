@@ -1,0 +1,267 @@
+
+/* Auction Vertical card */
+.auction-id{
+    margin-left: auto;
+    margin-top: 16px;
+}
+.auction-tab{
+    width: 100%;
+}
+.auction-tab .nav-tabs{
+    padding-bottom: 13px;
+}
+.auction-tab .nav-tabs li{
+    margin-top: 17px;
+}
+.auction-tab .nav-tabs li a{
+    color: #000;
+    padding: 13px 0px;
+    margin-right: 35px;
+    margin-bottom: 10px;
+    font-weight: 500;
+    text-decoration: none;
+}
+.auction-tab .nav-tabs li a.active{
+    border-bottom: 2px solid #0988CE;
+    color: #0988CE;
+}
+
+/* file pdf */
+.sieve-pdf{
+    border: 1px solid #EAEAEA;
+    padding: 15px;
+    /* min-height: 160px; */
+    /* margin-bottom: 25px; */
+}
+.file-wrap{
+    display: inline-block;
+    margin-right: 25px;
+    /* margin-top: 10px; */
+}
+.file-wrap img{
+    width: 16px;
+    height: auto;
+    margin-right: 13px;
+    transform: translateY(-3px);
+}
+.file-wrap a{
+    /* color: #000000 !important;
+    text-decoration: underline; */
+    cursor: pointer;
+}
+
+
+/* Auction - Time Start/end   */
+.auction-time{
+    border: 1px solid #E2E2E2;
+    /* margin-top: 20px; */
+}
+.time-head{
+    color: #24243A;
+    background-color: #E2E2E2;
+    padding: 15px 15px;
+}
+.time-body{
+    display: flex;
+    flex-flow: row nowrap;
+    padding: 20px 15px;
+}
+.time-body .clock-icon{
+    margin-right: 15px;
+}
+.time-body .clock-icon img{
+    width: 40px;
+    height: auto;
+}
+.time-body .hms{
+    font-weight: 500;
+    display: flex;
+    flex-flow: row nowrap;
+}
+.time-body .hms > div{
+    display: flex;
+    flex-flow: column;
+    line-height: 1.1;
+    justify-content: center;
+    text-align: center;
+    transform: translateY(-3px);
+}
+.time-body .hms > div span:first-child{
+    font-size: 32px;
+    display: inline-block;
+    margin: 0 7px;
+}
+.time-body .hms > div span:last-child{
+    font-weight: 500;
+    color: #000000;
+}
+.hms-red{
+    color: #E30011;
+}
+
+
+/* Auction - Location / Rang */
+.auction-location{
+    margin-top: 15px;
+    border: 1px solid #E2E2E2;
+    padding: 20px 15px;
+    margin-bottom: 30px;
+}
+.auction-location .location{
+    /* padding: 0px 8px 0px 8px; */
+    margin-bottom: 11px;
+}
+.auction-location .location img{
+    width: 20px;
+    height: 20px;
+    margin-right: 12px;
+}
+.auction-location .location span{
+    text-decoration: underline;
+    cursor: pointer;
+}
+.auction-location .deliverable-msg{
+    color: #4CAF50;
+    /* margin-left: 40px; */
+}
+.auction-location .check-agree{
+    margin-bottom: 15px;
+}
+.auction-location .check-agree input{
+    margin-right: 10px;
+    transform: translateY(1px);
+}
+.auction-location .check-agree > span >a{
+    color: #0988CE;
+    /* font-weight: bold; */
+    cursor: pointer;
+}
+.auction-location .place-bid-btn{
+    background-color: #2D99D5;
+    color: #fff;
+    width: 100%;
+    border: 0;
+    outline: none;
+    padding: 0px 8px;
+    height: 48px;
+    line-height: 48px;
+    text-align: center;
+    border-radius: 4px;
+}
+
+/* Modal: 1 - Order Cancel */
+.OCModal .modal-dialog{
+    max-width: 420px;
+}
+.OCModal h4{
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+.OCModal p{
+    color: #24243A;
+    margin-bottom: 10px;
+}
+.OCModal address,
+.OCModal input
+{
+    padding: 10px 14px;
+    border: 1px solid #DDDDDD;
+    font-size: 14px;
+    margin-bottom: 15px;
+    cursor: pointer;
+}
+.OCModal address.selected{
+    background-color: #0988CE0F;
+    border: 1px solid #0988CE;
+}
+.OCModal .add-oc{
+    color: #0988CE;
+    font-weight: bold;
+    margin: 3px 0 25px 0;
+    display: inline-block;
+    text-decoration: none;
+    cursor: pointer;
+}
+.action-btn{
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+}
+.action-btn a{
+    width: calc(50% - 10px);
+    border: 1px solid #f3f3f3;
+    padding: 8px;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+}
+.action-btn .cancel-oc{
+    border: 1px solid #0988CE;
+    color: #0988CE;
+}
+.action-btn .ok-oc{
+    background-color: #0988CE;
+    color: #fff;
+}
+
+
+/* Modal: 2 - Order Cancel */
+.OCFormModal .contact-info{
+    display: flex;
+    justify-content: space-between;
+    flex-flow: nowrap row;
+}
+
+.OCFormModal .contact-info > div:first-child{
+    margin-right: 5px;
+    min-width: 100px;
+    width: fit-content;
+}
+.OCFormModal .pointofCD{
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 24px;
+    border-bottom: 1px solid #DAE0F4;
+    padding-bottom: 7px;
+}
+.OCFormModal .OCForm-head{
+    margin-left: -16px;
+    margin-right: -16px;
+    font-size: 17px;
+    background-color: #F9F9F9;
+    margin-top: -16px;
+    padding: 16px;
+    margin-bottom: 30px;
+    font-weight: bold;
+}
+.OCFormModal .action-btn{
+    width: 64%;
+    margin-left: auto;
+}
+@media (max-width: 768px){
+    .OCFormModal{
+        padding-left: 0px;
+    }
+    .input-wrap{
+        margin-bottom: 10px;
+    }
+}
+@media (min-width: 576px){
+    .modal-dialog {
+        max-width: 570px;
+        margin: 1.75rem auto;
+    }
+}
+
+input.errors{
+  color: red;
+  border-color:red ;
+}
+.erro-red{
+  color: red;
+}
+
+.check-pins{
+    cursor: pointer;
+}

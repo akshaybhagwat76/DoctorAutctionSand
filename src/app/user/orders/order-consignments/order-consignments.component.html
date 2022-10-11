@@ -1,0 +1,243 @@
+<div class="main-wrap">
+
+  <div *ngIf="udLoading" class="loading-txt">Loading...</div>
+
+
+  <div *ngIf="!udLoading" class="content-wrap">
+
+    <div class="top-head">
+      <a (click)="back2List()">Consignment no: {{consignmentNo}}</a>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <div class="row pb-3">
+      <div class="col">
+        <span class="my-border-primary px-4 py-2">Tonnage: {{consignmentDetails?.tonnage}}</span>
+      </div>
+      <div class="col">
+        <span class="my-border-primary px-4 py-2">Net Amount: {{consignmentDetails?.amount | currency:"INR"}}</span>
+      </div>
+      <div class="col">
+        <span class="my-border-warning px-4 py-2">Due Amount: {{dueAmount | currency:"INR"}}</span>
+      </div>
+      <div class="col text-right">
+        <!-- <button *ngIf="consignmentDetails?.remaining_tonnage === '0.000'" class="btn btn-sm btn-primary"
+          (click)="makePayment()"
+          [disabled]="selectedTruckIds?.length == 0 || truckList?.length !== selectedTruckIds?.length">Make
+          Payment</button> -->
+          <div class="dropdown">
+            <button class="btn btn-primary dropdown-toggle" type="button" id="makePayment" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+            *ngIf="consignmentDetails?.remaining_tonnage === '0.000'"
+              [disabled]="selectedTruckIds?.length == 0 || truckList?.length !== selectedTruckIds?.length">
+              Make Payment
+            </button>
+            <div class="dropdown-menu" aria-labelledby="makePayment">
+              <a class="dropdown-item" href="javascript:void(0)" (click)="makePayment()">Online</a>
+              <a class="dropdown-item" href="javascript:void(0)" (click)="offlineDialog()">Offline</a>
+            </div>
+          </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12 table-responsive p-0">
+        <table class="list-table table">
+          <thead>
+            <tr>
+              <th>
+                <input *ngIf="orderDetails?.payment_option === 2" [checked]="selectedType === 'all'" type="checkbox" (change)="onTruckSelect($event, 'all')">
+              </th>
+              <th>Sr No.</th>
+              <th>Vehicle Number</th>
+              <th>Tonnage</th>
+              <th>Amount</th>
+              <th>Delivery Challan</th>
+              <th>Invoice</th>
+              <th>Credit Note</th>
+              <th>Debit Note</th>
+              <th>Status</th>
+              <!-- <th>Action</th> -->
+            </tr>
+          </thead>
+
+          <tbody class="text-center" *ngIf="isListLoading">
+            <tr>
+              <td colspan="9">Loading...</td>
+            </tr>
+          </tbody>
+
+          <tbody class="text-center" *ngIf="!isListLoading && truckList?.length === 0">
+            <tr>
+              <td colspan="9">No result found</td>
+            </tr>
+          </tbody>
+
+          <tbody *ngIf="!isListLoading && truckList?.length !== 0">
+            <tr *ngFor="let item of truckList; let i = index;">
+              <td >
+                <input [disabled]="item?.is_paid" *ngIf="orderDetails?.payment_option === 2" type="checkbox" [checked]="selectedTruckIds.includes(item?.truck_detail_id)" (change)="onTruckSelect($event, item?.truck_detail_id)">
+              </td>
+              <td>{{i + 1}}</td>
+              <td>{{item?.vehicle_number}}</td>
+              <td>{{item?.tonnage}}</td>
+              <td>{{item?.amount | currency: 'INR'}}</td>
+              <td>
+                <ng-template #popContent>
+                  <div>
+                    <a *ngIf="item?.delivery_challan"
+                      href="{{urlService.orderDCUrl('dp_for_transporter' + item?.delivery_challan, consignmentDetails?.order_number, item?.dc_number)}}"
+                      target="_blank">
+                      Duplicate For Transporter <img src="assets/img/icon_view.svg" alt="file" />
+                    </a>
+                  </div>
+                  <div>
+                    <a *ngIf="item?.delivery_challan"
+                      href="{{urlService.orderDCUrl('dp_for_consignee' + item?.delivery_challan, consignmentDetails?.order_number, item?.dc_number)}}"
+                      target="_blank">
+                      Duplicate For Consignee <img src="assets/img/icon_view.svg" alt="file" />
+                    </a>
+                  </div>
+                  <div>
+                    <a *ngIf="item?.delivery_challan"
+                      href="{{urlService.orderDCUrl('og_for_consigner' + item?.delivery_challan, consignmentDetails?.order_number, item?.dc_number)}}"
+                      target="_blank">
+                      Original For Consigner <img src="assets/img/icon_view.svg" alt="file" />
+                    </a>
+                  </div>
+                </ng-template>
+                <button type="button" class="btn btn-outline-secondary btn-sm" placement="bottom"
+                  [ngbPopover]="popContent" container="body" popoverClass="my-popover">
+                  <!-- triggers="mouseenter:mouseleave" [closeDelay]="5000" -->
+                  delivery challans
+                </button>
+
+              </td>
+              <td>
+                <a *ngIf="item?.invoice"
+                  href="{{urlService.orderConsignmentInvoiceUrl(item?.invoice, consignmentDetails?.order_number, item?.dc_number)}}"
+                  target="_blank">
+                  {{item?.invoice}} <img src="assets/img/icon_view.svg" alt="file" />
+                </a>
+                <span *ngIf="!item?.invoice">-</span>
+              </td>
+              <td>
+                <a *ngIf="item?.credit_note"
+                  href="{{urlService.orderConsignmentCreditNoteUrl(item?.credit_note, consignmentDetails?.order_number, item?.dc_number)}}"
+                  target="_blank">
+                  {{item?.credit_note}} <img src="assets/img/icon_view.svg" alt="file" />
+                </a>
+                <span *ngIf="!item?.credit_note">-</span>
+              </td>
+              <td>
+                <a *ngIf="item?.debit_note"
+                  href="{{urlService.orderConsignmentCreditNoteUrl(item?.debit_note, consignmentDetails?.order_number, item?.dc_number)}}"
+                  target="_blank">
+                  {{item?.debit_note}} <img src="assets/img/icon_view.svg" alt="file" />
+                </a>
+                <span *ngIf="!item?.debit_note">-</span>
+              </td>
+              <td>
+                <span>{{item?.payment_remark}}</span>
+              </td>
+              <!-- <td>
+                <button class="btn btn-sm btn-outline-primary" *ngIf="!item?.is_paid && orderDetails?.payment_option === 2"
+                  (click)="offlineDialog(item)">Upload Docs</button>
+              </td> -->
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="modal fade" id="offlineDocumentModal" tabindex="-1" role="dialog" aria-labelledby="filter"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg float-right m-0 h-100 w-50" role="document">
+    <div class="modal-content h-100 w-100" style="overflow-y: auto;">
+      <div class="modal-header justify-content-start sticky-top bg-white">
+        <button type="button" class="close ml-0 mr-1" data-dismiss="modal" aria-label="Close" (click)="initForm()"
+          id="modal-close-btn">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h6 class="modal-title font-weight-bold" id="confirmModel-title">Upload offline documents</h6>
+      </div>
+      <div class="modal-body p-4" [formGroup]="offlinePayForm" *ngIf="offlinePayForm">
+        <div class="row align-items-center py-3">
+          <div class="col-md-3"><span class="">Payment Mode *</span></div>
+          <div class="col-md-4">
+            <div class="input-wrap m-0">
+              <ng-select [items]="paymentMode" bindLabel="name" bindValue="value" placeholder="Select"
+                dropdownPosition="bottom" [multiple]="false" formControlName="payment_mode" [clearable]="false">
+              </ng-select>
+              <i *ngIf="offlinePayForm.controls.payment_mode.invalid && offlinePayForm.controls.payment_mode.touched"
+                class="erro-red">Payment mode required</i>
+            </div>
+          </div>
+        </div>
+
+        <div class="row align-items-center py-3">
+          <div class="col-md-3"><span class="">Bank Name *</span></div>
+          <div class="col-md-4">
+            <div class="input-wrap m-0">
+              <input type="text" placeholder="" formControlName="bank_name">
+              <i *ngIf="offlinePayForm.controls.bank_name.invalid && offlinePayForm.controls.bank_name.touched"
+                class="erro-red">Bank name required</i>
+            </div>
+          </div>
+        </div>
+
+        <div class="row align-items-center py-3">
+          <div class="col-md-3"><span class="">{{offlinePayForm.value.payment_mode == cheque ? 'Cheque No' :
+              'Transaction No'}} *</span></div>
+          <div class="col-md-4">
+            <div class="input-wrap m-0">
+              <input type="text" placeholder="" formControlName="cheque_no">
+              <i *ngIf="offlinePayForm.controls.cheque_no.invalid && offlinePayForm.controls.cheque_no.touched"
+                class="erro-red">Cheque number required</i>
+            </div>
+          </div>
+        </div>
+        <div class="row align-items-center py-3">
+          <div class="col-md-3"><span class="">Net Amount *</span></div>
+          <div class="col-md-4">
+            <div class="input-wrap m-0">
+              <input type="text" placeholder="" formControlName="net_amount" readonly>
+              <i *ngIf="offlinePayForm.controls.net_amount.invalid && offlinePayForm.controls.net_amount.touched"
+                class="erro-red">Amount required</i>
+            </div>
+          </div>
+        </div>
+
+        <div class="row align-items-center py-3">
+          <div class="col-md-3"><span class="">Transaction ID *</span></div>
+          <div class="col-md-4">
+            <div class="input-wrap m-0">
+              <input type="text" placeholder="" formControlName="transaction_id" readonly>
+              <i *ngIf="offlinePayForm.controls.transaction_id.invalid && offlinePayForm.controls.transaction_id.touched"
+                class="erro-red">Transaction ID required</i>
+            </div>
+          </div>
+        </div>
+
+        <div class="row align-items-center py-2">
+          <div class="col-md-3"><span class="">Upload Payment Confirmation</span></div>
+          <div class="col-md-4">
+            <div class="input-wrap m-0">
+              <input type="file" (change)="fileBrowseHandler($event)">
+              <!-- <i *ngIf="offlinePayForm.controls.payment_mode.invalid && offlinePayForm.controls.payment_mode.touched"
+              class="erro-red">Payment mode required</i> -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary rounded-0" data-dismiss="modal">CANCEL</button>
+        <button type="button" class="btn btn-primary" (click)="OfflinePayment()">SUBMIT</button>
+      </div>
+    </div>
+  </div>
+</div>

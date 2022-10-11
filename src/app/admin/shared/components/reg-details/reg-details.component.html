@@ -1,0 +1,636 @@
+<div class="main-wrap">
+    <!-- <div class="bcrumb">
+        <a (click)="back2List()"> {{ listType === "SELLER" ? 'Seller' : 'Buyer'}} List</a> >
+        <span> {{ userDetails.name }}</span> >
+        <span> Registration Details </span>
+    </div> -->
+
+    <div *ngIf="udLoading" class="loading-txt">Loading...</div>
+
+
+    <div *ngIf="!udLoading" class="content-wrap">
+
+        <div class="top-head">
+            <a (click)="back2List()">Registration Details</a>
+
+            <div>
+            <button *ngIf="!hasPOCDetails || !hasUserDetails" class="btn btn-sm btn-outline-primary"
+                [ngClass]="{'d-none': isEdit}" (click)="onFillDetailsClick($event)">Fill Details</button>
+
+            <button *ngIf="isEdit" class="btn btn-sm btn-outline-primary" (click)="handleSaveClick($event)"
+                [disabled]="!userDetailsForm.valid || !pocForm.valid">Save</button>
+
+            <button *ngIf="enableSendPaymentLink" class="btn btn-sm btn-primary"
+                (click)="onSendPaymentLinkClick($event)">Send Payment Link</button>
+
+            <button *ngIf="enableActivateAccount" class="btn btn-sm btn-primary"
+                (click)="activateAccount($event)">Activate Dashboard</button>
+            <button *ngIf="enableDeActivateAccount" class="btn btn-sm btn-primary"
+                (click)="deActivateAccount($event)">Deactivate Dashboard</button>
+                <button *ngIf="sendPaymentLinkSD" class="btn btn-sm btn-primary"
+                (click)="onSendSDPaymentLinkClick(0)">Send Security Deposit Payment Link</button>
+            <button *ngIf="sendPaymentLinkSD" class="btn btn-sm btn-primary ml-2"
+                (click)="onSendSDPaymentLinkClick(1)">Pay Later</button>
+            </div>
+
+        </div>
+
+        <form *ngIf="showCreditLimitSection" [formGroup]="creditDetailsForm">
+            <div class="form-group-wrap">
+                <div class="fg-head">
+                    <span>Credit Details</span>
+                    <button class="btn btn-sm btn-outline-primary"
+                    (click)="addUpdateCreditDetails()" [disabled]="!creditDetailsForm.valid">Upgrade Limit</button>
+                </div>
+                <div class="fg-data">
+                    <span>Current Limit</span>
+                    <span>{{ creditDetails?.credit_limit }}</span>
+                </div>
+                <div class="fg-data">
+                    <span>Update Credit Limit</span>
+                    <input type="text" formControlName="credit_limit">
+                </div>
+            </div>
+        </form>
+        <form [formGroup]="userDetailsForm">
+            <!-- Company Details -->
+            <div class="form-group-wrap">
+                <div class="fg-head">
+                    Company Details
+                </div>
+                <div class="fg-data">
+                    <span>Company Name</span>
+                    <span>{{ userDetails.name }}</span>
+                </div>
+                <div class="fg-data">
+                    <span>Address</span>
+                    <span>{{ userDetails.line_1 }}</span>
+                </div>
+                <div class="fg-data">
+                    <span>Nearest Landmark</span>
+                    <span>{{ userDetails.landmark }}</span>
+                </div>
+                <div class="fg-data">
+                    <span>State</span>
+                    <span>{{ userDetails.state_name }}</span>
+                </div>
+                <div class="fg-data">
+                    <span>City</span>
+                    <span>{{ userDetails.city_name }}</span>
+                </div>
+                <div class="fg-data">
+                    <span>Country</span>
+                    <span>{{ userDetails.country_name }}</span>
+                </div>
+                <div class="fg-data">
+                    <span>Pincode</span>
+                    <span>{{ userDetails.pincode }}</span>
+                </div>
+                <div class="fg-data">
+                    <span>Phone Number</span>
+                    <span>{{ userDetails.mobile }}</span>
+                </div>
+                <div class="fg-data">
+                    <span>E-Mail</span>
+                    <span>{{ userDetails.email }}</span>
+                </div>
+                <div class="fg-data">
+                    <span>PAN Number</span>
+                    <span>{{ userDetails.pan_number }}</span>
+                </div>
+                <div class="fg-data">
+                    <span>GST Number</span>
+                    <span>{{ userDetails.gst_number }}</span>
+                </div>
+
+                <div class="fg-data" *ngIf="hasUserDetails || isEdit">
+                    <span>TIN Number (Optional)</span>
+                    <div *ngIf="hasUserDetails">{{userDetails.tin_number}}</div>
+                    <div *ngIf="!hasUserDetails"><input type="text" formControlName="tin_number" maxlength="11"></div>
+                    <div>
+                        <ng-container
+                            *ngIf="userDetailsForm.controls.tin_number.touched && userDetailsForm.controls.tin_number.value != '' && userDetailsForm.controls.tin_number.errors">
+                            <span *ngIf="userDetailsForm.controls.tin_number.errors.pattern"
+                                class="input-error text-danger">Invalid TIN Number</span>
+                        </ng-container>
+                    </div>
+                </div>
+                <div class="fg-data" *ngIf="hasUserDetails || isEdit">
+                    <div>CIN Number (Optional)</div>
+                    <div *ngIf="hasUserDetails">{{userDetails.cin_number}}</div>
+                    <div *ngIf="!hasUserDetails"><input type="text" formControlName="cin_number" maxlength="21"></div>
+                    <div>
+                        <ng-container
+                            *ngIf="userDetailsForm.controls.cin_number.touched && userDetailsForm.controls.cin_number.value != '' && userDetailsForm.controls.cin_number.errors">
+                            <span *ngIf="userDetailsForm.controls.cin_number.errors.required"
+                                class="input-error text-danger">CIN Number is
+                                required</span>
+                            <span *ngIf="userDetailsForm.controls.cin_number.errors.pattern"
+                                class="input-error text-danger">Invalid
+                                CIN Number</span>
+                        </ng-container>
+                    </div>
+                </div>
+                <div class="fg-data" *ngIf="hasUserDetails || isEdit">
+                    <div>TAN Number (Optional)</div>
+                    <div *ngIf="hasUserDetails">{{userDetails.tan_number}}</div>
+                    <div *ngIf="!hasUserDetails"><input type="text" formControlName="tan_number" maxlength="10"></div>
+                    <div>
+                        <ng-container
+                            *ngIf="userDetailsForm.controls.tan_number.touched && userDetailsForm.controls.tan_number.value != '' && userDetailsForm.controls.tan_number.errors">
+                            <span *ngIf="userDetailsForm.controls.tan_number.errors.required"
+                                class="input-error text-danger">TAN Number is
+                                required</span>
+                            <span *ngIf="userDetailsForm.controls.tan_number.errors.pattern"
+                                class="input-error text-danger">Invalid TAN Number</span>
+                        </ng-container>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Supporting Doc -->
+            <div class="form-group-wrap" *ngIf="hasUserDetails || isEdit">
+                <div class="fg-head">
+                    Supporting Documents
+                </div>
+                <div class="fg-data">
+                    <span>Address Proof *</span>
+
+                    <div *ngIf="hasUserDetails && userDetails.address_proof">
+                        <a href="{{urlService.documentUrl(userDetails.user_id, userDetails.address_proof)}}"
+                            target="_blank">{{userDetails.address_proof}}</a>
+                    </div>
+
+                    <div *ngIf="!hasUserDetails">
+                        <input type="file" formControlName="address_proof"
+                            (change)="fileBrowseHandler($event, 'address_proof')">
+                    </div>
+
+                    <div>
+                        <ng-container
+                            *ngIf="userDetailsForm.controls.address_proof.touched && userDetailsForm.controls.address_proof.errors">
+                            <span *ngIf="userDetailsForm.controls.address_proof.errors.required"
+                                class="input-error text-danger">Address Proof is required</span>
+                            <span *ngIf="userDetailsForm.controls.address_proof.errors.pattern"
+                                class="input-error text-danger">Invalid Address Proof</span>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Banking Details -->
+            <div class="form-group-wrap" *ngIf="hasUserDetails || isEdit">
+                <div class="fg-head">
+                    Banking Details
+                </div>
+                <div class="fg-data">
+                    <div>Bank Name (Optional))</div>
+                    <div *ngIf="hasUserDetails">{{userDetails.bank_name}}</div>
+                    <div *ngIf="!hasUserDetails"><input type="text" formControlName="bank_name"></div>
+                    <div>
+                        <!-- <ng-container
+                            *ngIf="userDetailsForm.controls.bank_name.touched && userDetailsForm.controls.bank_name.errors">
+                            <span *ngIf="userDetailsForm.controls.bank_name.errors.required"
+                                class="input-error text-danger">Bank Name is
+                                required</span>
+                            <span *ngIf="userDetailsForm.controls.bank_name.errors.pattern"
+                                class="input-error text-danger">Invalid Bank Name</span>
+                        </ng-container> -->
+                    </div>
+                </div>
+
+                <div class="fg-data">
+                    <div>Account Number (Optional)</div>
+                    <div *ngIf="hasUserDetails">{{userDetails.account_number}}</div>
+                    <div *ngIf="!hasUserDetails"><input type="text" formControlName="account_number"></div>
+                    <div>
+                        <!-- <ng-container
+                            *ngIf="userDetailsForm.controls.account_number.touched && userDetailsForm.controls.account_number.errors">
+                            <span *ngIf="userDetailsForm.controls.account_number.errors.required"
+                                class="input-error text-danger">Account Number is
+                                required</span>
+                            <span *ngIf="userDetailsForm.controls.account_number.errors.pattern"
+                                class="input-error text-danger">Invalid Account Number</span>
+                        </ng-container> -->
+                    </div>
+                </div>
+
+                <div class="fg-data">
+                    <div>IFSC Code (Optional)</div>
+                    <div *ngIf="hasUserDetails">{{userDetails.ifsc_code}}</div>
+                    <div *ngIf="!hasUserDetails"><input type="text" formControlName="ifsc_code" maxlength="11"></div>
+                    <div>
+                        <!-- <ng-container
+                            *ngIf="userDetailsForm.controls.ifsc_code.touched && userDetailsForm.controls.ifsc_code.errors">
+                            <span *ngIf="userDetailsForm.controls.ifsc_code.errors.required"
+                                class="input-error text-danger">IFSC Code is
+                                required</span>
+                            <span *ngIf="userDetailsForm.controls.ifsc_code.errors.pattern"
+                                class="input-error text-danger">Invalid IFSC Code</span>
+                        </ng-container> -->
+                    </div>
+                </div>
+            </div>
+
+        </form>
+        <!-- Payment details -->
+        <form [formGroup]="offlinePaymentForm" *ngIf="IsOfflinePaymentAllowed">
+            <div class="form-group-wrap">
+                <div class="fg-head">
+                    <span>Payment Details</span>
+                    <button *ngIf="submitPaymentDetailBtn" class="btn btn-sm btn-outline-primary"
+                        (click)="addOfflinePaymentDetails()" [disabled]="!offlinePaymentForm.valid">Save</button>
+                </div>
+                <div class="fg-data">
+                    <div>Transaction Id *</div>
+                    <div *ngIf="enableInvoice">{{paymentDetails?.transaction_id}}</div>
+                    <div *ngIf="!enableInvoice">
+                    <input type="text" formControlName="transaction_id"></div>
+                    <div>
+                        <ng-container
+                            *ngIf="offlinePaymentForm.controls.transaction_id.touched && offlinePaymentForm.controls.transaction_id.errors">
+                            <span *ngIf="offlinePaymentForm.controls.transaction_id.errors.required"
+                                class="input-error text-danger">Transaction Id is
+                                required</span>
+                        </ng-container>
+                    </div>
+                </div>
+
+                <div class="fg-data">
+                    <div>Payment Remarks *</div>
+                    <div *ngIf="enableInvoice">{{paymentDetails?.payment_remarks?.toUpperCase()}}</div>
+                    <div *ngIf="!enableInvoice">
+                    <input type="text" formControlName="payment_remarks"></div>
+                    <div>
+                        <ng-container
+                            *ngIf="offlinePaymentForm.controls.payment_remarks.touched && offlinePaymentForm.controls.payment_remarks.errors">
+                            <span *ngIf="offlinePaymentForm.controls.payment_remarks.errors.required"
+                                class="input-error text-danger">Payment Remarks
+                                required</span>
+                        </ng-container>
+                    </div>
+                </div>
+
+                <div class="fg-data">
+                    <div>Amount *</div>
+                    <div *ngIf="enableInvoice">{{paymentDetails?.amount | number: '1.2-2'}}</div>
+                    <div *ngIf="!enableInvoice">
+                    <input type="text" formControlName="amount" (change)="calculateTaxAmout()"></div>
+                    <div>
+                        <ng-container
+                            *ngIf="offlinePaymentForm.controls.amount.touched && offlinePaymentForm.controls.amount.errors">
+                            <span *ngIf="offlinePaymentForm.controls.amount.errors.required"
+                                class="input-error text-danger">Amount is
+                                required</span>
+                            <span *ngIf="offlinePaymentForm.controls.amount.errors.pattern"
+                            class="input-error text-danger">Invalid Amount</span>
+                        </ng-container>
+                    </div>
+                </div>
+
+                <div class="fg-data" *ngIf="hasPaymentDetails">
+                    <div>Discount Amount</div>
+                    <div *ngIf="enableInvoice">{{paymentDetails?.discount_amount | number: '1.2-2'}}</div>
+                </div>
+
+                <div class="fg-data" *ngIf="hasPaymentDetails">
+                    <div>Net Amount</div>
+                    <div *ngIf="enableInvoice">{{paymentDetails?.net_amount | number: '1.2-2'}}</div>
+                </div>
+
+                <div class="fg-data">
+                    <div>Tax Amount *</div>
+                    <div *ngIf="enableInvoice">{{paymentDetails?.tax_amount | number: '1.2-2'}}</div>
+                    <div *ngIf="!enableInvoice">
+                    <input type="text" formControlName="tax_amount"></div>
+                    <div>
+                        <ng-container
+                            *ngIf="offlinePaymentForm.controls.tax_amount.touched && offlinePaymentForm.controls.tax_amount.errors">
+                            <span *ngIf="offlinePaymentForm.controls.tax_amount.errors.required"
+                                class="input-error text-danger">Tax Amount
+                                required</span>
+                            <span *ngIf="offlinePaymentForm.controls.tax_amount.errors.pattern"
+                                class="input-error text-danger">Invalid Tax Amount</span>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <div class="form-group-wrap" *ngIf="IsSdPaymentCompleted">
+            <div class="fg-head">
+                <span>Security Deposit Details</span>
+            </div>
+            <div class="fg-data">
+                <div>Transaction Id</div>
+                <div>{{sdPaymentDetails?.transaction_id}}</div>
+            </div>
+
+            <!-- <div class="fg-data">
+                <div>Payment Remarks *</div>
+                <div>{{sdPaymentDetails?.payment_remarks?.toUpperCase()}}</div>
+            </div> -->
+
+            <div class="fg-data">
+                <div>Amount</div>
+                <div>{{sdPaymentDetails?.amount}}</div>
+            </div>
+
+            <!-- <div class="fg-data">
+                <div>Discount Amount</div>
+                <div>{{sdPaymentDetails?.discount_amount}}</div>
+            </div>
+
+            <div class="fg-data">
+                <div>Net Amount</div>
+                <div>{{sdPaymentDetails?.net_amount}}</div>
+            </div> -->
+
+            <div class="fg-data">
+                <div>Tax Amount</div>
+                <div>{{sdPaymentDetails?.tax_amount?.toFixed(2)}}</div>
+            </div>
+        </div>
+
+        <form [formGroup]="pocForm" *ngIf="hasPOCDetails || isEdit">
+            <div class="pickup-wrap" *ngFor="let group of pocForm.controls;let i = index">
+
+                <ng-container [formGroup]="group">
+
+                    <span class="remove-poc" *ngIf="!hasPOCDetails && pocForm.controls.length > 1"
+                        (click)="deletePOCForm(i, group)">&#10006;</span>
+                    <!-- Pickup Center 1 - ditail -->
+                    <div class="form-group-wrap">
+                        <div class="fg-head">
+                            {{ listType === 'SELLER' ? 'Pickup' : 'Delivery'}} Center {{i+1}} - Details
+                        </div>
+                        <div class="fg-data">
+                            <div>Address *</div>
+                            <div *ngIf="hasPOCDetails">{{ userDetails.poc_details[i].line_1 }}</div>
+                            <div *ngIf="!hasPOCDetails"><input type="text" formControlName="address"></div>
+                            <div>
+                                <ng-container *ngIf="group.controls.address.touched && group.controls.address.errors">
+                                    <span *ngIf="group.controls.address.errors.required"
+                                        class="input-error text-danger">
+                                        Address is required
+                                    </span>
+                                </ng-container>
+                            </div>
+                        </div>
+
+                        <div class="fg-data">
+                            <div>Landmark *</div>
+                            <div *ngIf="hasPOCDetails">{{ userDetails.poc_details[i].landmark }}</div>
+                            <div *ngIf="!hasPOCDetails"><input type="text" formControlName="landmark"></div>
+                            <div>
+                                <ng-container *ngIf="group.controls.landmark.touched && group.controls.landmark.errors">
+                                    <span *ngIf="group.controls.landmark.errors.required"
+                                        class="input-error text-danger">
+                                        Landmark is required
+                                    </span>
+                                </ng-container>
+                            </div>
+                        </div>
+
+                        <div class="fg-data">
+                            <div>State *</div>
+                            <div *ngIf="hasPOCDetails">{{ userDetails.poc_details[i].state_name }}</div>
+                            <div *ngIf="!hasPOCDetails">
+                                <div class="p-0">
+                                    <ng-select [items]="stateList" bindLabel="state_name" bindValue="id"
+                                        [clearable]="false" formControlName="state_id" dropdownPosition="bottom"
+                                        (change)="getCityList(group.controls['state_id'].value,i)">
+                                    </ng-select>
+                                </div>
+                            </div>
+                            <div>
+                                <ng-container *ngIf="group.controls.state_id.touched && group.controls.state_id.errors">
+                                    <span *ngIf="group.controls.state_id.errors.required"
+                                        class="input-error text-danger">
+                                        State is required
+                                    </span>
+                                </ng-container>
+                            </div>
+                        </div>
+                        <div class="fg-data">
+                            <div>City *</div>
+                            <div *ngIf="hasPOCDetails">{{ userDetails.poc_details[i].city_name }}</div>
+                            <div *ngIf="!hasPOCDetails">
+                                <ng-select [items]="cityList[group.controls['state_id'].value]" bindLabel="city_name"
+                                    bindValue="id" placeholder="City *" [clearable]="false" formControlName="city_id"
+                                    dropdownPosition="bottom">
+                                </ng-select>
+                            </div>
+                            <div>
+                                <ng-container *ngIf="group.controls.city_id.touched && group.controls.city_id.errors">
+                                    <span *ngIf="group.controls.city_id.errors.required"
+                                        class="input-error text-danger">
+                                        City is required
+                                    </span>
+                                </ng-container>
+                            </div>
+                        </div>
+                        <div class="fg-data">
+                            <div>Pincode *</div>
+                            <div *ngIf="hasPOCDetails">{{ userDetails.poc_details[i].pincode }}</div>
+                            <div *ngIf="!hasPOCDetails"><input type="text" formControlName="pincode" maxlength="6">
+                            </div>
+                            <div>
+                                <ng-container *ngIf="group.controls.pincode.touched && group.controls.pincode.errors">
+                                    <span *ngIf="group.controls.pincode.errors.required"
+                                        class="input-error text-danger">
+                                        Pincode is required
+                                    </span>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pickup Center 1 POC Details -->
+                    <div class="form-group-wrap">
+                        <div class="fg-head">
+                            {{ listType === 'SELLER' ? 'Pickup' : 'Delivery'}} Center {{i+1}} - POC Details
+                        </div>
+                        <div class="fg-data">
+                            <div>Photo (Optional)</div>
+                            <div *ngIf="hasPOCDetails">
+                                <a href="{{urlService.documentUrl(userDetails.user_id, userDetails.poc_details[i].poc_profile)}}"
+                                    target="_blank">{{userDetails.poc_details[i].poc_profile}}</a>
+                            </div>
+                            <div *ngIf="!hasPOCDetails"><input type="file" formControlName="poc_profile"
+                                    (change)="fileBrowseHandler($event, 'poc_profile', i)"></div>
+                        </div>
+                        <div class="fg-data">
+                            <div>Name *</div>
+                            <div *ngIf="hasPOCDetails">{{userDetails.poc_details[i].poc_name}}</div>
+                            <div *ngIf="!hasPOCDetails"><input type="text" formControlName="poc_name"></div>
+                            <div>
+                                <ng-container *ngIf="group.controls.poc_name.touched && group.controls.poc_name.errors">
+                                    <span *ngIf="group.controls.poc_name.errors.required"
+                                        class="input-error text-danger">
+                                        Name is required
+                                    </span>
+                                </ng-container>
+                            </div>
+                        </div>
+                        <div class="fg-data">
+                            <div>E-Mail *</div>
+                            <div *ngIf="hasPOCDetails">{{userDetails.poc_details[i].poc_email}}</div>
+                            <div *ngIf="!hasPOCDetails"><input type="email" formControlName="poc_email"></div>
+                            <div>
+                                <ng-container
+                                    *ngIf="group.controls.poc_email.touched && group.controls.poc_email.errors">
+                                    <span *ngIf="group.controls.poc_email.errors.required"
+                                        class="input-error text-danger">
+                                        E-Mail is required
+                                    </span>
+                                    <span *ngIf="group.controls.poc_email.errors.pattern"
+                                        class="input-error text-danger">
+                                        Invalid E-Mail
+                                    </span>
+                                </ng-container>
+                            </div>
+                        </div>
+                        <div class="fg-data">
+                            <div>Phone Number *</div>
+                            <div *ngIf="hasPOCDetails">{{userDetails.poc_details[i].poc_mobile}}</div>
+                            <div *ngIf="!hasPOCDetails"><input type="text" formControlName="poc_mobile" maxlength="10"
+                                    pattern="[0-9]{10}">
+                            </div>
+                            <div>
+                                <ng-container
+                                    *ngIf="group.controls.poc_mobile.touched && group.controls.poc_mobile.errors">
+                                    <span *ngIf="group.controls.poc_mobile.errors.required"
+                                        class="input-error text-danger">
+                                        Phone Number is required
+                                    </span>
+                                </ng-container>
+                            </div>
+                        </div>
+                        <!-- <div class="fg-data d-none">
+                            <div>Registration Date</div>
+                            <div><input type="text" formControlName="poc_reg_date"></div>
+                        </div> -->
+                    </div>
+
+                </ng-container>
+            </div>
+
+            <div class="add-add-btn" *ngIf="!hasPOCDetails">
+                <button class="btn btn-sm btn-primary" (click)="createPOCForm()"><span>+</span> Add Another Pickup
+                    Centre</button>
+            </div>
+        </form>
+
+        <!-- Plant Certn Doc -->
+        <div class="form-group-wrap" *ngIf="enableUploadCertificate">
+            <div class="fg-head">
+                <span>Plant Certification Document</span>
+                <button *ngIf="!userDetails.certificate" class="btn btn-sm btn-outline-primary"
+                    (click)="uploadCertificate($event)" [disabled]="!certificateData">Upload
+                    Certificate</button>
+            </div>
+            <div class="fg-data">
+                <div>Plant Certification</div>
+                <div *ngIf="!userDetails.certificate"><input type="file"
+                        (change)="fileBrowseHandler($event, 'certificate')" /></div>
+                <div *ngIf="userDetails.certificate"><a href="{{urlService.documentUrl(userDetails.user_id, userDetails.certificate)}}"
+                        target="_blank" title="plant certification">Plant Certification.pdf</a></div>
+            </div>
+        </div>
+
+        <!-- level 2 Doc for buyer -->
+        <div class="form-group-wrap" *ngIf="levelTwoDoc && IsBuyer">
+            <div class="fg-head">
+                <span>Level 2 Registration Documents</span>
+                <button *ngIf="!userDetails.reg_docs || userDetails.reg_docs.length == 0" class="btn btn-sm btn-outline-primary"
+                    (click)="uploadDocuments($event)" [disabled]="regDocs.length == 0">Upload</button>
+            </div>
+            <!-- <div class="fg-data">
+                <div>Documents</div>
+                <div *ngIf="!userDetails.reg_docs || userDetails.reg_docs.length == 0"><input type="file" multiple
+                        (change)="fileBrowseHandler($event, 'reg_doc')" /></div>
+                <div *ngIf="userDetails.reg_docs && userDetails.reg_docs.length > 0">
+                    <a *ngFor="let item of userDetails.reg_docs" href="{{urlService.documentUrl(userDetails.user_id, item.document)}}" class="regdoc"
+                            target="_blank" title="plant certification">{{item.document}}</a>
+                </div>
+            </div> -->
+            <div class="fg-data">
+              <div>Company Type</div>
+              <div>
+                <ng-select [items]="[{name: 'Company', value: 'company'},
+                                      {name: 'LLP', value: 'llp'},
+                                      {name: 'Sole Proprietor', value: 'sole_proprietor'}]"
+                  bindLabel="name" bindValue="value"
+                  placeholder="Select" dropdownPosition="bottom" [clearable]="false" [searchable]="false"
+                  [(ngModel)]="buyerCompanyType"
+                  class="border w-50 disable-clear-all"
+                  >
+                </ng-select>
+                <i *ngIf="buyerCompanyTypeError" class="text-danger" style="font-size: 10px;">Please select company type</i>
+              </div>
+            </div>
+
+            <div class="fg-data">
+                <div>Documents <i class="border px-2 rounded-circle" title="Please upload all necessary documents for {{buyerCompanyType ? buyerCompanyType: 'Selected company type'}}">i</i></div>
+                <div *ngIf="!userDetails.reg_docs || userDetails.reg_docs.length == 0">
+                  <input type="file" accept=".zip,.rar,.7zip"
+                  (change)="fileBrowseHandler($event, 'reg_doc')" />
+                  <i *ngIf="!docError" class="text-info" style="font-size: 10px;">allowed file types (zip)</i><br/>
+                  <i *ngIf="docError" class="text-danger" style="font-size: 10px;">File size must be less than 5mb</i>
+                </div>
+                <div *ngIf="userDetails.reg_docs && userDetails.reg_docs.length > 0">
+                    <a *ngFor="let item of userDetails.reg_docs" href="{{urlService.documentUrl(userDetails.user_id, item.document)}}" class="regdoc"
+                            target="_blank" title="plant certification">{{item.document}}</a>
+                </div>
+                <div>
+                  <a href="https://docs.google.com/spreadsheets/d/1r-aiwqBFWNlMWz_de8n0onrnIJAtA96gPxkiY4tlXLs/edit#gid=910025938" target="_blank">View document list.</a>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- paymnent Invoice -->
+        <div class="form-group-wrap" *ngIf="enableInvoice && IsValidInvoice">
+            <div class="fg-head">
+                Payment Invoice
+            </div>
+            <div class="fg-data">
+                <div>e-Invoice</div>
+                <div><a href="{{urlService.documentUrl(userDetails.user_id, 'reg_invoice.pdf')}}"
+                        target="_blank" title="e-invoice">e-Invoice.pdf</a></div>
+            </div>
+        </div>
+
+        <!-- Security deposit Invoice -->
+        <div class="form-group-wrap" *ngIf="IsSdPaymentCompleted">
+            <div class="fg-head">
+                Security Deposit Invoice
+            </div>
+            <div class="fg-data">
+                <div>e-sd-Invoice</div>
+                <div><a href="{{urlService.documentUrl(userDetails.user_id, 'sd_invoice.pdf')}}"
+                        target="_blank" title="e-invoice">e-sd-Invoice.pdf</a></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="reg-succ-modal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="reg-wrap">
+                    <img src="assets/img/Icon-check-circle.svg" alt="circle">
+                    <h3>Congratulations!</h3>
+                    <p>You have successfully filled the registration details.</p>
+                    <button type="button" data-dismiss="modal">OK</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

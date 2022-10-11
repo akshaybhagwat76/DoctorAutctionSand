@@ -1,0 +1,271 @@
+.main-bg{
+    background-color: #0988CE;
+}
+.whole-container{
+    font-size: 14px;
+    max-width: 950px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.whole-container .logo{
+    max-width: 180px;
+    height: auto;
+    padding: 30px 0px 20px 0;
+}
+.form-container{
+    background-color: #fff;
+}
+.form-container .top-steps{
+    background-color: #F9F9F9;
+}
+.form-container .top-steps .steps-wrap{
+    max-width: 550px;
+    margin-right: auto;
+    margin-left: auto;
+    padding: 25px 10px;
+    display: flex;
+    justify-content: space-between;
+}
+.form-container .top-steps .steps-wrap span.active{
+    font-weight: bold;
+}
+.form-container .top-steps .steps-wrap span{
+    display: flex;
+    align-items: start;
+    flex-flow: nowrap;
+    margin-right: 10px;
+}
+.form-container .top-steps .steps-wrap img{
+    max-width: 20px;
+    margin-right: 10px;
+}
+
+.rgt-form{
+    max-width: 550px;
+    margin-left: auto;
+    margin-right: auto;
+    min-height: calc(100vh - 250px);
+}
+
+.form-container .form-wrap{
+    padding-top: 30px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.amount > div{
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+}
+.amount > div:first-child{
+    background-color: #F9F9F9;
+}
+.amount > div > span{
+    padding: 10px;
+}
+
+.amount .c-code{
+    font-style: normal;
+    color: #0988ce;
+    display: inline-block;
+    margin: 0 5px;
+}
+.amount .c-remove {
+    font-style: normal;
+    display: inline-block;
+    color: red;
+    margin: 0 3px;
+    cursor: pointer;
+}
+.coupon-btn{
+    color: #0988CE;
+    padding: 10px;
+    font-size: 10px;
+    font-weight: bold;
+    position: relative;
+    margin-left: 20px;
+    display: inline-block;
+    cursor: pointer;
+}
+.coupon-btn::selection { background: transparent; } 
+.coupon-btn::-moz-selection { background: transparent; }
+
+.coupon-btn::after{
+    content: "";
+    display: block;
+    border: 5px solid;
+    position: absolute;
+    top: 15px;
+    left: -9px;
+    border-color: #0988CE transparent transparent transparent;
+
+}
+.coupon-input{
+    padding: 5px 10px;
+}
+.coupon-input input{
+    border: 1px solid #DAE0F4;
+    outline: none;
+    padding: 7px 15px;
+    margin-right: 20px;
+}
+.coupon-input button{
+    border: 0;
+    outline: none;
+    padding: 8px 18px;
+    background: #0988CE;
+    color: #fff;
+}
+.coupon-input button:hover{
+    background-color: #0276b6;
+}
+
+/* Right Form */
+.rf-bg{
+    background-color: #F9F9F9;
+}
+
+  
+  .rgt-form .register-user{
+    margin-bottom: 25px;
+  }
+  .rgt-form .register-user p{
+    font-size: 11.8px;
+    color: #535D79;
+  }
+  .rgt-form .register-user h4{
+    margin-bottom: 12px;
+  }
+  .rgt-form .contact-info{
+    display: flex;
+    justify-content: space-between;
+    flex-flow: nowrap row;
+  }
+  .rgt-form .contact-info > div:first-child{
+    margin-right: 5px;
+    min-width: 100px;
+    width: fit-content;
+  }
+  .verify-cont img{
+    margin-bottom: 25px;
+    max-width: 18px;
+    height: auto;
+    margin-top: 10px;
+  }
+  .rgt-form .otp-btn{
+    background-color: #0988CE;
+    display: inline-block;
+    font-size: 14px;
+    height: 34px;
+    padding: 5px 8px;
+    text-align: center;
+    color: #fff;
+    border: 1px solid #0988ce;
+    cursor: pointer;
+  }
+  .rgt-form .otp-btn:hover{
+    background-color: #0276b6;
+  }
+  .rgt-form .phone-otp{
+    margin-bottom: 25px;
+  }
+  .rgt-form .verify-wrap {
+    display: flex;
+    justify-content: space-between;
+    flex-flow: nowrap row;
+  }
+  
+  
+  .rgt-form .erro-red{
+    color: red;
+  }
+  .rgt-form .erro-blue{
+    color: #0988CE;
+  }
+  .rgt-form .doc-wrap .input-wrap{
+    font-size: 10px;
+    margin-bottom: 5px;
+  }
+  .rgt-form .doc-wrap h3{
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 25px;
+    border-bottom: 1px solid #e0e0e1;
+    padding-bottom: 10px;
+  }
+  .rgt-form .doc-wrap p{
+    font-size: 8px;
+    color: #000;
+  }
+  .photo-wrap input[type="file"]{
+    font-size: 10px;
+  }
+
+  .hr-line{
+    display: block;
+    border-bottom: 1px solid #e0e0e1;
+    margin-bottom: 25px;
+  }
+  .add-add-btn{
+    text-align: center;
+    margin-bottom: 50px;
+  }
+  .add-add-btn button{
+    border: 0px;
+    outline: none;
+    padding: 10px 20px;
+    background-color: #0988CE;
+    color: #fff;
+    font-size: 14px;
+  }
+  .add-add-btn button:hover{
+    background-color: #0276b6;
+  }
+  .add-add-btn button span{
+    background-color: #fff;
+    color: #0988ce;
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 16px;
+    display: inline-block;
+    border-radius: 50px;
+    height: 20px;
+    width: 20px;
+    margin: 0 10px 0px 0px;
+  }
+  .section-head{
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    border-bottom: 1px solid #e0e0e1;
+    margin-bottom: 25px;
+  }
+  .section-head h5{
+    font-size: 15px;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+  .section-head span{
+    font-size: 12px;
+    color: #535D79;
+    display: flex;
+  }
+
+  .section-head span input{
+    margin-right: 5px;
+    transform: translateY(3px); 
+  }
+
+
+
+/****** Media Query  *****/
+
+/* 1: Mobile */
+@media (max-width: 768px){
+    .whole-container{
+        padding: 10px;
+    }
+}
+
+ 

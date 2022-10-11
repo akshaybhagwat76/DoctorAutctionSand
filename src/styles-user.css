@@ -1,0 +1,74 @@
+/* breadcrumb */
+.breadcrumbs{
+    background-color: #F0F0F0;
+    padding: 12px;
+    color: #A2A2A2;
+}
+.breadcrumbs a{
+    color: #A2A2A2;
+    text-decoration: none;
+    cursor: pointer;
+}
+.breadcrumbs i{
+    margin: 0px 8px;
+    display: inline-block;
+    font-style: normal;
+}
+
+/* Back btn */
+.back-btn-wrap .back-btn{
+    position: relative;
+    background-color: #F9F9F9;
+    padding: 20px;
+}
+.back-btn-wrap .b-arrow{
+    line-height: 1px;
+    font-style: normal;
+    transform: rotate(180deg);
+    display: inline-block;
+    cursor: pointer;
+}
+.back-btn-wrap .b-arrow::after{
+    content: "\2794";
+    color: #0988CE;
+    transform: rotate(75deg);
+}
+
+
+/* Payment & T&C */
+.payment-wrap{
+    margin-top: 50px;
+    margin-bottom: 25px;
+}
+.payment-wrap .head{
+    font-weight: bold;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+.payment-wrap .theme-cont,
+.payment-wrap p,
+.payment-wrap ol,
+.payment-wrap ul
+
+{
+    padding: 0px;
+    list-style-position: inside;
+    color: #8F8F8F;
+}
+.payment-wrap .hl-head{
+    margin-top: 30px;
+    margin-bottom: 10px;
+    font-size: 17px;
+    position: relative;
+    display: flex;
+    flex-flow: row nowrap;
+    white-space: nowrap;
+    font-weight: bold;
+}
+.payment-wrap .hl-head i, i.hline{
+    display: inline-block;
+    width: 91%;
+    border-bottom: 1px solid #DDDDDD;
+    margin-left: 14px;
+    margin-bottom: 9px;
+}

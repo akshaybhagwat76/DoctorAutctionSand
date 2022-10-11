@@ -1,0 +1,113 @@
+<div class="layout-wrapper">
+  <header class="layout-header">
+    <div class="row layout-header-row">
+      <div class="col-auto col-logo">
+        <a routerLink="/admin/sellers">
+          <img src="assets/img/logo.svg" alt="doctor sand logo" />
+        </a>
+      </div>
+
+      <div class="col col-search d-none">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <img src="assets/img/icon-list.svg" />
+          </div>
+          <input type="text" class="form-control" placeholder="Enter location to find auctions nearby" />
+          <div class="input-group-append">
+            <button class="btn btn-primary btn-block">Search</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col"></div>
+
+      <div class="col-auto col-profile dropdown">
+        <a href="javascript:void()" id="filter-dropdown" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false" class="dropdown-toggle">
+          <span>{{profileData.name || ''}}</span>
+          <img src="assets/img/icon-profile.svg" />
+        </a>
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="filter-dropdown">
+          <button class="dropdown-item" (click)="handleLogout($event)">Logout</button>
+        </div>
+      </div>
+    </div>
+  </header>
+  <div class="layout-container">
+    <aside class="layout-sidebar">
+      <div class="navigation-group">
+        <span class="navigation-title">Registration</span>
+        <a class="navigation-item" routerLink="/admin/sellers" routerLinkActive="active">
+          <img src="assets/img/icon_seller_list.svg" /><img class="img-active"
+            src="assets/img/icon_seller_list.svg" /><span>Sellers
+            List</span></a>
+        <a class="navigation-item" routerLink="/admin/buyers" routerLinkActive="active"><img
+            src="assets/img/icon_buyer_list.svg" /><img class="img-active"
+            src="assets/img/icon_buyer_list.svg" /><span>Buyers List</span></a>
+        <a class="navigation-item" routerLink="/admin/auctions/list" routerLinkActive="active"><img
+          src="assets/img/icon_auction.svg" /><img class="img-active"
+          src="assets/img/icon_auction.svg" /><span>Auction List</span></a>
+        <a class="navigation-item" routerLink="/admin/orders" routerLinkActive="active"><img
+          src="assets/img/icon_auction.svg" /><img class="img-active"
+          src="assets/img/icon_auction.svg" /><span>Fixed Price</span></a>
+        <a class="navigation-item" routerLink="/admin/enquiries" routerLinkActive="active"><img
+            src="assets/img/icon_auction.svg" /><img class="img-active"
+            src="assets/img/icon_auction.svg" /><span>Enquiries</span></a>
+          <div class="accordion" id="reports-accordian">
+            <a id="reports-head" class="navigation-item" [ngClass]="{'collapsed': !router.url.includes('report')}" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+              Reports
+            </a>
+
+            <div id="collapseTwo" class="collapse" [ngClass]="{'show': router.url.includes('report')}" aria-labelledby="headingTwo" data-parent="#reports-accordian">
+              <div class="navigation-group">
+                  <a class="navigation-item" routerLink="/admin/reports/consignments" routerLinkActive="active">
+                    <img src="assets/img/icon-list.svg" /><img class="img-active"
+                      src="assets/img/icon-list-active.svg" /><span>Consignment Reports</span></a>
+                  <a class="navigation-item" routerLink="/admin/reports/trucks" routerLinkActive="active">
+                    <img src="assets/img/icon-list.svg" /><img class="img-active"
+                      src="assets/img/icon-list-active.svg" /><span>Truck Reports</span></a>
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion" id="manage-accordian">
+                  <a id="manage-head" class="navigation-item" [ngClass]="{'collapsed': !router.url.includes('manage')}" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    Manage
+                  </a>
+
+              <div id="collapseOne" class="collapse" [ngClass]="{'show': router.url.includes('manage')}" aria-labelledby="headingOne" data-parent="#manage-accordian">
+                <div class="navigation-group">
+                    <a class="navigation-item" routerLink="/admin/manage/products" routerLinkActive="active">
+                      <img src="assets/img/icon-list.svg" /><img class="img-active"
+                        src="assets/img/icon-list-active.svg" /><span>Products</span></a>
+                    <!-- <a class="navigation-item" routerLink="/admin/manage/fixed-fee-products/list" routerLinkActive="active">
+                      <img src="assets/img/icon-list.svg" /><img class="img-active"
+                        src="assets/img/icon-list-active.svg" /><span>Fixed Fee Products</span></a> -->
+                    <a class="navigation-item" routerLink="/admin/manage/grades" routerLinkActive="active">
+                      <img src="assets/img/icon-list.svg" /><img class="img-active"
+                        src="assets/img/icon-list-active.svg" /><span>Grades</span></a>
+                    <a class="navigation-item" routerLink="/admin/manage/truck-size" routerLinkActive="active">
+                      <img src="assets/img/icon-list.svg" /><img class="img-active"
+                    src="assets/img/icon-list-active.svg" /><span>Truck Size</span></a>
+                    <a class="navigation-item" routerLink="/admin/manage/pincodes" routerLinkActive="active">
+                      <img src="assets/img/icon-list.svg" /><img class="img-active"
+                        src="assets/img/icon-list-active.svg" /><span>Pincodes</span></a>
+                    <a class="navigation-item" routerLink="/admin/manage/locations" routerLinkActive="active">
+                      <img src="assets/img/icon-list.svg" /><img class="img-active"
+                        src="assets/img/icon-list-active.svg" /><span>Locations</span></a>
+                    <a class="navigation-item" routerLink="/admin/manage/terms" routerLinkActive="active">
+                      <img src="assets/img/icon-list.svg" /><img class="img-active"
+                        src="assets/img/icon-list-active.svg" /><span>T&C</span></a>
+                    <a class="navigation-item" routerLink="/admin/manage/payment-delivery-term-days" routerLinkActive="active">
+                      <img src="assets/img/icon-list.svg" /><img class="img-active"
+                        src="assets/img/icon-list-active.svg" /><span>Payment & Delivery Term Days</span></a>
+                  </div>
+            </div>
+          </div>
+      </div>
+    </aside>
+    <main class="layout-content">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

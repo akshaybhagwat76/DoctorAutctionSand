@@ -1,0 +1,51 @@
+<!-- breadcrumbs -->
+<div class="breadcrumbs">
+    <div class="container">
+        <a [routerLink]="['/user/auction/']">Dashboard</a> 
+        <i> > </i> 
+        <a [routerLink]="['/user/epassbook/']">ePassbook</a>
+        <i> > </i> 
+        <a href="javascript:void(0)">Transactions</a>
+    </div>
+</div>
+
+<!-- Back btn -->
+<div class="back-btn-wrap">
+    <div class="container">
+        <div class="back-btn">
+            <i class="b-arrow"></i>
+        </div>
+    </div>
+</div>
+
+<!-- Transaction Table -->
+<div class="trans-tbl-wrapper">
+    <div class="container">  
+        <div class="trans-scroll">
+
+            <table class="trans-tbl">
+                <tr>
+                    <th class="trans-th">Transaction Id</th>
+                    <th>Date</th>
+                    <th>Naration</th>
+                    <th>Type</th>
+                    <th class="amount-th">Amount</th>
+                </tr>
+                <tr>
+                    <td>45698725</td>
+                    <td>28/10/2020</td>
+                    <td>An Amount of ₹ 2,80,00,000 has been Credited to your nodal account for participating in an forward auction under id #45698725</td>
+                    <td class="type-td">Credit</td>
+                    <td><span>₹ </span> 80,000</td>
+                </tr>
+                <tr>
+                    <td>45698725</td>
+                    <td>28/10/2020</td>
+                    <td>An amount of ₹ 80,000 has been debited from your current account as penalty for not accepting LOI for an forward auction under the id #45698725 according to terms & conditions of doctor sand .</td>
+                    <td class="type-td">Debit</td>
+                    <td><span>₹ </span> 2,80,00,000</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

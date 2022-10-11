@@ -1,0 +1,299 @@
+<app-toaster [body]="toastBody" [title]="toastTitle" [toastType]="toastType">
+</app-toaster>
+
+<section id="fixed-fee-product-create" class="container-fluid pt-3" [formGroup]="productForm" *ngIf="productForm">
+  <div class="row align-items-center sticky-top bg-white">
+    <div class="col-md-7">
+      <div class="row align-items-center">
+        <div class="col-md-7">
+          <h4>{{title}}</h4>
+        </div>
+        <div class="col-md-7 text-right">
+          <!-- <div class="form-check p-0">
+            <input type="checkbox" id="hideAuNumber" formControlName="hide_auction_number">
+            <label for="hideAuNumber" class="pl-2 m-0">Hide auction number</label>
+          </div> -->
+        </div>
+      </div>
+    </div>
+    <div class="col-md-5">
+      <div class="row align-items-center">
+        <div class="col-md-3">
+          <!-- <div class="form-check p-0">
+            <input type="checkbox" id="isPrivate" formControlName="is_private" #isPrivate>
+            <label for="isPrivate" class="pl-2 m-0">Private</label>
+          </div> -->
+        </div>
+        <div class="col-md-4">
+          <!-- <span style="color: #0988ce; cursor: pointer;" data-toggle="modal" data-target="#sellerBuyerModal" *ngIf="isPrivate.checked">+ Add Participant</span> -->
+        </div>
+        <div class="col-md-5">
+          <button *ngIf="!paramId" class="btn btn-primary" (click)="createFixedFeeProduct()">Save Details</button>
+          <button *ngIf="paramId" class="btn btn-primary" (click)="updateFixedFeeProduct()">Save Details</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="">
+    <div action="" class="py-3">
+
+      <div class="row py-2" style="background-color: #f9f9f9;">
+        <div class="col-md-12">
+          <span class="">Product Details</span>
+        </div>
+      </div>
+
+      <div class="row align-items-center py-2">
+        <div class="col-md-2"><span class="">Select seller *</span></div>
+        <div class="col-md-3">
+          <div class="input-wrap m-0">
+            <input type="text" [formControl]="sellerName" data-toggle="modal" data-target="#sellerModal" placeholder="Select">
+            <i *ngIf="productForm.controls.seller_id.invalid && productForm.controls.seller_id.touched"
+            class="erro-red">Seller required</i>
+          </div>
+        </div>
+      </div>
+
+      <div class="row align-items-center py-2">
+        <div class="col-md-2"><span class="">Select serviceable pin codes *</span></div>
+        <div class="col-md-3">
+          <div class="input-wrap m-0">
+            <ng-select [items]="sellerPincodesList" bindLabel="pincode" bindValue="id" (change)="onPincodeSelected()"
+                placeholder="Select" dropdownPosition="bottom" [multiple]="true"  formControlName="pincodes">
+            </ng-select>
+            <i *ngIf="productForm.controls.pincodes.invalid && productForm.controls.pincodes.touched"
+            class="erro-red">Serviceable pincodes required</i>
+          </div>
+        </div>
+      </div>
+
+      <div class="row align-items-center py-2">
+        <div class="col-md-2"><span class="">Product *</span></div>
+        <div class="col-md-3">
+          <div class="input-wrap m-0">
+            <input type="text" id="product_name" readonly>
+          </div>
+        </div>
+      </div>
+
+      <div class="row align-items-center py-2">
+        <div class="col-md-2"><span class="">Grade *</span></div>
+        <div class="col-md-3">
+          <div class="input-wrap m-0">
+            <input type="text" id="grade" readonly>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="row align-items-center py-2">
+        <div class="col-md-2"><span class="">Truck size(in tonnes) *</span></div>
+        <div class="col-md-3">
+          <div class="input-wrap m-0">
+            <ng-select [items]="truckSizeList" bindLabel="lot_size" bindValue="id"
+                placeholder="Select" dropdownPosition="bottom" formControlName="truck_size_id" [clearable]="false">
+            </ng-select>
+            <i *ngIf="productForm.controls.truck_size_id.invalid && productForm.controls.truck_size_id.touched"
+            class="erro-red">Truck size required</i>
+          </div>
+        </div>
+      </div>
+
+      <div class="row align-items-center py-2">
+        <div class="col-md-2"><span class="">Lot size *</span></div>
+        <div class="col-md-3">
+          <div class="input-wrap m-0 py-3">
+            <input type="text" formControlName="lot_size" >
+            <i *ngIf="productForm.controls.lot_size.invalid && productForm.controls.lot_size.touched && !productForm.controls.lot_size.errors.pattern"
+            class="erro-red">Lot size required</i>
+            <i *ngIf="productForm.controls.lot_size.invalid && productForm.controls.lot_size.touched && productForm.controls.lot_size.errors.pattern"
+            class="erro-red">Please enter valid value</i>
+            <i *ngIf="+productForm.value.lot_size > +productForm.value.available_inventory"
+            class="erro-red">Lot size should be less than available inventory</i>
+          </div>
+        </div>
+      </div>
+
+      <div class="row align-items-center py-2">
+        <div class="col-md-2"><span class="">Price *</span></div>
+        <div class="col-md-3">
+          <div class="input-wrap m-0">
+            <input type="text" formControlName="price" >
+            <i *ngIf="productForm.controls.price.invalid && productForm.controls.price.touched && !productForm.controls.price.errors.pattern"
+            class="erro-red">Price required</i>
+          </div>
+        </div>
+      </div>
+
+      <div class="row align-items-center py-2">
+        <div class="col-md-2"><span class="">Minimum Order Quantity *</span></div>
+        <div class="col-md-3">
+          <div class="input-wrap m-0">
+            <input type="text" formControlName="min_order_qnty">
+            <i *ngIf="productForm.controls.min_order_qnty.invalid && productForm.controls.min_order_qnty.touched && !productForm.controls.min_order_qnty.errors.pattern"
+            class="erro-red">Minimum Order Quantity required</i>
+            <i *ngIf="productForm.controls.min_order_qnty.invalid && productForm.controls.min_order_qnty.touched && productForm.controls.min_order_qnty.errors.pattern"
+            class="erro-red">Please enter only numeric value</i>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="row align-items-center py-2">
+        <div class="col-md-2"><span class="">Source of sand</span></div>
+        <div class="col-md-3">
+          <div class="input-wrap m-0">
+            <input type="text" formControlName="source">
+          </div>
+        </div>
+      </div>
+
+      <div class="row align-items-center py-2">
+        <div class="col-md-2"><span class="">Silt (%)</span></div>
+        <div class="col-md-3">
+          <div class="input-wrap m-0">
+            <input type="text" formControlName="silt">
+          </div>
+        </div>
+      </div>
+
+      <div class="row align-items-center py-2" *ngIf="selectedSeller.product_type == 1">
+        <div class="col-md-2"><span class="">Microns</span></div>
+        <div class="col-md-3">
+          <div class="input-wrap m-0">
+            <input type="text" formControlName="microns">
+          </div>
+        </div>
+      </div>
+
+      <div class="row align-items-center py-2">
+        <div class="col-md-2"><span class="">Payment terms (days) *</span></div>
+        <div class="col-md-3">
+          <div class="input-wrap m-0">
+            <ng-select [items]="paymentTermList" bindLabel="type_days" bindValue="id"
+                placeholder="Select" dropdownPosition="bottom" formControlName="payment_term_id" [clearable]="false">
+            </ng-select>
+            <i *ngIf="productForm.controls.payment_term_id.invalid && productForm.controls.payment_term_id.touched"
+            class="erro-red">Payment term required</i>
+          </div>
+        </div>
+      </div>
+
+      <div class="row align-items-center py-2">
+        <div class="col-md-2"><span class="">Delivery terms (days) *</span></div>
+        <div class="col-md-3">
+          <div class="input-wrap m-0">
+            <ng-select [items]="deliveryTermList" bindLabel="type_days" bindValue="id"
+                placeholder="Select" dropdownPosition="bottom" formControlName="delivery_term_id" [clearable]="false">
+            </ng-select>
+            <i *ngIf="productForm.controls.delivery_term_id.invalid && productForm.controls.delivery_term_id.touched"
+            class="erro-red">Delivery term required</i>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Modal -->
+<!-- <div class="modal fade select-buyer-modal" id="sellerBuyerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Private Auction</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <div class="hisd-autocomplete">
+          <input type="text" class="w-100" [(ngModel)]='autocompleteInput' (keyup)='onAutocompleteKeypress($event);'>
+          <span class="flaticon-close disable-selection" style="cursor: pointer"></span>
+          <div class="autocomplete-list" [ngClass]="{'active': isAutocompleteShown}">
+            <ul class="px-2">
+              <li class="row" *ngFor="let item of autocompleteData; let i = index"
+               (hover)="currentValue = i" (click)="onAddParticipants(item)"><span>{{item.name}}</span></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-12 table-responsive p-0">
+          <table class="list-table table" *ngIf="selectedBuyers?.length !== 0">
+              <thead>
+                  <tr>
+                      <th>Company</th>
+                      <th>Action</th>
+                  </tr>
+              </thead>
+
+              <tbody>
+                  <tr *ngFor="let item of selectedBuyers; let i = index">
+                      <td class="cell-company">{{item.name}}</td>
+                      <td class="cell-status">
+                          <span (click)="onRemoveParticipant(i)">Remove</span>
+                      </td>
+                  </tr>
+              </tbody>
+          </table>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Save Changes</button>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<div class="modal fade select-seller-modal" id="sellerModal" tabindex="-1" role="dialog" aria-labelledby="sellerModal" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Select Seller</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <div class="input-group">
+          <input type="text" class=" w-100" (keyup)='filterAutocompleteForSeller($event);'>
+        </div>
+        <div class="col-12 table-responsive p-0">
+          <table class="list-table table">
+              <thead>
+                  <tr>
+                      <th>Action</th>
+                      <th>Company</th>
+                      <th>Sand Type</th>
+                      <th>Grade</th>
+                      <th>Available tonnage</th>
+                      <th>This month tonnage</th>
+                  </tr>
+              </thead>
+
+              <tbody *ngIf="sellerListTemp?.length !== 0">
+                  <tr *ngFor="let item of sellerListTemp; let i = index">
+                        <td class="cell-status">
+                          <input type="radio" name="seller_id" value="selectedSeller?.id" (change)="onSellerRadioChange(item)">
+                        </td>
+                      <td class="cell-company">{{item.name}}</td>
+                      <td class="cell-company">{{item.product_name}}</td>
+                      <td class="cell-company">{{item.grade}}</td>
+                      <td class="cell-company">{{item.total}}</td>
+                      <td class="cell-company">{{item.tonnage}}</td>
+                  </tr>
+              </tbody>
+          </table>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="onSellerChange($event)">Save Changes</button>
+      </div>
+    </div>
+  </div>
+</div>

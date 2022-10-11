@@ -1,0 +1,29 @@
+<section id="sellers-list" class="container-fluid">
+  <app-list [listType]="'SELLER'" (onListItemClick)="handleListItemClick($event)" (onPinClick)="handlePinClick($event)" (onProductClick)="handleProductClick($event)"></app-list>
+
+  <app-modal [isOpen]="isModalOpen" [fullscreen]='true' class="aside-panel" [ngClass]="{'modal-open': isModalOpen}"
+    (onClose)="handleModalClose($event)">
+    <app-modal-body>
+      <app-reg-details *ngIf="isModalOpen" [selectedData]="selectedData" (backToList)="handleModalClose($event)"
+        [listType]="'SELLER'" [stateList]="stateList">
+      </app-reg-details>
+    </app-modal-body>
+  </app-modal>
+
+  <app-modal [isOpen]="isModal2Open" [fullscreen]='true' class="aside-panel" [ngClass]="{'modal-open': isModal2Open}"
+  (onClose)="handleModalClose($event)">
+    <app-modal-body>
+      <app-serviceable-pincodes *ngIf="isModal2Open" [sellerId]="sellerId" (backToList)="handleModalClose($event)">
+      </app-serviceable-pincodes>
+    </app-modal-body>
+  </app-modal>
+
+  <app-modal [isOpen]="isModal3Open" [fullscreen]='true' class="aside-panel" [ngClass]="{'modal-open': isModal3Open}"
+  (onClose)="handleModalClose($event)">
+    <app-modal-body>
+      <app-sellers-products *ngIf="isModal3Open" [sellerDetails]="selectedData" (backToList)="handleModalClose($event)">
+      </app-sellers-products>
+    </app-modal-body>
+  </app-modal>
+
+</section>

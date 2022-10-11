@@ -1,0 +1,422 @@
+
+/* Tab */
+.auction-id{
+    margin-left: auto;
+    margin-top: 16px;
+}
+.auction-tab{
+    width: 100%;
+}
+.auction-tab .nav-tabs{
+    padding-bottom: 13px;
+}
+.auction-tab .nav-tabs li{
+    margin-top: 17px;
+}
+.auction-tab .nav-tabs li a{
+    color: #000;
+    padding: 13px 0px;
+    margin-right: 35px;
+    margin-bottom: 10px;
+    font-weight: 500;
+    text-decoration: none;
+}
+.auction-tab .nav-tabs li a.active{
+    border-bottom: 2px solid #0988CE;
+    color: #0988CE;
+}
+
+/* Right Side Won details */
+.rgt-won-details{
+    border: 1px solid #cbcbcb;
+    margin-top: 25px;
+    padding: 15px;
+}
+.won-status{
+    background-color: green;
+    text-align: center;
+    color: #fff;
+    padding: 12px 10px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+.awaiting-status{
+  background-color: #6c757d;
+  text-align: center;
+  color: #fff;
+  padding: 12px 10px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.won-status img{
+    width: 18px;
+    height: auto;
+    margin-right: 7px;
+    transform: translateY(-2px);
+}
+
+.invoice-wrap{
+    border: 1px solid #EAEAEA;
+    margin-bottom: 15px;
+}
+.invoice-head{
+    font-weight: bold;
+    background-color: #E5E5E5;
+    padding: 12px 15px;
+    margin: 0px;
+}
+.invoice-body{
+    padding: 13px 10px 4px 15px;
+    background-color: #fbfbfb;
+}
+.invoice-body p{
+    color: #24243A;
+    margin-bottom: 10px;
+    font-size: 15px;
+}
+
+/* Right pdf card */
+.pdf-card{
+    border: 1px solid #EAEAEA;
+    margin-bottom: 15px;
+}
+.pdf-head{
+    font-weight: bold;
+    background-color: #E5E5E5;
+    padding: 12px 15px;
+    margin: 0px;
+}
+.pdf-file-wrap{
+    padding: 13px 10px 4px 15px;
+    background-color: #fbfbfb;
+}
+.pdf-file-wrap a{
+    color: #0988CE;
+    /* text-decoration: underline; */
+    display: inline-block;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+.pdf-file-wrap a img{
+    width: 18px;
+    margin-right: 14px;
+    transform: translateY(-2px);
+}
+/* right PR button */
+.action-pr{
+    text-align: center;
+    color: #fff;
+    padding: 12px 10px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    display: block;
+    text-decoration: none;
+    cursor: pointer;
+}
+.action-pr-blue{
+    background-color: #0988CE;
+    box-shadow: 0px 2px 8px #7090D080;
+}
+.action-pr-red{
+    background-color: #E30011;
+    box-shadow: 0px 2px 8px #7090D080;
+}
+
+/* file pdf */
+.sieve-pdf{
+    border: 1px solid #EAEAEA;
+    padding: 15px;
+    /* min-height: 110px;
+    border-bottom-color: transparent;*/
+}
+.file-wrap{
+    display: inline-block;
+    margin-right: 25px;
+    /* margin-top: 10px; */
+}
+.file-wrap img{
+    width: 16px;
+    height: auto;
+    margin-right: 13px;
+    transform: translateY(-3px);
+}
+.file-wrap a{
+    /* color: #000000 !important;
+    text-decoration: underline; */
+    cursor: pointer;
+}
+
+/* Amount details table */
+.payment-tbl{
+    width: 100%;
+    border: 1px solid #E7E7E7;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+.payment-tbl tr td{
+    border: 1px solid #E7E7E7;
+    padding: 8px 10px;
+}
+.payment-tbl tr td:first-child{
+    width: 230px;
+    background-color: #fbfbfb;
+    vertical-align: top;
+}
+.payment-tbl tr th{
+    background-color: #fbfbfb;
+    border: 1px solid #E7E7E7;
+    padding: 8px 10px;
+}
+
+
+
+/* Auction - Time Start/end   */
+.auctin-time{
+    border: 1px solid #E2E2E2;
+    margin-top: 20px;
+}
+.time-head{
+    color: #24243A;
+    background-color: #E2E2E2;
+    padding: 15px 15px;
+}
+.time-body{
+    display: flex;
+    flex-flow: row nowrap;
+    padding: 20px 25px;
+}
+.time-body .clock-icon{
+    margin-right: 15px;
+}
+.time-body .clock-icon img{
+    width: 40px;
+    height: auto;
+}
+.time-body .hms{
+    font-weight: 500;
+    display: flex;
+    flex-flow: row nowrap;
+}
+.time-body .hms > div{
+    display: flex;
+    flex-flow: column;
+    line-height: 1.1;
+    justify-content: center;
+    text-align: center;
+    transform: translateY(-3px);
+}
+.time-body .hms > div span:first-child{
+    font-size: 32px;
+    display: inline-block;
+    margin: 0 7px;
+}
+.time-body .hms > div span:last-child{
+    font-weight: 500;
+    color: #000000;
+}
+.hms-red{
+    color: #E30011;
+}
+
+
+/* Auction - Location / Rang */
+.auction-location{
+    margin-top: 15px;
+    border: 1px solid #E2E2E2;
+    padding: 15px 8px;
+    margin-bottom: 30px;
+}
+.auction-location .location{
+    padding: 0px 8px 0px 8px;
+    margin-bottom: 11px;
+}
+.auction-location .location img{
+    width: 20px;
+    height: auto;
+    margin-right: 12px;
+}
+.auction-location .location span{
+    text-decoration: underline;
+    cursor: pointer;
+}
+.auction-location .deliverable-msg{
+    color: #4CAF50;
+    margin-left: 40px;
+}
+.auction-location .check-agree{
+    margin-bottom: 15px;
+}
+.auction-location .check-agree input{
+    margin-right: 10px;
+    transform: translateY(1px);
+}
+.auction-location .check-agree > span >a{
+    color: #0988CE;
+    font-weight: bold;
+    cursor: pointer;
+}
+.auction-location .place-bid-btn{
+    background-color: #2D99D5;
+    color: #fff;
+    width: 100%;
+    border: 0;
+    outline: none;
+    padding: 0px 8px;
+    height: 48px;
+    line-height: 48px;
+    text-align: center;
+    border-radius: 4px;
+}
+
+/* Bidder Table */
+.bidder-tbl{
+    border: 1px solid #E2E2E2;
+    overflow: auto;
+    margin-top: 20px;
+    height: calc(100% - 20px);
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+    position: relative;
+  }
+  .bidder-tbl::-webkit-scrollbar {
+    display: none;
+  }
+  .bidder-tbl table{
+    width: 100%;
+    min-width: 600px;
+  }
+  .bidder-tbl .tr-head{
+    background-color: #f9f9f9;
+  }
+  .bidder-tbl th{
+    padding: 14px 8px;
+    font-weight: 500;
+  }
+  .bidder-tbl td{
+    padding: 15px 8px;
+  }
+  .bidder-tbl .position-th{
+    padding-left: 40px;
+  }
+  .bidder-tbl .position-td{
+    position: relative;
+    padding-left: 40px;
+  }
+  .bidder-tbl .position-td span{
+    background-color: #0988CE;
+    color: #fff;
+    border-radius: 50px;
+    padding: 3px 16px;
+    font-size: 11px;
+    display: inline-block;
+    margin-left: 14px;
+    line-height: 1.5;
+  }
+  .bidder-tbl .position-td img{
+    position: absolute;
+    left: 15px;
+    /* top: 17px; */
+    width: 17px;
+  }
+  .scrll-tbl{
+    overflow: auto;
+    max-height: 614px;
+    position: relative;
+    width: 100%;
+    min-width: 600px;
+  }
+
+  .scrll-tbl::-webkit-scrollbar {
+    width: 7px;
+  }
+
+  .scrll-tbl::-webkit-scrollbar-thumb {
+  background: #b2b2b2;
+  border-radius: 20px;
+  }
+
+  .scrll-tbl::-webkit-scrollbar-track {
+  background: #ddd;
+  border-radius: 20px;
+  }
+
+  /* tables width head & data*/
+  .bidder-tbl table tr th:nth-child(1),
+  .bidder-tbl table tr td:nth-child(1)
+  {
+    width: 30%;
+  }
+  .bidder-tbl table tr th:nth-child(2),
+  .bidder-tbl table tr td:nth-child(2)
+  {
+    width: 30%;
+  }
+  .bidder-tbl table tr th:nth-child(3),
+  .bidder-tbl table tr td:nth-child(3)
+  {
+    width: 15%;
+  }
+  .bidder-tbl table tr th:nth-child(4),
+  .bidder-tbl table tr td:nth-child(4)
+  {
+    width: 25%;
+  }
+
+  /* Awaiting Overlay */
+  .overlay{
+    position: absolute;
+    display: flex;
+    top: 50px;
+    left: 0;
+    background-color: #0000006e;
+    color: #fff;
+    bottom: 0;
+    right: 0;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 17px;
+  }
+  /***** tr - Theme  */
+
+  .bidder-tbl .tr-bold{
+    font-weight: bold;
+  }
+  .tr-red{
+    background-color: #fefafa;
+    border: 1px solid;
+    border-color: #e30011 transparent;
+  }
+  .tr-orang{
+    background-color: #fff5e2;
+    border: 1px solid;
+    border-color: #f2b844 transparent;
+  }
+  .tr-blue{
+    background-color: #0988ce;
+    color: #fff;
+  }
+  .refresh-img{
+    float: right;
+    max-width: 24px;
+    cursor: pointer;
+  }
+
+  .action-btn{
+    text-align: center;
+    width: 195px;
+    display: block;
+    background-color: #F9F9F9;
+    margin-top: 10px;
+    padding: 11px;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+  }
+
+  .auction-won-btn{
+    background-color: green !important;
+    color: #fff;
+    margin-top: 15px !important;
+  }

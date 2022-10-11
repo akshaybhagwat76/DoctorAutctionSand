@@ -1,0 +1,308 @@
+<div class="profile-wrapper">
+
+    <!-- Profile Heading -->
+    <div class="container">
+
+        <h1 class="page-head">Account Settings</h1>
+        <div class="picture-wrap">
+            <div class="prof-img">
+                <img src="../../../assets/img/profile-img.png" alt="profile">
+            </div>
+            <div class="rgt-desc">
+                <h3 class="prof-head">Mineral Trader</h3>
+                <div class="picture-action">
+                    <a href="javascript:void()" class="pic-upload">Upload new picture</a>
+                    <a href="javascript:void()" class="pic-delete">Delete picture</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Basic Info Table-->
+    <div class="container">
+        <table class="payment-tbl">
+            <tr>
+                <th style="border-right: none;">Basic Information</th>
+                <th style="border-left: none;"></th>
+            </tr>
+            <tr>
+                <td>Address</td>
+                <td>Orient House, Adi Murzban Path, Ballard Estate, Fort, Near Wadia Clock Tower, Mumbai,Maharashtra, India. Pincode - 400038</td>
+            </tr>
+            <tr>
+                <td>Mobile Number</td>
+                <td>+91 9876543210</td>
+            </tr>
+            <tr>
+                <td>Email id</td>
+                <td>johndoe@mineraltrader.com</td>
+            </tr>
+            <tr>
+                <td>PAN Number</td>
+                <td>AGQLK4567A</td>
+            </tr>
+            <tr>
+                <td>GST</td>
+                <td>34CIPPS5925M1ZF</td>
+            </tr>
+            <tr>
+                <td>TAN</td>
+                <td>PDES03028F</td>
+            </tr>
+            <tr>
+                <td>TIN</td>
+                <td>452-12-4567</td>
+            </tr>
+            <tr>
+                <td>CIN</td>
+                <td>457889562312455689841</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- Ordering center -->
+    <div class="oc-wrapper">
+        <div class="container">
+            <div class="oc-head">
+                <h4>Ordering center details</h4>
+                <a class="add-oc" data-toggle="modal" data-dismiss="modal" data-target="#OCFormModal">+ add ordering center</a>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="oc-card">
+                        <h5 class="occ-h">Ordering center - 1</h5>
+                        <p>Mobile Number : +91 8291317711</p>
+                        <p>Email Id :Tatagroups@gmail.com</p>
+                        <address>
+                            Address : Orient House, Adi Murzban Path, Ballard Estate, Fort, Near Wadia Clock Tower, Mumbai,Maharashtra, India. Pincode - 400038
+                        </address>
+
+                        
+                        <h5 class="poc-h">Point Of Contact</h5>
+                        <div>Name : Terrence Ken Jeffords</div>
+                        <div>E-mail : terrence.jeffords@gmail.com</div>
+                        <div>Mobile Number : +91 8291317711</div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="oc-card">
+                        <h5 class="occ-h">Ordering center - 2</h5>
+                        <p>Mobile Number : +91 8291317711</p>
+                        <p>Email Id :Tatagroups@gmail.com</p>
+                        <address>
+                            Address : Orient House, Adi Murzban Path, Ballard Estate, Fort, Near Wadia Clock Tower, Mumbai,Maharashtra, India. Pincode - 400038
+                        </address>
+
+                        
+                        <h5 class="poc-h">Point Of Contact</h5>
+                        <div>Name : Terrence Ken Jeffords</div>
+                        <div>E-mail : terrence.jeffords@gmail.com</div>
+                        <div>Mobile Number : +91 8291317711</div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="oc-card">
+                        <h5 class="occ-h">Ordering center - 3</h5>
+                        <p>Mobile Number : +91 8291317711</p>
+                        <p>Email Id :Tatagroups@gmail.com</p>
+                        <address>
+                            Address : Orient House, Adi Murzban Path, Ballard Estate, Fort, Near Wadia Clock Tower, Mumbai,Maharashtra, India. Pincode - 400038
+                        </address>
+
+                        
+                        <h5 class="poc-h">Point Of Contact</h5>
+                        <div>Name : Terrence Ken Jeffords</div>
+                        <div>E-mail : terrence.jeffords@gmail.com</div>
+                        <div>Mobile Number : +91 8291317711</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Modal: 2 Ordering center Form -->
+    <div class="modal fade OCFormModal" id="OCFormModal">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="ordering-wrap" [formGroup]="addressForm" *ngIf="addressForm">
+                        <h4 class="OCForm-head">Enter ordering center details</h4>
+
+                        <!-- Address -->
+                        <div class="input-wrap">
+                            <input class="rf-bg text-uppercase" type="text" placeholder=" " formControlName="address">
+                            <label class="placeholder">Address *</label>
+                            <i *ngIf="addressForm.get('address').invalid
+                            && addressForm.get('address').touched"
+                            class="erro-red">Please enter Address</i>
+                        </div>
+
+
+                        <!-- Landmark & State -->
+                        <div class="row gutter">
+                            <div class="col-sm-12 col-md-6">
+                                <div class="input-wrap">
+                                    <input class="rf-bg text-uppercase" type="text" placeholder=" " formControlName="landmark">
+                                    <label class="placeholder">Nearest Landmark *</label>
+                                    <i *ngIf="addressForm.get('landmark').invalid
+                                    && addressForm.get('landmark').touched"
+                                    class="erro-red">Please enter Nearest Landmark</i>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12 col-md-6">
+                                <div class="input-wrap">
+                                    <ng-select [items]="stateList" bindLabel="state_name" bindValue="id"
+                                        placeholder="State *" dropdownPosition="bottom" formControlName="state_id"
+                                        [class.errors]="addressForm.get('state_id').invalid && addressForm.get('state_id').touched"
+                                        (change)="getCityList()">
+                                    </ng-select>
+                                    <i *ngIf="addressForm.get('state_id').invalid && addressForm.get('state_id').touched"
+                                    class="erro-red">State required</i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- City & PIN -->
+                        <div class="row gutter">
+                            <div class="col-sm-12 col-md-6">
+                                <div class="input-wrap">
+                                    <ng-select [items]="cityList" bindLabel="city_name" bindValue="id"
+                                        placeholder="City *" dropdownPosition="bottom" formControlName="city_id"
+                                        [class.errors]="addressForm.get('city_id').invalid && addressForm.get('city_id').touched">
+                                    </ng-select>
+                                    <i *ngIf="addressForm.get('city_id').invalid && addressForm.get('city_id').touched"
+                                    class="erro-red">City required</i>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12 col-md-6">
+                                <div class="input-wrap">
+                                    <input class="rf-bg text-uppercase" type="text" placeholder=" " formControlName="pincode"
+                                    maxlength="6"
+                                    pattern="[0-9]{6}">
+                                    <label class="placeholder">Pincode*</label>
+                                    <i *ngIf="addressForm.get('pincode').invalid
+                                    && addressForm.get('pincode').touched
+                                    && !addressForm.get('pincode').errors?.pattern"
+                                    class="erro-red">Please enter Pincode</i>
+                                    <i *ngIf="addressForm.get('pincode').invalid
+                                    && addressForm.get('pincode').touched
+                                    && addressForm.get('pincode').errors?.pattern"
+                                    class="erro-red">Invalid Pincode</i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Phone & Email -->
+                        <div class="row gutter">
+                            <div class="col-sm-12 col-md-6">
+
+                                <div class="contact-info">
+                                    <div class="input-wrap" style="min-width: 48px;width: 48px;">
+                                      <ng-select class="disable-arrow disable-dropdown disable-clear-all"
+                                        [items]="dial_code" bindLabel="name" bindValue="code" placeholder=""
+                                        [clearable]="false" [searchable]="false" dropdownPosition="bottom"
+                                        formControlName="dial_code">
+                                      </ng-select>
+                                    </div>
+                                    <div class="input-wrap">
+                                        <input class="rf-bg text-uppercase" type="number" placeholder=" " formControlName="poc_mobile"
+                                        pattern="[0-9]{10}">
+                                        <label class="placeholder">Phone Number *</label>
+                                        <i *ngIf="addressForm.get('poc_mobile').invalid
+                                        && addressForm.get('poc_mobile').touched
+                                        && !addressForm.get('poc_mobile').errors?.pattern"
+                                        class="erro-red">Phone Number required</i>
+                                        <i *ngIf="addressForm.get('poc_mobile').invalid
+                                        && addressForm.get('poc_mobile').touched
+                                        && addressForm.get('poc_mobile').errors?.pattern"
+                                        class="erro-red">Invalid Phone Number</i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12 col-md-6">
+                                <div class="email-info">
+                                    <div class="input-wrap">
+                                        <input class="rf-bg text-uppercase" type="email" placeholder=" " formControlName="poc_email"
+                                        pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,3}$">
+                                        <label class="placeholder">Email *</label>
+                                        <i *ngIf="addressForm.get('poc_email').invalid
+                                    && addressForm.get('poc_email').touched
+                                    && !addressForm.get('poc_email').errors?.pattern"
+                                    class="erro-red">Email required</i>
+                                    <i *ngIf="addressForm.get('poc_email').invalid
+                                    && addressForm.get('poc_email').touched
+                                    && addressForm.get('poc_email').errors?.pattern"
+                                    class="erro-red">Invalid Email</i>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <h5 class="pointofCD">Point Of Contact details</h5>
+
+                        <!-- Profile Photo & Name -->
+                        <div class="row gutter">
+                            <div class="col-sm-12 col-md-6">
+                                <div class="input-wrap">
+                                  <input type="file"
+                                  [class.errors]="addressForm.get('poc_profile').invalid && addressForm.get('poc_profile').touched"
+                                  placeholder=" " formControlName="poc_profile" (change)="fileBrowseHandler($event)">
+                                  <label class="placeholder">Profile Photo </label>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12 col-md-6">
+                                <div class="input-wrap">
+                                    <input class="rf-bg text-uppercase" type="text" formControlName="poc_name">
+                                    <label class="placeholder">Name *</label>
+                                    <i *ngIf="addressForm.get('poc_name').invalid
+                                    && addressForm.get('poc_name').touched"
+                                    class="erro-red">Name required</i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Email & phone -->
+                        <div class="row gutter">
+                            <div class="col-sm-12 col-md-6">
+                                <div class="email-info">
+                                    <div class="input-wrap">
+                                        <input class="rf-bg text-uppercase" type="email" placeholder=" ">
+                                        <label class="placeholder">Email *</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12 col-md-6">
+                                <div class="input-wrap">
+                                    <input class="rf-bg text-uppercase" type="number" placeholder=" ">
+                                    <label class="placeholder">Phone Number *</label>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+                        <div class="action-btn">
+                            <a class="cancel-oc" data-dismiss="modal">Cancel</a>
+                            <a class="ok-oc" href="javascript:void(0)" (click)="submitAddressForm()">Ok</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    
+</div>

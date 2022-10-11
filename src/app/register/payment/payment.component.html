@@ -1,0 +1,49 @@
+
+<div class="main-bg">
+    <div class="whole-container">
+        <div class="logo">
+            <img src="assets/img/logo1-doctor-sand.svg" alt="ss-logo">
+        </div>
+        <div class="form-container">
+            <div class="top-steps">
+                <div class="steps-wrap justify-content-center">
+                    <span>
+                        <img src="assets/img/Icon-check-circle.svg" alt="circle">
+                        Security Deposit
+                    </span>
+                </div>
+            </div>
+            <div class="form-wrap">
+                <ng-container>
+                    <form action="">
+                        <div class="rgt-form">
+    
+                            <div class="amount">
+                                <div>
+                                    <span><b>Particulars</b></span>
+                                    <span><b>Amount</b></span>
+                                </div>
+                                <div>
+                                    <span>Amount</span>
+                                    <span>{{sdResp.base_amount | currency:'INR':'symbol'}}</span>
+                                </div>
+                                <div>
+                                    <span>GST @18%</span>
+                                    <span>{{sdResp.gst_amount | currency:'INR':'symbol'}}</span>
+                                </div>
+                                <div>
+                                    <span>Amount Payable</span>
+                                    <span>{{sdResp.total_amount | currency:'INR':'symbol'}}</span>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <P class="p-2">{{processResp}}</P>
+                              <button class="btn btn-primary" (click)="createRzpayOrder()">Pay</button>
+                            </div>
+                        </div>
+                    </form>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</div>

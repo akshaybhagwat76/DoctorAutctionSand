@@ -1,0 +1,129 @@
+<div class="login-wrapper">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12 col-lg-4 left-panel">
+        <div class="panel-container">
+          <div class="panel-header">
+            <img src="assets/img/logo1-doctor-sand.svg" alt="" />
+          </div>
+        </div>
+        <img src="assets/img/hill-design.svg" />
+      </div>
+
+      <div class="col-xs-12 col-lg-8 right-panel">
+        <div class="panel-container">
+          <div class="panel-header">
+            <img src="assets/img/logo1-doctor-sand.svg" alt="" />
+          </div>
+          <div *ngIf="!forgetPassword" class="panel-body">
+            <h2 class="heading">Login to doctorsand</h2>
+            <p class="description">
+              Please enter email id and password to login to doctorsand.
+            </p>
+            <form class="login-form" [formGroup]="loginForm" (submit)="login()">
+              <div class="input-wrap">
+                <input type="text" formControlName="email" placeholder="" />
+                <label class="placeholder">E-Mail/Phone</label>
+                <span
+                  *ngIf="
+                    loginForm.controls.email.touched &&
+                    loginForm.controls.email.errors &&
+                    loginForm.controls.email.errors.required
+                  "
+                  class="input-error text-danger"
+                  >This field is required</span
+                >
+<!--
+                <span
+                  *ngIf="
+                    loginForm.controls.email.touched &&
+                    loginForm.controls.email.errors &&
+                    loginForm.controls.email.errors.pattern
+                  "
+                  class="input-error text-danger"
+                  >Please provide valid email address</span
+                > -->
+              </div>
+
+              <div class="input-wrap">
+                <input
+                  type="password"
+                  formControlName="password"
+                  placeholder=""
+                />
+                <label class="placeholder">Password</label>
+                <span
+                  *ngIf="
+                    loginForm.controls.password.touched &&
+                    loginForm.controls.password.errors &&
+                    loginForm.controls.password.errors.required
+                  "
+                  class="input-error text-danger"
+                  >This field is required</span
+                >
+              </div>
+              <button
+                class="btn btn-primary btn-block"
+                type="submit"
+                [disabled]="!loginForm.valid"
+              >
+                Login
+              </button>
+              <i class="float-right"><a class="btn-sm" href="javascript:void(0)" (click)="initForgetPasswordMail()">Forget Password</a></i>
+              <span *ngIf="loginFormError" class="input-error text-danger">
+                {{ loginFormError }}
+              </span>
+            </form>
+          </div>
+
+          <div class="panel-body" *ngIf="forgetPassword">
+            <h2 class="heading">Sent email to reset password</h2>
+            <p class="description">
+              Please enter valid email, we will sent a mail with a link to reset your password.
+            </p>
+
+            <form class="login-form" [formGroup]="forgetPassForm" (submit)="onForgetPassSubmit()">
+              <div class="input-wrap">
+                <input type="text" formControlName="email" placeholder="" />
+                <label class="placeholder">E-Mail</label>
+                <span
+                  *ngIf="
+                    forgetPassForm.controls.email.touched &&
+                    forgetPassForm.controls.email.errors &&
+                    forgetPassForm.controls.email.errors.required
+                  "
+                  class="input-error text-danger"
+                  >This field is required</span
+                >
+
+                <span
+                  *ngIf="
+                    forgetPassForm.controls.email.touched &&
+                    forgetPassForm.controls.email.errors &&
+                    forgetPassForm.controls.email.errors.email
+                  "
+                  class="input-error text-danger"
+                  >Please provide valid email address</span
+                >
+              </div>
+              <button
+                class="btn btn-primary btn-block"
+                type="submit"
+                [disabled]="!forgetPassForm.valid"
+              >
+                Sent Email
+              </button>
+              <i class="float-right"><a class="btn-sm" href="javascript:void(0)" (click)="forgetPassword = false">Back</a></i>
+              <span *ngIf="forgetPassErrorMessage" class="input-error text-danger">
+                {{ forgetPassErrorMessage }}
+              </span>
+              <span *ngIf="forgetPassSuccessMessage" class="input-error text-success">
+                {{ forgetPassSuccessMessage }}
+              </span>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

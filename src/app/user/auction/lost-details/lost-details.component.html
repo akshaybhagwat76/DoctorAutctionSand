@@ -1,0 +1,172 @@
+<div class="upcoming-wrapper">
+    <!-- breadcrumbs -->
+    <div class="breadcrumbs">
+        <div class="container">
+            <a [routerLink]="['/user/auction/']">Auctions</a>
+            <i> > </i>
+            <a href="javascript:void(0)">Auction Result</a>
+        </div>
+    </div>
+
+    <!-- Back btn -->
+    <div class="back-btn-wrap">
+        <div class="container">
+            <div class="back-btn">
+                <i class="b-arrow"></i>
+                <div class="auction-id">Auction No. : {{auctionId}}</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Auction lost table -->
+    <div class="container">
+        <h4 class="lost-head">Auction lost</h4>
+        <table class="payment-tbl">
+            <tr>
+                <th style="border-right: none;">Bidding Details</th>
+                <th style="border-left: none;"></th>
+            </tr>
+            <tr>
+                <td>Position</td>
+                <td>#4</td>
+            </tr>
+            <tr>
+                <td>Starting bid price/ton</td>
+                <td><span>₹ </span> 12,000</td>
+            </tr>
+            <tr>
+                <td>Your final bid</td>
+                <td><span>₹ </span> 15,000</td>
+            </tr>
+            <tr>
+                <td>Winning bid</td>
+                <td><span>₹ </span> 17,000</td>
+            </tr>
+            <tr>
+                <td>Security deposit status</td>
+                <td>Released</td>
+            </tr>
+        </table>
+    </div>
+
+
+    <!-- Lot Details -->
+    <div class="lot-details">
+        <div class="container">
+
+                <!-- Lot Details -->
+                <div class="auction-tab">
+                    <ul class="nav nav-tabs">
+                        <li><a class="active" data-toggle="tab" href="#l-details">Lot Details</a></li>
+                        <li><a data-toggle="tab" href="#payment">Delivery and payment terms</a></li>
+                        <li><a data-toggle="tab" href="#tnc" id="tab-tnc">Terms and conditions</a></li>
+
+                        <li><a data-toggle="tab" href="#bid-history" >My bid history</a></li>
+
+
+                    </ul>
+
+                    <div class="tab-content">
+
+                    <!-- Tab: 1 : Lot Details -->
+                    <div id="l-details" class="tab-pane fade in active show">
+                        <div class="row">
+                            <div class="col-xs-12 col-lg-8">
+
+                                <!-- auction Vertical card -->
+                                <app-auction-hcard></app-auction-hcard>
+
+                                <!-- Left PDF Link -->
+                                <div class="sieve-pdf">
+                                    <div class="file-wrap">
+                                        <img src="assets/img/file-icon.png" alt="file">
+                                        <a href="javascript:void(0)">Sieve Analysis Report.pdf</a>
+                                    </div>
+                                    <div class="file-wrap">
+                                        <img src="assets/img/file-icon.png" alt="file">
+                                        <a href="javascript:void(0)">Concrete Test Report.pdf</a>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                     <!-- Tab: 2 : Payment terms -->
+                    <div id="payment" class="tab-pane fade">
+                        <div class="payment-wrap">
+                            <h2 class="head">Delivery and payment terms</h2>
+                            <!-- <div class="theme-cont">Updated December 2020</div> -->
+                            <div class="pay-cont">
+                                <h5 class="hl-head">Delivery terms<i></i></h5>
+
+                                <p>
+                                    Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Bibendum est ultricies integer quis. Iaculis urna id volutpat lacus laoreet. Mauris vitae ultricies leo integer malesuada. Ac odio tempor orci dapibus ultrices in. Egestas diam in arcu cursus euismod. Dictum fusce ut placerat orci nulla. Tincidunt ornare massa eget egestas purus viverr. Magna
+                                </p>
+                                <p>
+                                    Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Bibendum est ultricies integer quis. Iaculis urna id volutpat lacus laoreet. Mauris vitae ultricies leo integer malesuada. Ac odio tempor orci dapibus ultrices in. Egestas diam in arcu cursus euismod. Dictum fusce ut placerat orci nulla. Tincidunt ornare massa eget egestas purus viverr. Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Bibendum est ultricies integer quis. Iaculis urna id volutpat lacus laoreet. Mauris vitae ultricies leo integer malesuada. Ac odio tempor orci dapibus ultrices in. Egestas diam in arcu cursus euismod. Dictum fusce ut placerat orci nulla. Tincidunt ornare massa eget egestas purus viverr.
+                                </p>
+                                <ul>
+                                    <li>Dictum fusce ut placerat orci nulla. Tincidunt ornare massa eget egestas purus viverr.</li>
+                                    <li>Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut</li>
+                                    <li>Tincidunt ornare massa eget egestas purus viverr.</li>
+                                    <li>Vitae tempus quam pellentesque nec nam aliquam sem et. Ut morbi tincidunt augue interdum. Sem</li>
+                                </ul>
+                                <h5 class="hl-head">Delivery terms<i></i></h5>
+                                <p>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Bibendum est ultricies integer quis. Iaculis urna id volutpat lacus laoreet. Mauris vitae ultricies leo integer malesuada. Ac odio tempor orci dapibus ultrices in. Egestas diam in arcu cursus euismod. Dictum fusce ut placerat orci nulla. Tincidunt ornare massa eget egestas purus viverra accumsan in nisl. Tempor id eu nisl nunc mi ipsum faucibus. Fusce id velit ut tortor pretium. Massa ultricies mi quis hendrerit dolor magna eget. Nullam eget felis eget nunc lobortis. Faucibus ornare suspendisse sed nisi. Sagittis eu volutpat odio facilisis mauris sit amet massa. Erat velit scelerisque in dictum non consectetur a erat. Amet nulla facilisi morbi tempus iaculis urna. Egestas purus viverra accumsan in nisl. Feugiat in ante metus dictum at tempor commodo. Convallis tellus id interdum velit laoreet. Proin sagittis nisl rhoncus mattis rhoncus urna neque viverra. Viverra aliquet eget sit amet tellus cras adipiscing enim eu. Ut faucibus pulvinar elementum integer enim neque volutpat ac tincidunt. Dui faucibus in ornare quam. In iaculis nunc sed augue lacus viverra vitae congue. Vitae tempus quam pellentesque nec nam aliquam sem et. Ut morbi tincidunt augue interdum. Sem fringilla ut morbi tincidunt augue. Morbi enim nunc faucibus a pellentesque sit amet porttitor eget. In est ante in nibh mauris. Nam aliquam sem et tortor consequat id porta nibh. Diam quis enim lobortis scelerisque fermentum dui faucibus. Non curabitur gravida arcu ac. Magna
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                     <!-- Tab: 3 : T&C -->
+                    <div id="tnc" class="tab-pane fade">
+                        <div class="payment-wrap">
+                            <h2 class="head">Terms & Condition Of Service</h2>
+                            <!-- <div class="theme-cont">Updated December 2020</div> -->
+                            <div class="pay-cont">
+                                <h5 class="hl-head">Accepting the terms<i></i></h5>
+
+                                <p>
+                                    Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Bibendum est ultricies integer quis. Iaculis urna id volutpat lacus laoreet. Mauris vitae ultricies leo integer malesuada. Ac odio tempor orci dapibus ultrices in. Egestas diam in arcu cursus euismod. Dictum fusce ut placerat orci nulla. Tincidunt ornare massa eget egestas purus viverr. Magna
+                                </p>
+                                <p>
+                                    Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Bibendum est ultricies integer quis. Iaculis urna id volutpat lacus laoreet. Mauris vitae ultricies leo integer malesuada. Ac odio tempor orci dapibus ultrices in. Egestas diam in arcu cursus euismod. Dictum fusce ut placerat orci nulla. Tincidunt ornare massa eget egestas purus viverr. Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Bibendum est ultricies integer quis. Iaculis urna id volutpat lacus laoreet. Mauris vitae ultricies leo integer malesuada. Ac odio tempor orci dapibus ultrices in. Egestas diam in arcu cursus euismod. Dictum fusce ut placerat orci nulla. Tincidunt ornare massa eget egestas purus viverr.
+                                </p>
+                                <p>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Bibendum est ultricies integer quis. Iaculis urna id volutpat lacus laoreet. Mauris vitae ultricies leo integer malesuada. Ac odio tempor orci dapibus ultrices in. Egestas diam in arcu cursus euismod. Dictum fusce ut placerat orci nulla. Tincidunt ornare massa eget egestas purus viverra accumsan in nisl. Tempor id eu nisl nunc mi ipsum faucibus. Fusce id velit ut tortor pretium. Massa ultricies mi quis hendrerit dolor magna eget. Nullam eget felis eget nunc lobortis. Faucibus ornare suspendisse sed nisi. Sagittis eu volutpat odio facilisis mauris sit amet massa. Erat velit scelerisque in dictum non consectetur a erat. Amet nulla facilisi morbi tempus iaculis urna. Egestas purus viverra accumsan in nisl. Feugiat in ante metus dictum at tempor commodo. Convallis tellus id interdum velit laoreet. Proin sagittis nisl rhoncus mattis rhoncus urna neque viverra. Viverra aliquet eget sit amet tellus cras adipiscing enim eu. Ut faucibus pulvinar elementum integer enim neque volutpat ac tincidunt. Dui faucibus in ornare quam. In iaculis nunc sed augue lacus viverra vitae congue. Vitae tempus quam pellentesque nec nam aliquam sem et. Ut morbi tincidunt augue interdum. Sem fringilla ut morbi tincidunt augue. Morbi enim nunc faucibus a pellentesque sit amet porttitor eget. In est ante in nibh mauris. Nam aliquam sem et tortor consequat id porta nibh. Diam quis enim lobortis scelerisque fermentum dui faucibus. Non curabitur gravida arcu ac. Magna
+                                </p>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab: 4 : history -->
+                    <div id="bid-history" class="tab-pane fade">
+                        <div class="payment-wrap history-wrap">
+                            <h2 class="head">My Bid History</h2>
+                            <!-- <div class="theme-cont">Updated December 2020</div> -->
+                            <div class="pay-cont">
+                                <h5 class="hl-head">My Bid History<i></i></h5>
+
+                                <p>
+                                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Libero dignissimos repellendus architecto fugit laudantium, id rem laboriosam incidunt iste asperiores unde illum ipsam beatae corporis aperiam soluta sed, doloremque reiciendis!
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    </div>
+                </div>
+
+
+
+
+        </div>
+    </div>
+</div>

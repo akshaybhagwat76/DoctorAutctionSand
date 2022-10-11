@@ -1,0 +1,23 @@
+ <!-- Modal: 1 Confirm PR -->
+ <div class="modal fade modalConfirm" [id]="modalId">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="mconfirm-wrap">
+                    <h4 [innerHTML]="mdata?.title"></h4>
+
+                    <!-- <p>{{mdata?.text}}</p> -->
+                    <div class="mb-3" [innerHTML]="mdata?.text"></div>
+
+                    <div class="action-btn" [ngClass]="{'justify-content-end': !showCancel}">
+                        <a [ngClass]="{'d-none': !showCancel}" class="cancel-oc" data-dismiss="modal" (click)="onConfirm(false)">{{mdata?.secondaryBtnText ? mdata?.secondaryBtnText :'CANCEL'}}</a>
+                        <a class="ok-oc" data-dismiss="modal" (click)="onConfirm(true)">{{mdata?.primaryBtnText ? mdata?.primaryBtnText :'OK'}}</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,244 @@
+
+<div class="main-wrap">
+
+  <div *ngIf="udLoading" class="loading-txt">Loading...</div>
+
+
+  <div *ngIf="!udLoading" class="content-wrap">
+
+    <div class="top-head">
+      <a (click)="back2List()" [ngClass]="{'d-none': isEdit}">Add Fixed Price Products</a>
+      <a (click)="back2List()" [ngClass]="{'d-none': !isEdit}">Update {{productDetails?.product?.name}}</a>
+      <div>
+        <button class="btn btn-sm btn-outline-primary" [ngClass]="{'d-none': isEdit}" (click)="createFixedFeeProduct()">Publish</button>
+
+        <button class="btn btn-sm btn-outline-primary" [ngClass]="{'d-none': !isEdit}" (click)="updateFixedFeeProduct()">Update</button>
+      </div>
+    </div>
+    <form [formGroup]="productForm">
+      <div class="row py-2" style="background-color: #f9f9f9;">
+        <div class="col-md-12">
+          <span class="">Product Details</span>
+        </div>
+      </div>
+      <div class="row align-items-center py-2">
+        <div class="col-md-4"><span class="">Select Product Type *</span></div>
+        <div class="col-md-3">
+          <div class="input-wrap m-0">
+            <ng-select [items]="productTypeList" bindLabel="name" bindValue="value"
+              formControlName="product_type"  placeholder="Select" dropdownPosition="bottom" [clearable]="false" (change)="listProducts($event.value)">
+            </ng-select>
+            <i *ngIf="productForm.controls.product_type.invalid && productForm.controls.product_type.touched"
+            class="erro-red">Product type required</i>
+          </div>
+        </div>
+      </div>
+      <div class="row align-items-center py-2">
+        <div class="col-md-4"><span class="">Select Product *</span></div>
+        <div class="col-md-3">
+          <div class="input-wrap m-0">
+            <ng-select [items]="productList" bindLabel="name" bindValue="id"
+                placeholder="Select" dropdownPosition="bottom" formControlName="product_id" [clearable]="false" (change)="onProductChange($event)">
+            </ng-select>
+            <i *ngIf="productForm.controls.product_id.invalid && productForm.controls.product_id.touched"
+            class="erro-red">Product required</i>
+          </div>
+        </div>
+      </div>
+
+      <div class="row align-items-center py-2">
+        <div class="col-md-4"><span class="">Grade *</span></div>
+        <div class="col-md-3">
+          <div class="input-wrap m-0">
+            <ng-select [items]="gradeList" bindLabel="grade" bindValue="id"
+                placeholder="Select" dropdownPosition="bottom" formControlName="grade_id" [clearable]="false">
+            </ng-select>
+            <i *ngIf="productForm.controls.grade_id.invalid && productForm.controls.grade_id.touched"
+            class="erro-red">Grade required</i>
+          </div>
+        </div>
+      </div>
+
+      <div class="row align-items-center py-2">
+        <div class="col-md-4"><span class="">Source of sand *</span></div>
+        <div class="col-md-3">
+          <div class="input-wrap m-0">
+            <input type="text" formControlName="source">
+            <!-- <i *ngIf="productForm.controls.grade_id.invalid && productForm.controls.grade_id.touched"
+            class="erro-red">Source required</i> -->
+          </div>
+        </div>
+      </div>
+
+      <div class="row align-items-center py-2">
+        <div class="col-md-4"><span class="">Silt (%) *</span></div>
+        <div class="col-md-3">
+          <div class="input-wrap m-0">
+            <input type="text" formControlName="silt">
+            <!-- <i *ngIf="productForm.controls.grade_id.invalid && productForm.controls.grade_id.touched"
+            class="erro-red">Silt required</i> -->
+          </div>
+        </div>
+      </div>
+
+      <div class="row align-items-center py-2">
+        <div class="col-md-4"><span class="">MOQ({{productForm?.value?.product_type === productType?.sand_bulk ? 'Truckload' : 'Bags'}}) *</span></div>
+        <div class="col-md-3">
+          <div class="input-wrap m-0">
+            <input type="text" formControlName="min_order_qnty">
+            <i *ngIf="productForm.controls.min_order_qnty.invalid && productForm.controls.min_order_qnty.touched && !productForm.controls.min_order_qnty.errors.pattern"
+            class="erro-red">Minimum order quantity required</i>
+            <i *ngIf="productForm.controls.min_order_qnty.invalid && productForm.controls.min_order_qnty.touched && productForm.controls.min_order_qnty.errors.pattern"
+            class="erro-red">Please enter only numeric value</i>
+          </div>
+        </div>
+      </div>
+
+      <div class="row align-items-center py-2">
+        <div class="col-md-4"><span class="">Incremental Order value({{productForm?.value?.product_type === productType?.sand_bulk ? 'Truckload' : 'Bags'}}) *</span></div>
+        <div class="col-md-3">
+          <div class="input-wrap m-0">
+            <input type="text" formControlName="incremental_order_velue">
+            <i *ngIf="productForm.controls.incremental_order_velue.invalid && productForm.controls.incremental_order_velue.touched && !productForm.controls.incremental_order_velue.errors.pattern"
+            class="erro-red">Incremental order value required</i>
+            <i *ngIf="productForm.controls.incremental_order_velue.invalid && productForm.controls.incremental_order_velue.touched && productForm.controls.incremental_order_velue.errors.pattern"
+            class="erro-red">Please enter only numeric value</i>
+          </div>
+        </div>
+      </div>
+
+      <div class="row align-items-center py-2">
+        <div class="col-md-4"><span class="">Delivery terms (days) *</span></div>
+        <div class="col-md-3">
+          <div class="input-wrap m-0">
+            <ng-select [items]="deliveryTermList" bindLabel="type_days" bindValue="id"
+                placeholder="Select" dropdownPosition="bottom" formControlName="delivery_term_id" [clearable]="false">
+            </ng-select>
+            <i *ngIf="productForm.controls.delivery_term_id.invalid && productForm.controls.delivery_term_id.touched"
+            class="erro-red">Delivery term required</i>
+          </div>
+        </div>
+      </div>
+
+      <div class="row py-2" style="background-color: #f9f9f9;">
+        <div class="col-md-12">
+          <span class="">Pricing Details</span>
+        </div>
+      </div>
+
+      <!-- <div class="row align-items-center py-2">
+        <div class="col-md-4"><span class="">Default {{productForm?.value?.product_type === productType?.sand_bag ?  'Bag' : 'Truckload'}} Size *</span></div>
+        <div class="col-md-3">
+          <div class="input-wrap m-0">
+            <input type="text" formControlName="default_unit_size">
+          </div>
+        </div>
+      </div> -->
+
+      <div class="row align-items-center py-2" *ngIf="productForm?.value?.product_type === productType?.sand_bulk || productForm?.value?.product_type === productType?.supllementry">
+        <div class="col-md-4"><span class="">Price/{{defaultUnits?.truck?.name}} Truckload (Cash) *</span></div>
+        <!-- <div class="col-md-4"><span class="">Price/ {{productForm?.value?.default_unit_size}} {{defaultUnits?.truck?.name}} Truckload (Cash) *</span></div> -->
+        <div class="col-md-3">
+          <div class="input-wrap m-0">
+            <input type="text" formControlName="price" (input)="calcCreditPrice()">
+            <i *ngIf="productForm.controls.price.invalid && productForm.controls.price.touched && !productForm.controls.price.errors.pattern"
+            class="erro-red">Price required</i>
+          </div>
+        </div>
+      </div>
+
+      <div class="row align-items-center py-2" *ngIf="productForm?.value?.product_type === productType?.sand_bag">
+        <div class="col-md-4"><span class="">For Price/ bag ({{productForm?.value?.default_unit_size + ' ' + defaultUnits?.bag?.name}} ) *</span></div>
+        <div class="col-md-3">
+          <div class="input-wrap m-0">
+            <input type="text" formControlName="price" (input)="calcCreditPrice()">
+            <i *ngIf="productForm.controls.price.invalid && productForm.controls.price.touched && !productForm.controls.price.errors.pattern"
+            class="erro-red">Price required</i>
+          </div>
+        </div>
+      </div>
+
+      <div class="row align-items-center py-2" *ngIf="productForm?.value?.product_type === productType?.sand_bulk || productForm?.value?.product_type === productType?.supllementry">
+        <!-- <div class="col-md-4"><span class="">Price/ {{productForm?.value?.default_unit_size}} {{defaultUnits?.truck?.name}} Truckload (Credit) *</span></div> -->
+        <div class="col-md-4"><span class="">Price/{{defaultUnits?.truck?.name}} Truckload (Credit) *</span></div>
+      </div>
+
+      <div class="row align-items-center py-2" *ngIf="productForm?.value?.product_type === productType?.sand_bag">
+        <div class="col-md-4"><span class="">For Price/ bag ({{productForm?.value?.default_unit_size + ' ' + defaultUnits?.bag?.name}} ) (Credit) *</span></div>
+      </div>
+
+      <div class="row align-items-center py-2">
+        <div class="col-md-2">
+          <div class="input-wrap">
+            <ng-select [items]="paymentTermList" bindLabel="type_days" bindValue="id"
+              placeholder=" " dropdownPosition="bottom" formControlName="payment_term_id" [clearable]="false" id="p_term_id" (change)="onPTermChange($event)">
+            </ng-select>
+            <input type="text" id="p_term_name" placeholder=" " hidden>
+            <label class="placeholder">Terms *</label>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="input-wrap">
+            <ng-select [items]="creditPriceType" bindLabel="name" bindValue="value" formControlName="credit_type"
+              placeholder=" " dropdownPosition="bottom" [clearable]="false" id="type_id" (change)="onCreditTypeChange($event)">
+            </ng-select>
+            <input type="text" id="type_name" placeholder=" " hidden>
+            <label class="placeholder">Unit *</label>
+          </div>
+        </div>
+
+        <div class="col-md-2">
+          <div class="input-wrap">
+            <input type="text" id="t_price" placeholder=" " readonly [value]="productForm?.value?.price">
+            <label class="placeholder">Price *</label>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="input-wrap">
+            <input type="text" id="credit_value" placeholder=" " (input)="calcCreditPrice()">
+            <label class="placeholder">Credit *</label>
+          </div>
+        </div>
+        <div class="col-md-1 mb-4 text-center">
+          =
+        </div>
+        <div class="col-md-2">
+          <div class="input-wrap">
+            <input type="text" id="total_value" placeholder=" " readonly>
+            <label class="placeholder">Total *</label>
+          </div>
+        </div>
+        <div class="col-md-1">
+          <button class="btn btn-sm btn-outline-primary mb-4" (click)="addCredit()">Add</button>
+        </div>
+      </div>
+
+      <ng-container formArrayName="credit_prices">
+            <div class="col-12 table-responsive p-0" *ngIf="creditPrices && creditPrices.length > 0">
+              <table class="list-table table">
+                  <thead>
+                      <tr>
+                          <th>Terms</th>
+                          <th>Unit</th>
+                          <th>Credit Price</th>
+                          <th>Action</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of creditPrices.controls; index as i">
+                        <td class="cell-company">{{item?.value?.payment_term_days}} days</td>
+                        <td class="cell-phone">{{item?.value?.type == '1' ? '₹ ' + item?.value?.value + '(Flat)' : item?.value?.value + ' % (Percentage)'}}</td>
+                        <td class="cell-phone">₹ {{item?.value?.total_value}}</td>
+                        <td class="cell-status">
+                            <span (click)="removeCredit(i)" class="pointer">Delete</span>
+                        </td>
+                    </tr>
+                  </tbody>
+              </table>
+            </div>
+      </ng-container>
+
+
+
+    </form>
+  </div>

@@ -1,0 +1,43 @@
+<div class="dashboard-wrapper w-100">
+  <div class="container">
+    <h3 class="dash-head">Fixed Price</h3>
+
+    <div class="aution-tab">
+      <!-- Aution Tab -->
+      <ul class="nav nav-tabs">
+        <li class="active"><a class="active" data-toggle="tab" href="#sand" (click)="loadProductList(productType?.sand_bulk)">Sand (Bulk)</a></li>
+        <li class=""><a data-toggle="tab" href="#supplementry" (click)="loadProductList(productType?.supllementry)">Supplementry Products</a></li>
+        <li class=""><a data-toggle="tab" href="#sand-bags" (click)="loadProductList(productType?.sand_bag)">Sand (Bags)</a></li>
+        <div class="auction-sort">
+          <div class="sort-type mr-2">
+
+            <!-- <input type="text" value="Mumbai"> -->
+            <ng-select [items]="[]" bindLabel="location_name" bindValue="id" placeholder="Select Location"
+              dropdownPosition="bottom" [clearable]="false" class="disable-clear-all">
+            </ng-select>
+          </div>
+        </div>
+      </ul>
+
+      <div class="tab-content py-3">
+        <!-- Tab: 1 Sand -->
+        <div id="sand" class="tab-pane fade in active show">
+          <div class="row">
+            <div class="col-md-6" *ngFor="let product of productList;">
+              <app-fixed-fee-product-card [product]="product"></app-fixed-fee-product-card>
+            </div>
+            <!-- <div class="col-md-6">
+              <app-fixed-fee-product-card></app-fixed-fee-product-card>
+            </div> -->
+          </div>
+        </div>
+        <!-- Tab: 2 Supplementry Products -->
+        <div id="supplementry" class="tab-pane fade in active show">
+        </div>
+        <!-- Tab: 3 Sand Bags -->
+        <div id="sand-bags" class="tab-pane fade in active show">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

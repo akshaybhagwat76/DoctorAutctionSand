@@ -1,0 +1,401 @@
+<div class="main-wrap">
+
+  <div *ngIf="udLoading" class="loading-txt">Loading...</div>
+
+
+  <div *ngIf="!udLoading" class="content-wrap">
+
+    <div class="top-head">
+      <a (click)="back2List()">Consignment no: {{consignmentNo}}</a>
+
+      <div>
+        <button class="btn btn-sm btn-outline-primary"
+        data-toggle="modal" data-target="#addTruckSidebar" (click)="newForm()"
+        [disabled] = "orderStatus === holdStatus" [title]="orderStatus === holdStatus ? 'Order is under hold.' : ''">Add Truck</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="">
+
+    <div>Vehicle details:</div>
+
+    <div class="row">
+      <div class="col-12 table-responsive p-0">
+        <table class="list-table table">
+          <thead>
+            <tr>
+              <th>Sr No.</th>
+              <th>Product Name</th>
+              <th>Delivery Date</th>
+              <th>Vehicle Number</th>
+              <th>Tonnage</th>
+              <th>Amount</th>
+              <th>Delivery Challan</th>
+              <th>Invoice</th>
+              <th>Credit Note</th>
+              <th>Debit Note</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+
+          <tbody class="text-center" *ngIf="isListLoading">
+            <tr>
+              <td colspan="11">Loading...</td>
+            </tr>
+          </tbody>
+
+          <tbody class="text-center" *ngIf="!isListLoading && truckList?.length === 0">
+            <tr>
+              <td colspan="11">No result found</td>
+            </tr>
+          </tbody>
+
+          <tbody *ngIf="!isListLoading && truckList?.length !== 0">
+            <tr *ngFor="let item of truckList; let i = index;">
+              <td>{{i + 1}}</td>
+              <th>{{item?.product_name}}</th>
+              <td>{{ consignmentDetails?.delivery_date | date: "dd/MM/YYYY" }}</td>
+              <td class="text-uppercase">{{item?.vehicle_number}}</td>
+              <td>{{item?.tonnage}}</td>
+              <td>{{item?.amount | currency: 'INR'}}</td>
+              <td>
+                <!-- <a *ngIf="item?.delivery_challan"
+                  href="{{urlService.orderDCUrl(item?.delivery_challan, consignmentDetails?.order_number, item?.dc_number)}}"
+                  target="_blank">
+                  {{item?.delivery_challan}} <img src="assets/img/icon_view.svg" alt="file" />
+                </a> -->
+                <ng-template #popContent>
+                  <div>
+                    <a
+                      href="{{urlService.orderDCUrl('dp_for_transporter' + item?.delivery_challan, consignmentDetails?.order_number, item?.dc_number)}}"
+                      target="_blank">
+                      Duplicate For Transporter <img src="assets/img/icon_view.svg" alt="file" />
+                    </a>
+                  </div>
+                  <div>
+                    <a
+                      href="{{urlService.orderDCUrl('dp_for_consignee' + item?.delivery_challan, consignmentDetails?.order_number, item?.dc_number)}}"
+                      target="_blank">
+                      Duplicate For Consignee <img src="assets/img/icon_view.svg" alt="file" />
+                    </a>
+                  </div>
+                  <div>
+                    <a
+                      href="{{urlService.orderDCUrl('og_for_consigner' + item?.delivery_challan, consignmentDetails?.order_number, item?.dc_number)}}"
+                      target="_blank">
+                      Original For Consigner <img src="assets/img/icon_view.svg" alt="file" />
+                    </a>
+                  </div>
+                </ng-template>
+                <button *ngIf="item?.delivery_challan" type="button" class="btn btn-outline-secondary btn-sm" placement="bottom"
+                  [ngbPopover]="popContent" container="body" popoverClass="my-popover" >
+                  <!-- triggers="mouseenter:mouseleave" [closeDelay]="5000" -->
+                  delivery challans
+                </button>
+                <button *ngIf="!item?.delivery_challan" class="btn btn-sm btn-outline-primary" (click)="onGenerateDC(item?.truck_detail_id)" [disabled] = "orderStatus === holdStatus" [title]="orderStatus === holdStatus ? 'Order is under hold.' : ''">Generate</button>
+              </td>
+              <td>
+                <a *ngIf="item?.invoice"
+                  href="{{urlService.orderConsignmentInvoiceUrl(item?.invoice, consignmentDetails?.order_number, item?.dc_number)}}"
+                  target="_blank">
+                  {{item?.invoice}} <img src="assets/img/icon_view.svg" alt="file" />
+                </a>
+                <button *ngIf="!item?.invoice" class="btn btn-sm btn-outline-primary" (click)="onGenerateInvoice(item?.truck_detail_id)" [disabled] = "orderStatus === holdStatus" [title]="orderStatus === holdStatus ? 'Order is under hold.' : ''">Generate</button>
+              </td>
+              <td>
+                <button *ngIf="!item?.credit_note" class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#generateCreditNoteModal" (click)="initCreditNoteForm(item?.truck_detail_id, 1)">Generate</button>
+                <a *ngIf="item?.credit_note"
+                  href="{{urlService.orderConsignmentCreditNoteUrl(item?.credit_note, consignmentDetails?.order_number, item?.dc_number)}}"
+                  target="_blank">
+                  {{item?.credit_note}} <img src="assets/img/icon_view.svg" alt="file" />
+                </a>
+              </td>
+              <td>
+                <button *ngIf="!item?.debit_note" class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#generateCreditNoteModal" (click)="initCreditNoteForm(item?.truck_detail_id, 2)">Generate</button>
+                <a *ngIf="item?.debit_note"
+                  href="{{urlService.orderConsignmentCreditNoteUrl(item?.debit_note, consignmentDetails?.order_number, item?.dc_number)}}"
+                  target="_blank">
+                  {{item?.debit_note}} <img src="assets/img/icon_view.svg" alt="file" />
+                </a>
+              </td>
+              <td class="status">
+                <span class="pointer" data-toggle="modal" data-target="#addTruckSidebar" (click)="onEditTruckClick(item)">edit</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<div class="modal fade" id="addTruckSidebar" tabindex="-1" role="dialog" aria-labelledby="filter" aria-hidden="true">
+  <div class="modal-dialog modal-lg float-right m-0 h-100 w-50" role="document">
+    <div class="modal-content h-100 w-100" style="overflow-y: auto;">
+      <div class="modal-header justify-content-start sticky-top bg-white">
+        <button type="button" class="close ml-0 mr-1" data-dismiss="modal" aria-label="Close" (click)="initForm()" id="modal-close-btn">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h5 class="modal-title" id="consignmentSidebarTitle">{{truckForm?.value?.id ? 'Update' : 'Create'}} Consignment</h5>
+        <!-- <button type="button" class="btn btn-primary ml-auto" (click)="addTrucks()">+TRUCK</button> -->
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="truckForm" *ngIf="truckForm">
+          <div class="row py-2" style="background-color: #f9f9f9;">
+            <div class="col-md-12">
+              <span class="">Truck Details</span>
+            </div>
+          </div>
+
+          <div class="row align-items-center py-2">
+            <div class="col-md-5"><span class="">Date *</span></div>
+            <div class="col-md-7">
+              <div class="input-wrap m-0">
+                <input type="date" formControlName="date">
+                <i *ngIf="truckForm.controls.date.invalid && truckForm.controls.date.touched"
+                class="erro-red">Date required</i>
+              </div>
+            </div>
+          </div>
+
+          <div class="row align-items-center py-2">
+            <div class="col-md-5"><span class="">Product *</span></div>
+            <div class="col-md-7">
+              <div class="input-wrap m-0">
+                <ng-select [items]="orderItems" bindLabel="product_name" bindValue="order_item_id"
+                      placeholder="Select" dropdownPosition="bottom" formControlName="order_item_id" [clearable]="false" (change)="onProductChange()">
+                </ng-select>
+                <i *ngIf="truckForm.controls.order_item_id.invalid && truckForm.controls.order_item_id.touched"
+                class="erro-red">Please select product.</i>
+              </div>
+            </div>
+          </div>
+          <div class="row align-items-center py-2">
+            <div class="col-md-5"><span class="">Vehicle Number *</span></div>
+            <div class="col-md-7">
+              <div class="input-wrap m-0">
+                <input type="text" formControlName="vehicle_number" class="text-uppercase">
+                <i *ngIf="truckForm.controls.vehicle_number.invalid && truckForm.controls.vehicle_number.touched"
+                class="erro-red">Vehicle number required</i>
+              </div>
+            </div>
+          </div>
+          <div class="row align-items-center py-2">
+            <div class="col-md-5"><span class="">Truck Size *</span></div>
+            <div class="col-md-7">
+              <div class="input-wrap m-0">
+                <ng-select [items]="truckSizeList" bindLabel="lot_size" bindValue="id"
+                      placeholder="Select" dropdownPosition="bottom" formControlName="truck_size_id" [clearable]="false" (change)="varianceValidation()">
+                </ng-select>
+                <i *ngIf="truckForm.controls.truck_size_id.invalid && truckForm.controls.truck_size_id.touched"
+                class="erro-red">Please select truck size.</i>
+              </div>
+            </div>
+          </div>
+          <div class="row align-items-center py-2">
+            <div class="col-md-5 mb-3"><span class="">Tonnage *</span></div>
+            <div class="col-md-7">
+              <div class="input-wrap mb-3">
+                <input type="text" formControlName="tonnage" (input)="varianceValidation()">
+                <i *ngIf="truckForm.controls.tonnage.invalid && truckForm.controls.tonnage.touched && isVarianceValid"
+                class="erro-red">Tonnage required</i>
+                <i style="bottom: -28px !important;" *ngIf="!isVarianceValid"
+                class="erro-red">Tonnage should be less than and equal to {{maxVar}} and grater than and equal to {{minVar}}</i>
+              </div>
+            </div>
+          </div>
+
+          <div class="row align-items-center py-2">
+            <div class="col-md-5"><span class="">Driver Name *</span></div>
+            <div class="col-md-7">
+              <div class="input-wrap m-0">
+                <input type="text" formControlName="driver_name" class="text-uppercase">
+                <i *ngIf="truckForm.controls.driver_name.invalid && truckForm.controls.driver_name.touched"
+                class="erro-red">Driver name required</i>
+              </div>
+            </div>
+          </div>
+
+          <div class="row align-items-center py-2">
+            <div class="col-md-5"><span class="">Driver Phone Number *</span></div>
+            <div class="col-md-7">
+              <div class="input-wrap m-0" [ngClass]="{'py-3': truckForm.controls.driver_number.errors && truckForm.controls.driver_number.errors.max && truckForm.controls.driver_number.touched}">
+                <input type="text" formControlName="driver_number" maxlength="10" pattern="[0-9]{10}">
+
+                <i *ngIf="truckForm.controls.driver_number.invalid && truckForm.controls.driver_number.touched && !truckForm.get('driver_number').errors?.pattern"
+                    class="erro-red">Driver phone number required</i>
+                    <i *ngIf="truckForm.controls.driver_number.invalid && truckForm.controls.driver_number.touched && truckForm.get('driver_number').errors?.pattern"
+                    class="erro-red">Invalid phone number</i>
+              </div>
+            </div>
+          </div>
+
+          <div class="row align-items-center py-2">
+            <div class="col-md-5"><span class="">Make (optional)</span></div>
+            <div class="col-md-7">
+              <div class="input-wrap m-0">
+                <input type="text" formControlName="make" class="text-uppercase">
+                <!-- <i *ngIf="truckForm.controls.lr_number.errors && truckForm.controls.lr_number.errors.required && truckForm.controls.lr_number.touched"
+                class="erro-red">LR Number required</i> -->
+              </div>
+            </div>
+          </div>
+
+          <div class="row align-items-center py-2">
+            <div class="col-md-5"><span class="">E-Way Number (optional)</span></div>
+            <div class="col-md-7">
+              <div class="input-wrap m-0">
+                <input type="text" formControlName="eway_number" class="text-uppercase">
+                <!-- <i *ngIf="truckForm.controls.eway_number.errors && truckForm.controls.eway_number.errors.required && truckForm.controls.eway_number.touched"
+                class="erro-red">E-Way Number required</i> -->
+              </div>
+            </div>
+          </div>
+
+          <div class="row align-items-center py-2">
+            <div class="col-md-5 mb-4"><span class="">LR Number (optional)</span></div>
+            <div class="col-md-7">
+              <div class="input-wrap">
+                <input type="text" formControlName="lr_number" class="text-uppercase">
+                <!-- <i *ngIf="truckForm.controls.transporter.errors && truckForm.controls.transporter.errors.required && truckForm.controls.transporter.touched"
+                class="erro-red">Transporter required</i> -->
+              </div>
+            </div>
+          </div>
+
+          <div class="row align-items-center py-2">
+            <div class="col-md-5 mb-4"><span class="">Transist Pass *</span></div>
+            <div class="col-md-7">
+              <div class="input-wrap">
+                <input type="file" (change)="fileBrowseHandler($event)" *ngIf="!transistPass">
+                <a class="product-img-prev" alt="concert_report" href="{{urlService.truckDocsUrl(transit_pass_url)}}" target="_blank" *ngIf="transistPass">
+                  {{transit_pass_url}}
+                </a>
+                <span class="ml-3 pointer" *ngIf="transistPass" (click)="transistPass = !transistPass">change file</span>
+                <i *ngIf="truckForm.controls.transit_pass.errors && truckForm.controls.transit_pass.errors.required"
+                class="erro-red">Transist pass required</i>
+              </div>
+            </div>
+          </div>
+
+          <div class="row align-items-center py-2">
+            <div class="col-md-5 mb-4"><span class="">Transist Pass Number (optional)</span></div>
+            <div class="col-md-7">
+              <div class="input-wrap">
+                <input type="text" formControlName="transit_pass_number" class="text-uppercase">
+                <!-- <i *ngIf="truckForm.controls.transit_pass_number.errors && truckForm.controls.transit_pass_number.errors.required && truckForm.controls.transit_pass_number.touched"
+                class="erro-red">Transist pass number required</i> -->
+              </div>
+            </div>
+          </div>
+
+          <div class="row align-items-center py-2">
+            <div class="col-md-5 mb-4"><span class="">Other Documents (optional)</span></div>
+            <div class="col-md-7">
+              <div class="input-wrap">
+                <input type="file" (change)="fileBrowseHandler2($event)" *ngIf="!otherDocs">
+                <a class="product-img-prev" alt="concert_report" href="{{urlService.truckDocsUrl(other_docs_url)}}" target="_blank" *ngIf="otherDocs">
+                  {{other_docs_url}}
+                </a>
+                <span class="ml-3 pointer" *ngIf="otherDocs" (click)="otherDocs = !otherDocs">change file</span>
+                <!-- <i *ngIf="truckForm.controls.transporter.errors && truckForm.controls.transporter.errors.required && truckForm.controls.transporter.touched"
+                class="erro-red">Transporter required</i> -->
+              </div>
+            </div>
+          </div>
+
+          <div class="row align-items-center py-2">
+            <div class="col-md-5 mb-4"><span class="">Remark (optional)</span></div>
+            <div class="col-md-7">
+              <div class="input-wrap">
+                <input type="text" formControlName="remark" class="text-uppercase">
+                <!-- <i *ngIf="truckForm.controls.transporter.errors && truckForm.controls.transporter.errors.required && truckForm.controls.transporter.touched"
+                class="erro-red">Transporter required</i> -->
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary rounded-0" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="addTruckDetails()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="generateCreditNoteModal" tabindex="-1" role="dialog" aria-labelledby="filter" aria-hidden="true">
+  <div class="modal-dialog modal-lg float-right m-0 h-100 w-50" role="document">
+    <div class="modal-content h-100 w-100" style="overflow-y: auto;">
+      <div class="modal-header justify-content-start sticky-top bg-white">
+        <button type="button" class="close ml-0 mr-1" data-dismiss="modal" aria-label="Close" (click)="onCreditFormClose()" id="modal-close-btn" >
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h5 class="modal-title" id="consignmentSidebarTitle">Create {{creditNoteForm?.value?.type === 1 ? 'Credit' : 'Debit'}} Note</h5>
+        <!-- <button type="button" class="btn btn-primary ml-auto" (click)="addTrucks()">+TRUCK</button> -->
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="creditNoteForm" *ngIf="creditNoteForm">
+
+          <div class="row align-items-center py-2">
+            <div class="col-md-3"><span class="">Tonnage *</span></div>
+            <div class="col-md-4">
+              <div class="input-wrap m-0">
+                <input type="text" formControlName="tonnage">
+                <i *ngIf="creditNoteForm.controls.tonnage.invalid && creditNoteForm.controls.tonnage.touched"
+                class="erro-red">Tonnage required</i>
+              </div>
+            </div>
+          </div>
+
+          <div class="row align-items-center py-2">
+            <div class="col-md-3 mb-4"><span class="">Delivary Challan *</span></div>
+            <div class="col-md-4">
+              <div class="input-wrap">
+                <input type="file" (change)="fileBrowseHandlerCreditNote($event)">
+                <i *ngIf="creditNoteForm.controls.delivery_challan.invalid && creditNoteForm.controls.delivery_challan.touched"
+                class="erro-red">Delivery challan required</i>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="row align-items-center py-2">
+            <div class="col-md-3 mb-4"><span class="">Reason *</span></div>
+            <div class="col-md-4">
+              <div class="input-wrap">
+                <ng-select [items]="reasonType" bindLabel="name" bindValue="value" placeholder="Select"
+                  dropdownPosition="bottom" [multiple]="false" formControlName="reason_type" [clearable]="false" (change)="onReasonTypeChange()">
+                </ng-select>
+                <i *ngIf="creditNoteForm.controls.reason_type.invalid && creditNoteForm.controls.reason_type.touched"
+                class="erro-red">Reason required</i>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="row align-items-center py-2" *ngIf="creditNoteForm?.value?.reason_type == 2">
+            <div class="col-md-3 mb-4"><span class="">Other Reason *</span></div>
+            <div class="col-md-4">
+              <div class="input-wrap">
+                <input type="text" formControlName="remark">
+                <i *ngIf="creditNoteForm.controls.remark.invalid && creditNoteForm.controls.remark.touched"
+                class="erro-red">Other reason required</i>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary rounded-0" data-dismiss="modal" (click)="onCreditFormClose()">Close</button>
+        <button type="button" class="btn btn-primary" (click)="onCreditNoteFormSubmit()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+

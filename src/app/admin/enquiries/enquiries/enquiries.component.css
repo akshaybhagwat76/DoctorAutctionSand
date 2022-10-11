@@ -1,0 +1,72 @@
+/* filter header */
+.filter-header {
+    background-color: #f9f9f9;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 5px 15px;
+  }
+  
+  .filter-header a {
+    display: inline-flex;
+  }
+  
+  .filter-header a img {
+    max-width: 40px;
+  }
+
+/* list table */
+.list-table thead tr th {
+    font-size: 0.875rem;
+    font-size: 700;
+    border: 0;
+    background-color: #f9f9f9;
+  }
+  
+  .list-table tbody tr td {
+    font-size: 0.875rem;
+    font-weight: 400;
+    vertical-align: middle;
+    padding: 0.75em;
+    background-color: white;
+    transition: background-color 0.3s linear;
+    cursor: pointer;
+  }
+  
+  .list-table tbody tr:hover td {
+    background-color: #f4fbff;
+  }
+  
+  .list-table thead tr th:first-child,
+  .list-table tbody tr td:first-child {
+    padding-left: 1.5em;
+  }
+  
+  .list-table thead tr th:last-child,
+  .list-table tbody tr td:last-child {
+    padding-right: 1.5em;
+  }
+  
+  .list-table tbody tr:first-child td {
+    border-top: 0;
+  }
+  
+  .list-table .cell-company {
+    font-weight: 700;
+    color: var(--primary-bg-color);
+  }
+  
+  .list-table .cell-status span {
+    background-color: #f2f2f2;
+    display: inline-flex;
+    border-radius: 16px;
+    padding: 6px 10px;
+    font-weight: 700;
+    color: var(--primary-bg-color);
+    font-size: 0.75rem;
+  }
+
+  #addNotesModal .modal-dialog {
+    width: 70% !important;
+    min-width: 70% !important;
+  }

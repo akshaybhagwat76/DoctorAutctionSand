@@ -1,0 +1,129 @@
+.main-wrap {
+  position: relative;
+}
+
+/* Breadcrumb */
+.bcrumb {
+  color: #989898;
+  font-size: 10px;
+  margin-left: -4px;
+  background-color: #f2f2f2;
+  padding: 0 0 14px 0px;
+  margin-left: -15px;
+  margin-right: -15px;
+}
+.bcrumb > a {
+  text-decoration: none;
+  color: #989898;
+  margin: 0 4px;
+  cursor: pointer;
+}
+.bcrumb > a:hover:not(:last-child) {
+  color: #0988ce;
+}
+.regdoc{
+  margin-right: 10px;
+}
+/* Loading... */
+.loading-txt {
+  margin: 200px 0px;
+  text-align: center;
+  font-size: 20px;
+}
+
+/* Head Save btn */
+.content-wrap {
+  width: 100%;
+  background-color: #ffffff;
+  padding-bottom: 25px;
+}
+
+.content-wrap .top-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  background-color: #f9f9f9;
+  padding: 10px;
+  background-color: #f9f9f9;
+  padding: 10px 80px;
+  position: sticky;
+  top: -8px;
+  z-index: 999;
+}
+.content-wrap .top-head > a {
+  text-decoration: none;
+  color: #000;
+  cursor: pointer;
+}
+.content-wrap .top-head > a:before {
+  content: "\279E";
+  position: absolute;
+  left: 50px;
+  transform: rotate(180deg);
+  font-size: 1.125rem;
+  color: #0988ce;
+}
+.content-wrap .top-head button {
+  font-weight: 400 !important;
+  padding: 0.25rem 1.5rem !important;
+}
+.content-wrap .top-head button.spl-btn {
+  background-color: #0988ce;
+  color: #fff;
+}
+
+/* list table */
+.list-table thead tr th {
+  font-size: 0.875rem;
+  font-size: 700;
+  border: 0;
+  background-color: #f9f9f9;
+}
+
+.list-table tbody tr td {
+  font-size: 0.875rem;
+  font-weight: 400;
+  vertical-align: middle;
+  padding: 0.75em;
+  background-color: white;
+  transition: background-color 0.3s linear;
+  cursor: pointer;
+}
+
+.list-table tbody tr:hover td {
+  background-color: #f4fbff;
+}
+
+.list-table thead tr th:first-child,
+.list-table tbody tr td:first-child {
+  padding-left: 1.5em;
+}
+
+.list-table thead tr th:last-child,
+.list-table tbody tr td:last-child {
+  padding-right: 1.5em;
+}
+
+.list-table tbody tr:first-child td {
+  border-top: 0;
+}
+
+.list-table .cell-company {
+  font-weight: 700;
+  color: var(--primary-bg-color);
+}
+
+.list-table .cell-status span {
+  background-color: #f2f2f2;
+  display: inline-flex;
+  border-radius: 16px;
+  padding: 6px 10px;
+  font-weight: 700;
+  color: var(--primary-bg-color);
+  font-size: 0.75rem;
+}
+
+.erro-red{
+  color: red;
+}

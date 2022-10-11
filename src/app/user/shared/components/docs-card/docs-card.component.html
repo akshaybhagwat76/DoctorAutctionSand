@@ -1,0 +1,47 @@
+<div class="accordion" id="{{docData?.doc_id}}Parent">
+  <div class="card docs-card">
+    <div class="card-header py-0 border-bottom-0 bg-white" id="headingOne">
+      <!-- <h2 class="mb-0"> -->
+        <a class="text-primary w-100 d-flex justify-content-between py-2 border-bottom" type="button" data-toggle="collapse" [attr.data-target]="'#' + docData?.doc_id" aria-expanded="true">
+          <div>
+            {{docData?.doc_name}} <img *ngIf="docData?.doc_url" src="assets/img/order_view.svg" alt="" (click)="onViewPdf($event)">
+          </div>
+          <div *ngIf="docData?.doc_url">
+            <img src="assets/img/checkmark-circle.svg" alt="">
+          </div>
+          <div *ngIf="!docData?.doc_url && docData?.doc_id=='purchase-order'">
+            <button class="btn btn-primary btn-sm" (click)="onUploadPo($event)">upload purchase order</button>
+          </div>
+        </a>
+      <!-- </h2> -->
+    </div>
+
+    <div id="{{docData?.doc_id}}" class="collapse show" aria-labelledby="headingOne">
+      <div class="card-body">
+        <div class="d-flex justify-content-between pb-1" *ngIf="docData?.doc_number">
+          <span class="text-muted">No</span>
+          <span>{{docData?.doc_number}}</span>
+        </div>
+        <div class="d-flex justify-content-between" *ngIf="docData?.doc_date">
+          <span class="text-muted">Date</span>
+          <span>{{docData?.doc_date ? (docData?.doc_date | date: 'dd/MM/YYYY') : 'N/A'}}</span>
+        </div>
+        <div class="d-flex justify-content-between pb-1" *ngIf="docData?.order_value">
+          <span class="text-muted">Order Value</span>
+          <span>{{docData?.order_value | currency: 'INR': 'symbol':'1.0-0'}}</span>
+        </div>
+        <div class="d-flex justify-content-between" *ngIf="docData?.invoice_amount">
+          <span class="text-muted">Invoice Amount</span>
+          <span>{{docData?.invoice_amount | currency: 'INR': 'symbol':'1.0-0'}}</span>
+        </div><div class="d-flex justify-content-between pb-1" *ngIf="docData?.received_amount">
+          <span class="text-muted">Received Amount</span>
+          <span>{{docData?.received_amount | currency: 'INR': 'symbol':'1.0-0'}}</span>
+        </div>
+        <div class="d-flex justify-content-between" *ngIf="docData?.due_amount">
+          <span class="text-muted">Due Amount</span>
+          <span>{{docData?.due_amount | currency: 'INR': 'symbol':'1.0-0'}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

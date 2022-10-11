@@ -1,0 +1,470 @@
+<app-modal-confirm modalId="editAuctionConfirmation" [mdata]="modalData" (confirm)="editConfirmResponse($event)"></app-modal-confirm>
+<app-modal-confirm modalId="addTimeModal" [mdata]="modalData" (confirm)="editConfirmResponse($event)"></app-modal-confirm>
+
+<div class="main-wrap">
+
+  <div *ngIf="udLoading" class="loading-txt">Loading...</div>
+
+
+  <div *ngIf="!udLoading" class="content-wrap">
+
+      <div class="top-head">
+          <a (click)="back2List()">Auction Details</a>
+
+          <div>
+            <!-- <button class="btn btn-white" (click)="showExtendPopUp()"><span *ngIf="selectedData.id"
+              class="mr-2"></span><img src="assets/img/Add_timer_blue.png" /></button> -->
+
+            <button class="btn btn-sm btn-outline-primary"
+                [ngClass]="{'d-none': isEdit}" (click)="onFillDetailsClick($event)">Edit</button>
+            <button class="btn btn-sm btn-outline-primary"
+            [ngClass]="{'d-none': !isEdit}" (click)="handleFormSubmit()">Save</button>
+          </div>
+      </div>
+
+      <!-- <div class="row">
+        <div class="col-md-12 text-right">
+          <span>Auction No. : {{auctionDetails?.auction_number}}</span>
+        </div>
+      </div> -->
+
+      <div class="form-group-wrap" *ngIf="!isEdit">
+          <div class="fg-head">
+              Auction Details (# {{auctionDetails?.auction_number}})
+          </div>
+          <div class="fga-data">
+              <span>Location</span>
+              <span>{{ auctionDetails?.location_name }}</span>
+          </div>
+          <div class="fga-data">
+              <span>Time slot</span>
+              <span>{{ auctionDetails?.from_datetime | date: "dd/MM/YYYY hh:mm aa" }} - {{ auctionDetails?.to_datetime | date: "dd/MM/YYYY hh:mm aa" }}</span>
+          </div>
+
+          <div class="fga-data" *ngIf="auctionDetails?.is_private">
+            <span>Participants</span>
+            <span>
+              <span *ngFor="let item of auctionDetails?.participants; let i = index;">
+                {{item?.name}}<span *ngIf="i+1 !== auctionDetails?.participants?.length">,</span>
+              </span>
+            </span>
+          </div>
+
+          <div class="fg-head">
+            Product Details
+          </div>
+          <div class="fga-data">
+              <span>Seller name</span>
+              <span>{{ auctionDetails?.seller_name }}</span>
+          </div>
+          <div class="fga-data">
+              <span>Serviceable pincodes</span>
+              <span>
+                <span *ngFor="let item of auctionDetails?.serviceable_pincodes; let i = index;">
+                  {{item?.pincode}}<span *ngIf="i+1 !== auctionDetails?.serviceable_pincodes?.length">,</span>
+                </span>
+              </span>
+          </div>
+          <div class="fga-data">
+              <span>Product name</span>
+              <span>{{ auctionDetails?.name }}</span>
+          </div>
+          <div class="fga-data">
+              <span>Grade</span>
+              <span>{{ auctionDetails?.grade }}</span>
+          </div>
+          <div class="fga-data">
+              <span>Truck size</span>
+              <span>{{ auctionDetails?.truck_size }} ton</span>
+          </div>
+          <div class="fga-data">
+              <span>Lot size</span>
+              <span>{{ auctionDetails?.lot_size }}</span>
+          </div>
+          <div class="fg-head">
+            Pricing Details
+          </div>
+          <div class="fga-data">
+              <span>Start bid price/ton</span>
+              <span>{{ auctionDetails?.start_bid }}</span>
+          </div>
+          <div class="fga-data">
+              <span>Total price</span>
+              <span>{{ auctionDetails?.total_price }}</span>
+          </div>
+          <div class="fga-data">
+              <span>Total price + GST</span>
+              <span>{{ auctionDetails?.total_price_gst }}</span>
+          </div>
+          <div class="fga-data">
+            <span>Security deposit type</span>
+            <span>{{ auctionDetails?.security_deposit_type =='amt' ? 'FLAT AMOUNT':'PERCENTAGE' }}</span>
+          </div>
+          <div class="fga-data">
+            <span>Security deposit</span>
+            <span>{{ auctionDetails?.security_deposit }}</span>
+          </div>
+          <div class="fga-data">
+            <span>Minimum bid limit</span>
+            <span>{{ auctionDetails?.min_limit }} %</span>
+          </div>
+          <div class="fga-data">
+            <span>Maximum bid limit</span>
+            <span>{{ auctionDetails?.max_limit }} %</span>
+          </div>
+          <div class="fga-data">
+            <span>Source of sand</span>
+            <span>{{ auctionDetails?.source_of_sand }}</span>
+          </div>
+          <div class="fga-data">
+            <span>Silt(%)</span>
+            <span>{{ auctionDetails?.silt }} %</span>
+          </div>
+          <div class="fga-data">
+            <span>Quantity variance(%)</span>
+            <span>{{ auctionDetails?.quantity_variation }} %</span>
+          </div>
+          <div class="fga-data">
+            <span>Payment terms</span>
+            <span>{{ auctionDetails?.payment_days }} days</span>
+          </div>
+          <div class="fga-data">
+            <span>Delivery terms</span>
+            <span>{{ auctionDetails?.delivery_days }} days</span>
+          </div>
+
+      </div>
+
+      <div class="form-group-wrap" *ngIf="isEdit && auctionForm" [formGroup]="auctionForm">
+        <div class="fg-head">
+            Update Auction Details ({{auctionDetails?.auction_number}})
+        </div>
+        <div class="fga-data">
+            <span>Location</span>
+            <span>
+              <ng-select [items]="locationList" bindLabel="location_name" bindValue="id"
+                placeholder="Select" dropdownPosition="bottom" formControlName="location_id" class="w-50 " [clearable]="false">
+              </ng-select>
+            </span>
+        </div>
+        <div class="fga-data">
+          <span>Private</span>
+          <div class="">
+            <input type="checkbox" id="isPrivate" formControlName="is_private" #isPrivate>
+            <span class="px-3" style="color: #0988ce; cursor: pointer;" data-toggle="modal" data-target="#sellerBuyerModal" *ngIf="isPrivate.checked">+ Add Participant</span>
+          </div>
+        </div>
+        <div class="fga-data" *ngIf="auctionForm?.value?.is_private">
+          <span>Participants</span>
+          <span>
+            <span *ngFor="let item of auctionDetails?.participants; let i = index;">
+              {{item?.name}}<span *ngIf="i+1 !== auctionDetails?.participants?.length">,</span>
+            </span>
+          </span>
+        </div>
+        <div class="fga-data">
+          <span>Hide auction number</span>
+          <div class="">
+            <input type="checkbox" id="hideAu" formControlName="hide_auction_number">
+          </div>
+        </div>
+        <div class="fga-data">
+            <span>Time slot</span>
+            <div class="d-flex">
+              <div class="input-wrap m-0 w-50 mr-2">
+                <!-- <input type="datetime-local" placeholder=" "
+                formControlName="from_datetime">
+                <label class="placeholder">From *</label> -->
+                <input [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1" placeholder="From" (dateTimeChange)="onFromtimeChange()" formControlName="from_datetime">
+                <owl-date-time #dt1></owl-date-time>
+              </div>
+              <!-- <div class="input-wrap m-0 w-50">
+                <input type="datetime-local" placeholder=" "
+                formControlName="to_datetime">
+                <label class="placeholder">To *</label>
+              </div> -->
+            </div>
+        </div>
+        <div class="fga-data">
+          <span>Duration *</span>
+          <div class="d-flex">
+            <div class="input-wrap m-0 w-50 mr-2">
+              <ng-select [items]="[
+                {
+                  value: 15, name: '15 Min'
+                },
+                {
+                  value: 30, name: '30 Min'
+                },
+                {
+                  value: 60, name: '60 Min'
+                },
+                {
+                  value: 90, name: '90 Min'
+                },
+                {
+                  value: 120, name: '120 Min'
+                }
+              ]" bindLabel="name" bindValue="value" (change)="onTotimeChange()"
+                  placeholder="Select" dropdownPosition="bottom" [multiple]="false" formControlName="duration"
+                  [disabled]="auctionForm.value.from_datetime ? false : true" [clearable]="false">
+              </ng-select>
+            </div>
+            <div class="input-wrap m-0 w-50">
+              <input type="text" placeholder=" "
+              formControlName="to_datetime" readonly>
+              <label class="placeholder">To *</label>
+            </div>
+          </div>
+        </div>
+        <div class="fg-head">
+          Product Details
+        </div>
+        <div class="fga-data">
+            <span>Seller name</span>
+            <div class="input-wrap mb-0">
+              <input type="text" [formControl]="sellerName" data-toggle="modal" data-target="#sellerModal" placeholder="Select" class="w-50">
+            </div>
+        </div>
+        <div class="fga-data">
+            <span>Serviceable pincodes</span>
+            <div class="input-wrap mb-0">
+              <ng-select [items]="sellerPincodesList" bindLabel="pincode" bindValue="id" (change)="onPincodeSelected()"
+                placeholder="Select" dropdownPosition="bottom" [multiple]="true"  formControlName="serviceable_pins" class="">
+              </ng-select>
+            </div>
+        </div>
+        <div class="fga-data">
+            <span>Product name</span>
+            <div class="input-wrap mb-0">
+              <!-- <ng-select [items]="productList" bindLabel="name" bindValue="id" class="w-50"
+                placeholder="Select" dropdownPosition="bottom" (change)="onProductChange($event)" formControlName="auction_product_id" [clearable]="false">
+              </ng-select> -->
+              <input type="text" formControlName="product_name" readonly class="w-50">
+            </div>
+        </div>
+        <div class="fga-data">
+            <span>Grade</span>
+            <div class="input-wrap mb-0">
+              <!-- <ng-select [items]="gradeList" bindLabel="grade" bindValue="id" class="w-50"
+                placeholder="Select" dropdownPosition="bottom" formControlName="grade_id" [clearable]="false">
+              </ng-select> -->
+              <input type="text" formControlName="grade" readonly class="w-50">
+            </div>
+        </div>
+        <div class="fga-data">
+            <span>Truck size</span>
+            <div class="input-wrap mb-0">
+              <ng-select [items]="truckSizeList" bindLabel="lot_size" bindValue="id" class="w-50"
+                  placeholder="Select" dropdownPosition="bottom" formControlName="truck_size_id" [clearable]="false">
+              </ng-select>
+            </div>
+        </div>
+        <div class="fga-data">
+            <span>Lot size</span>
+            <div class="input-wrap mb-0">
+              <input type="text" formControlName="lot_size" (input)="calcPrice()" class="w-50">
+            </div>
+            <i *ngIf="auctionForm.controls.lot_size.invalid && auctionForm.controls.lot_size.touched && auctionForm.controls.lot_size.errors.pattern"
+            class="erro-red">Please enter valid value</i>
+            <!-- <i *ngIf="+auctionForm.value.lot_size > +auctionForm.value.available_inventory"
+            class="erro-red">Lot size should be less than available inventory</i> -->
+        </div>
+        <div class="fg-head">
+          Pricing Details
+        </div>
+        <div class="fga-data">
+            <span>Start bid price/ton</span>
+            <div class="input-wrap m-0">
+              <input type="text" formControlName="start_bid" (input)="calcPrice()" class="w-50">
+            </div>
+            <i *ngIf="auctionForm.controls.start_bid.invalid && auctionForm.controls.start_bid.touched && auctionForm.controls.start_bid.errors.pattern"
+              class="erro-red">Please enter only integer value</i>
+        </div>
+        <div class="fga-data">
+            <span>Total price</span>
+            <div class="input-wrap m-0">
+              <input type="text" formControlName="total_price" [attr.disabled]= "true" class="w-50">
+            </div>
+        </div>
+        <div class="fga-data">
+            <span>Total price + GST</span>
+            <div class="input-wrap m-0">
+              <input type="text" formControlName="total_price_with_gst" [attr.disabled]= "true" class="w-50">
+            </div>
+        </div>
+        <div class="fga-data">
+          <span>Security deposit type</span>
+          <div class="input-wrap m-0">
+            <ng-select [items]="security_deposit_type" bindLabel="name" bindValue="value" (change)="calcSecurityDeposite()"
+                placeholder="Select" dropdownPosition="bottom" formControlName="security_deposit_type" class="w-50"
+                [readonly]="true" [clearable]="false" class="disabled">
+            </ng-select>
+          </div>
+        </div>
+        <div class="fga-data">
+          <span>Security deposit</span>
+          <div class="input-wrap m-0">
+            <input type="text" formControlName="security_deposit" (input)="calcSecurityDeposite()" class="w-50">
+            <i *ngIf="auctionForm.controls.security_deposit.invalid && auctionForm.controls.security_deposit.touched && auctionForm.controls.security_deposit.errors.pattern"
+            class="erro-red">Please enter only numeric value</i>
+          </div>
+        </div>
+        <div class="fga-data">
+          <span>Minimum bid limit %</span>
+          <div class="input-wrap m-0">
+            <input type="text" formControlName="min_limit" class="w-50">
+          </div>
+          <i *ngIf="auctionForm.controls.min_limit.invalid && auctionForm.controls.min_limit.touched && auctionForm.controls.min_limit.errors.pattern"
+          class="erro-red">Please enter only integer value</i>
+        </div>
+        <div class="fga-data">
+          <span>Maximum bid limit %</span>
+          <div class="input-wrap m-0">
+            <input type="text" formControlName="max_limit" class="w-50">
+          </div>
+          <i *ngIf="auctionForm.controls.max_limit.invalid && auctionForm.controls.max_limit.touched && auctionForm.controls.max_limit.errors.pattern"
+          class="erro-red">Please enter only integer value</i>
+        </div>
+        <div class="fga-data">
+          <span>Source of sand</span>
+          <div class="input-wrap m-0">
+            <input type="text" formControlName="source_of_sand" class="w-50">
+          </div>
+        </div>
+        <div class="fga-data">
+          <span>Silt (%)</span>
+          <div class="input-wrap m-0">
+            <input type="text" formControlName="silt" class="w-50">
+          </div>
+        </div>
+        <div class="fga-data">
+          <span>Quantity variance (%)</span>
+          <div class="input-wrap m-0">
+            <input type="text" formControlName="quantity_variation" class="w-50">
+          </div>
+        </div>
+        <div class="fga-data">
+          <span>Payment terms</span>
+          <div class="input-wrap m-0">
+            <ng-select [items]="paymentTermList" bindLabel="type_days" bindValue="id" class="w-50"
+                placeholder="Select" dropdownPosition="bottom" formControlName="payment_term_id" [clearable]="false">
+            </ng-select>
+          </div>
+        </div>
+        <div class="fga-data">
+          <span>Delivery terms</span>
+          <div class="input-wrap m-0">
+            <ng-select [items]="deliveryTermList" bindLabel="type_days" bindValue="id" class="w-50"
+                placeholder="Select" dropdownPosition="bottom" formControlName="delivery_term_id" [clearable]="false">
+            </ng-select>
+          </div>
+        </div>
+
+      </div>
+
+  </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade select-buyer-modal" id="sellerBuyerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Private Auction</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <div class="hisd-autocomplete">
+          <input type="text" class="w-100" [(ngModel)]='autocompleteInput' (keyup)='onAutocompleteKeypress($event);'>
+          <span class="flaticon-close disable-selection" style="cursor: pointer"></span>
+          <div class="autocomplete-list" [ngClass]="{'active': isAutocompleteShown}">
+            <ul class="px-2">
+              <li class="row" *ngFor="let item of autocompleteData; let i = index"
+               (hover)="currentValue = i" (click)="onAddParticipants(item)"><span>{{item.name}}</span></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-12 table-responsive p-0">
+          <table class="list-table table" *ngIf="selectedBuyers?.length !== 0">
+              <thead>
+                  <tr>
+                      <th>Company</th>
+                      <th>Action</th>
+                  </tr>
+              </thead>
+
+              <tbody>
+                  <tr *ngFor="let item of selectedBuyers; let i = index">
+                      <td class="cell-company">{{item.name}}</td>
+                      <td class="cell-status">
+                          <span (click)="onRemoveParticipant(i)">Remove</span>
+                      </td>
+                  </tr>
+              </tbody>
+          </table>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <!-- <button type="button" class="btn btn-primary" data-dismiss="modal">Save Changes</button> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade select-seller-modal" id="sellerModal" tabindex="-1" role="dialog" aria-labelledby="sellerModal" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Select Seller</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <div class="input-group">
+          <input type="text" class=" w-100" (keyup)='filterAutocompleteForSeller($event);'>
+        </div>
+        <div class="col-12 table-responsive p-0">
+          <table class="list-table table">
+              <thead>
+                  <tr>
+                      <th>Action</th>
+                      <th>Company</th>
+                      <th>Sand Type</th>
+                      <th>Grade</th>
+                      <th>Available tonnage</th>
+                      <th>This month tonnage</th>
+                  </tr>
+              </thead>
+
+              <tbody *ngIf="sellerListTemp?.length !== 0">
+                  <tr *ngFor="let item of sellerListTemp; let i = index">
+                        <td class="cell-status">
+                          <input type="radio" name="seller_id" value="selectedSeller?.id" [checked]="item.product_id == auctionDetails?.auction_product_id" (change)="onSellerRadioChange(item)">
+                        </td>
+                      <td class="cell-company">{{item.name}}</td>
+                      <td class="cell-company">{{item.product_name}}</td>
+                      <td class="cell-company">{{item.grade}}</td>
+                      <td class="cell-company">{{item.total}}</td>
+                      <td class="cell-company">{{item.tonnage}}</td>
+                  </tr>
+              </tbody>
+          </table>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="onSellerChange($event)">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>

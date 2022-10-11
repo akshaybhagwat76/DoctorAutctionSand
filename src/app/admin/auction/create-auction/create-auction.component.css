@@ -1,0 +1,134 @@
+.autocomplete-list.active,
+.hisd-autocomplete input:active+.autocomplete-list {
+    display: block;
+}
+
+.hisd-autocomplete span.flaticon-close {
+    position: absolute;
+    top: 7px;
+    right: 7px;
+}
+
+.hisd-autocomplete input {
+    box-shadow: none !important;
+    border: 0 !important;
+    /* width: calc(100% - 45px) !important; */
+}
+
+.hisd-autocomplete {
+    position: relative;
+    border-top: 1px solid #dadbe1 !important;
+    border-bottom: 1px solid #dadbe1 !important;
+    border-left: 1px solid #dadbe1 !important;
+    border-right: 1px solid #dadbe1 !important;
+    /* overflow: hidden; */
+    background: white;
+}
+
+.autocomplete-list {
+    position: absolute;
+    left: 0;
+    right: 0;
+    background: white;
+    display: none;
+    z-index: 5;
+    box-shadow: 0px 1px 2px 1px #e2e9ff;
+
+}
+
+.autocomplete-list ul {
+    height: auto;
+    max-height: 250px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    margin: 0;
+    list-style-type: none;
+}
+
+.autocomplete-list li {
+    padding: 1rem;
+}
+
+.autocomplete-list li:hover,
+.autocomplete-list li.active {
+    background-color: #039be5;
+    color: white;
+    cursor: pointer;
+}
+
+
+/* filter header */
+.filter-header {
+  background-color: #f9f9f9;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 5px 15px;
+}
+
+.filter-header a {
+  display: inline-flex;
+}
+
+.filter-header a img {
+  max-width: 40px;
+}
+
+/* list table */
+.list-table thead tr th {
+  font-size: 0.875rem;
+  font-size: 700;
+  border: 0;
+  background-color: #f9f9f9;
+}
+
+.list-table tbody tr td {
+  font-size: 0.875rem;
+  font-weight: 400;
+  vertical-align: middle;
+  padding: 0.75em;
+  background-color: white;
+  transition: background-color 0.3s linear;
+  cursor: pointer;
+}
+
+.list-table tbody tr:hover td {
+  background-color: #f4fbff;
+}
+
+.list-table thead tr th:first-child,
+.list-table tbody tr td:first-child {
+  padding-left: 1.5em;
+}
+
+.list-table thead tr th:last-child,
+.list-table tbody tr td:last-child {
+  padding-right: 1.5em;
+}
+
+.list-table tbody tr:first-child td {
+  border-top: 0;
+}
+
+.list-table .cell-company {
+  font-weight: 700;
+  color: var(--primary-bg-color);
+}
+
+.list-table .cell-status span {
+  background-color: #f2f2f2;
+  display: inline-flex;
+  border-radius: 16px;
+  padding: 6px 10px;
+  font-weight: 700;
+  color: var(--primary-bg-color);
+  font-size: 0.75rem;
+}
+
+.erro-red{
+  color: red;
+}
+
+/* .sticky-top {
+  z-index: 999 !important;
+} */

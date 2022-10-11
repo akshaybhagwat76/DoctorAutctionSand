@@ -1,0 +1,125 @@
+<app-modal-confirm (confirm)=onConfirmRemove($event) [mdata]="modalRemoveData" modalId="modalRemoveConfirm">
+</app-modal-confirm>
+
+<div class="container py-4">
+    <div class="row" *ngIf="cartData; else elseNotCartData">
+        <div class="col-lg-8">
+            <div *ngFor="let item of productDetailList">
+                <app-auction-hcard [auctionDetail]="item" (removeItem)="onRemoveBtnClick($event)"></app-auction-hcard>
+            </div>
+        </div>
+        <div class="col-xs-12 col-lg-4">
+
+
+            <table class="bid-details border mt-0">
+                <tr>
+                  <td style="width: 60%;">Payment Option </td>
+                  <td>{{cartData?.payment_option=='1' ? 'Cash' : 'Credit'}}</td>
+                </tr>
+                <tr>
+                    <td style="width: 60%;">Delivery Option </td>
+                    <td>{{cartData?.delivery_option=='1' ? 'For' : 'Ex-works'}}</td>
+                </tr>
+                <tr>
+                    <td style="width: 60%;">Total Tonnage </td>
+                    <td>{{cartData?.total_tonnage}}</td>
+                </tr>
+                <tr>
+                    <td style="width: 60%;">Sub Total</td>
+                    <td>{{cartData?.subtotal_amount | currency:"INR"}}</td>
+                </tr>
+                <tr>
+                    <td style="width: 60%;">Gst</td>
+                    <td>{{cartData?.tax_amount | currency:"INR"}}</td>
+                </tr>
+                <tr class="font-weight-bold">
+                    <td style="width: 60%;">Order Value</td>
+                    <td>{{cartData?.grandtotal_amount | currency:"INR"}}</td>
+                </tr>
+            </table>
+            <!-- <div class="check-agree px-2">
+                <input type="checkbox" name="" id="" formControlName="isTermChecked">
+                <span>I agree to
+                  <a (click)="goToTab('tab-tnc')">Terms & Conditions</a>
+                </span>
+            </div> -->
+            <table class="border border-primary my-2">
+                <tr>
+                    <td class="p-2">
+                        {{cartData?.shipping_address?.line_1 ? cartData?.shipping_address?.line_1 + ', ' : ''}}
+                        {{cartData?.shipping_address?.line_2 ? cartData?.shipping_address?.line_2 + ', ' : ''}}
+                        {{cartData?.shipping_address?.landmark ? cartData?.shipping_address?.landmark + ', ' : ''}}
+                        {{cartData?.shipping_address?.city?.city_name ? cartData?.shipping_address?.city?.city_name + ', ' : ''}}
+                        {{cartData?.shipping_address?.state?.state_name ? cartData?.shipping_address?.state?.state_name + ', ' : ''}}
+                        {{cartData?.shipping_address?.pincode ? cartData?.shipping_address?.pincode + ', ' : ''}}
+                    </td>
+                </tr>
+            </table>
+            <button class="btn btn-primary w-100" data-toggle="modal" data-dismiss="modal" data-target="#confirmOrderModal">PLACE ORDER</button>
+        </div>
+    </div>
+    <ng-template #elseNotCartData>
+      <div class="row">
+        <div class="col">
+          <div class="card border-0">
+            <div class="card-body cart">
+                <div class="col-sm-12 empty-cart-cls text-center">
+                  <!-- <img src="https://i.imgur.com/dCdflKN.png" width="130" height="130" class="img-fluid mb-4 mr-3"> -->
+                    <h3><strong>Your Cart is Empty</strong></h3>
+                    <a class="btn btn-primary" [routerLink]="['/user/fixed-fee']">Continue</a>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+</div>
+
+<!-- Modal: 2 Ordering center Form -->
+<div class="modal fade confirmOrderModal" id="confirmOrderModal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <h4 class="OCForm-head">Confirm Order</h4>
+                <div>
+                    <table class="bid-details my-4">
+                        <tr>
+                          <td style="width: 60%;">Payment Option </td>
+                          <td>{{cartData?.payment_option=='1' ? 'Cash' : 'Credit'}}</td>
+                        </tr>
+                        <tr>
+                            <td style="width: 60%;">Delivery Option </td>
+                            <td>{{cartData?.delivery_option=='1' ? 'For' : 'Ex-works'}}</td>
+                        </tr>
+                        <tr>
+                            <td style="width: 60%;">Total Tonnage </td>
+                            <td>{{cartData?.total_tonnage}}</td>
+                        </tr>
+                        <tr>
+                            <td style="width: 60%;">Sub Total</td>
+                            <td>{{cartData?.subtotal_amount | currency:"INR"}}</td>
+                        </tr>
+                        <tr>
+                            <td style="width: 60%;">Gst</td>
+                            <td>{{cartData?.tax_amount | currency:"INR"}}</td>
+                        </tr>
+                        <tr class="font-weight-bold">
+                            <td style="width: 60%;">Order Value</td>
+                            <td>{{cartData?.grandtotal_amount | currency:"INR"}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <a class="btn btn-outline-primary btn-sm w-100" data-dismiss="modal">CANCEL</a>
+                    </div>
+                    <div class="col">
+                        <a class="btn btn-primary btn-sm w-100" href="javascript:void(0)" (click)="confirmPlaceOrder()">CONFIRM ORDER</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

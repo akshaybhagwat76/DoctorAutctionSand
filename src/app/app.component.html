@@ -1,0 +1,13 @@
+<router-outlet></router-outlet>
+<ng-http-loader
+    [backdrop]="true"
+    [backgroundColor]="'#0988CE'"
+    [debounceDelay]="100"
+    [extraDuration]="300"
+    [minDuration]="300"
+    [opacity]="'.6'"
+    [backdropBackgroundColor]="'#000000'"
+    [spinner]="spinkit.skRotatingPlane"
+    [filteredUrlPatterns]="['get-bid']">
+</ng-http-loader>
+<app-toasts aria-live="polite" aria-atomic="true"></app-toasts>

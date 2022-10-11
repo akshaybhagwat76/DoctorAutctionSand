@@ -1,0 +1,91 @@
+.main-bg{
+    background-color: #0988CE;
+}
+.whole-container{
+    font-size: 14px;
+    max-width: 950px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.whole-container .logo{
+    max-width: 180px;
+    height: auto;
+    padding: 30px 0px 20px 0;
+}
+.form-container{
+    background-color: #fff;
+}
+.form-container .top-steps{
+    background-color: #F9F9F9;
+}
+.form-container .top-steps .steps-wrap{
+    max-width: 550px;
+    margin-right: auto;
+    margin-left: auto;
+    padding: 25px 10px;
+    display: flex;
+    justify-content: space-between;
+}
+.form-container .top-steps .steps-wrap span.active{
+    font-weight: bold;
+}
+.form-container .top-steps .steps-wrap span{
+    display: flex;
+    align-items: start;
+    flex-flow: nowrap;
+    margin-right: 10px;
+}
+.form-container .top-steps .steps-wrap img{
+    max-width: 20px;
+    margin-right: 10px;
+}
+
+.rgt-form{
+    max-width: 550px;
+    margin-left: auto;
+    margin-right: auto;
+    min-height: calc(100vh - 250px);
+}
+
+.form-container .form-wrap{
+    padding-top: 30px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.amount > div{
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+}
+.amount > div:first-child{
+    background-color: #F9F9F9;
+}
+.amount > div > span{
+    padding: 10px;
+}
+
+.amount .c-code{
+    font-style: normal;
+    color: #0988ce;
+    display: inline-block;
+    margin: 0 5px;
+}
+.amount .c-remove {
+    font-style: normal;
+    display: inline-block;
+    color: red;
+    margin: 0 3px;
+    cursor: pointer;
+}
+
+/****** Media Query  *****/
+
+/* 1: Mobile */
+@media (max-width: 768px){
+    .whole-container{
+        padding: 10px;
+    }
+}
+
+ 

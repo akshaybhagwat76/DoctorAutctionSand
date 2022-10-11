@@ -1,0 +1,372 @@
+<app-modal-confirm [modalId]="modalId" [mdata]="modalData" (confirm)="onSecurityModalResponse($event)"></app-modal-confirm>
+
+<app-modal-confirm [modalId]="pincodeModalId" [mdata]="pincodeModalData" (confirm)="onModalResponse($event)"></app-modal-confirm>
+<div class="upcoming-wrapper">
+    <!-- breadcrumbs -->
+    <div class="breadcrumbs">
+        <div class="container">
+            <a [routerLink]="['/user/auction/']">Auctions</a>
+            <i> > </i>
+            <a href="javascript:void(0)">Upcoming Auctions</a>
+        </div>
+    </div>
+
+    <!-- Back btn -->
+    <div class="back-btn-wrap d-none">
+        <div class="container">
+            <div class="back-btn">
+                <i class="b-arrow"></i>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Lot Details -->
+    <div class="lot-details">
+        <div class="container">
+
+                <!-- Lot Details -->
+                <div class="auction-tab">
+                    <ul class="nav nav-tabs mb-4">
+                        <li><a class="active" data-toggle="tab" href="#l-details">Lot Details</a></li>
+                        <li><a data-toggle="tab" href="#payment">Delivery & Payment Terms</a></li>
+                        <li><a data-toggle="tab" href="#tnc" id="tab-tnc">Terms & Conditions</a></li>
+                        <div class="auction-id">Auction No. : {{auctionDetails?.auction_number}}</div>
+                    </ul>
+
+                    <div class="row">
+
+                        <div class="col-lg-8 col-xs-12">
+
+                            <div class="tab-content">
+
+                                <!-- Tab: 1 : Lot Details -->
+            
+                                <div id="l-details" class="tab-pane fade in active show">
+                                    <div class="row">
+                                        <div class="col-xs-12 col-lg-12">
+            
+                                            <!-- auction Vertical card -->
+                                            <app-auction-hcard [auctionDetail]="auctionDetails" *ngIf="auctionDetails"></app-auction-hcard>
+            
+                                            <!-- PDF -->
+                                            <div class="sieve-pdf">
+                                                <div class="file-wrap" *ngIf="analysisReport">
+                                                    <img src="assets/img/file-icon.png" alt="file">
+                                                    <a href="{{urlService.productDocumentUrl(analysisReport)}}" target="_blank">Sieve Analysis Report.pdf</a>
+                                                </div>
+                                                <div class="file-wrap" *ngIf="concertReport">
+                                                    <img src="assets/img/file-icon.png" alt="file">
+                                                    <a href="{{urlService.productDocumentUrl(concertReport)}}" target="_blank">Concrete Test Report.pdf</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+            
+                                 <!-- Tab: 2 : Payment terms -->
+                                <div id="payment" class="tab-pane fade">
+                                    <div class="payment-wrap mt-0">
+                                        <!-- <h2 class="head">Delivery and payment terms</h2> -->
+                                        <!-- <div class="theme-cont">Updated December 2020</div> -->
+                                        <div class="pay-cont">
+                                          <h5 class="hl-head mt-0">Delivery Terms<i></i></h5>
+                                          <div [innerHTML]="deliveryText"></div>
+                                          <h5 class="hl-head">Payment Terms<i></i></h5>
+                                          <div [innerHTML]="paymentText"></div>
+                                        </div>
+                                    </div>
+                                </div>
+            
+                                 <!-- Tab: 3 : T&C -->
+                                <div id="tnc" class="tab-pane fade">
+                                    <div class="payment-wrap mt-0">
+                                        <!-- <h2 class="head">Terms & Condition Of Service</h2> -->
+                                        <!-- <div class="theme-cont">Updated December 2020</div> -->
+                                        <div class="pay-cont">
+                                            <h5 class="hl-head mt-0">Terms & Conditions<i></i></h5>
+                                            <div [innerHTML]="tncText"></div>
+            
+                                        </div>
+                                    </div>
+                                </div>
+            
+                                </div>
+                        </div>
+                        <!-- rgt: Time Start/end -->
+                        <div class="col-xs-12 col-lg-4">
+                            <!-- Auction time -->
+                            <div class="auctin-time">
+                                <div class="time-head">
+                                    Auction starts in
+                                </div>
+                                <div class="time-body">
+                                    <div class="clock-icon">
+                                        <img src="assets/img/timer-clock.png" alt="clock">
+                                    </div>
+                                    <!----   Class for red color = hms-red   ---->
+                                    <div class="hms">
+                                        <div>
+                                            <span id="hour-label-upcoming">00</span>
+                                            <span>HRS</span>
+                                        </div>
+                                        :
+                                        <div>
+                                            <span id="min-label-upcoming">00</span>
+                                            <span>MIN</span>
+                                        </div>
+                                        :
+                                        <div>
+                                            <span id="sec-label-upcoming">00</span>
+                                            <span>SEC</span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <!-- locatin -->
+                            <div class="auction-location">
+                                <div class="location">
+                                    <img src="assets/img/location-blue.png" alt="location">
+                                    <a href="javascript:void(0)" class="textPrimary" data-toggle="modal" data-target="#OCModal">{{selectedAddress ? selectedAddress?.city_name + ', - ' + selectedAddress?.pincode: 'Please select delivery address'}}</a>
+                                    <img class="check-pins ml-3" src="assets/img/info.png" alt="pins" title="Check serviceable pincodes" (click)="getServicePincodes()">
+                                </div>
+                                <!-- <p *ngIf="!selectedAddress"></p> -->
+                                <p class="deliverable-msg" *ngIf="isDeliverable == 'true' && selectedAddress">Deliverable to this location</p>
+                                <p class="erro-red" *ngIf="isDeliverable == 'false' && selectedAddress">Not deliverable to this location</p>
+
+                                <div class="check-agree">
+                                    <input type="checkbox" name="" id="" [(ngModel)]="isTermChecked">
+                                    <span>I agree to
+                                        <a (click)="goToTab('tab-tnc')">Terms & Conditions</a>
+                                    </span>
+                                </div>
+                                <input type="submit" class="place-bid-btn" value="REGISTER" (click)="onRegister()">
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+
+        </div>
+    </div>
+
+
+    <!-- Modal: 1 Ordering center -->
+    <div class="modal fade OCModal" id="OCModal">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="ordering-wrap">
+                        <h4>Choose your ordering center</h4>
+                        <p>Select an ordering center to see available auction. </p>
+                        <address *ngFor="let item of addressList" [ngClass]="{'selected': selectedAddress?.id == item?.id}" (click)="onAddressChange(item)">
+                            {{item?.line_1 ? item?.line_1 + ',' : ''}} {{item?.line_2 ? item?.line_2 + ',' : ''}} {{item?.landmark ? item?.landmark + ',' : ''}} {{item?.city_name ? item?.city_name + ',' : ''}} {{item?.state_name ? item?.state_name + ',' : ''}}. Pincode -  {{item?.pincode ? item?.pincode : ''}}
+                        </address>
+                        <!-- <address>
+                            Brigade Gateway, 8th floor, 26/1, Dr. Rajkumar Road, Malleshwaram(W), Maharashtra-560055, Mumbai, India.
+                        </address> -->
+                        <a class="add-oc" data-toggle="modal" data-dismiss="modal" data-target="#OCFormModal">+ Add ordering center</a>
+                        <div class="action-btn">
+                            <a class="cancel-oc" data-dismiss="modal">Cancel</a>
+                            <a class="ok-oc" (click)="onConfirmServiceAddress()">Ok</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: 2 Ordering center Form -->
+    <div class="modal fade OCFormModal" id="OCFormModal">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="ordering-wrap" [formGroup]="addressForm" *ngIf="addressForm">
+                        <h4 class="OCForm-head">Enter ordering center details</h4>
+
+                        <!-- Address -->
+                        <div class="input-wrap">
+                            <input class="rf-bg text-uppercase" type="text" placeholder=" " formControlName="address">
+                            <label class="placeholder">Address *</label>
+                            <i *ngIf="addressForm.get('address').invalid
+                            && addressForm.get('address').touched"
+                            class="erro-red">Please enter Address</i>
+                        </div>
+
+
+                        <!-- Landmark & State -->
+                        <div class="row gutter">
+                            <div class="col-sm-12 col-md-6">
+                                <div class="input-wrap">
+                                    <input class="rf-bg text-uppercase" type="text" placeholder=" " formControlName="landmark">
+                                    <label class="placeholder">Nearest Landmark *</label>
+                                    <i *ngIf="addressForm.get('landmark').invalid
+                                    && addressForm.get('landmark').touched"
+                                    class="erro-red">Please enter Nearest Landmark</i>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12 col-md-6">
+                                <div class="input-wrap">
+                                    <ng-select [items]="stateList" bindLabel="state_name" bindValue="id"
+                                        placeholder="State *" dropdownPosition="bottom" formControlName="state_id"
+                                        [class.errors]="addressForm.get('state_id').invalid && addressForm.get('state_id').touched"
+                                        (change)="getCityList()">
+                                    </ng-select>
+                                    <i *ngIf="addressForm.get('state_id').invalid && addressForm.get('state_id').touched"
+                                    class="erro-red">State required</i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- City & PIN -->
+                        <div class="row gutter">
+                            <div class="col-sm-12 col-md-6">
+                                <div class="input-wrap">
+                                    <ng-select [items]="cityList" bindLabel="city_name" bindValue="id"
+                                        placeholder="City *" dropdownPosition="bottom" formControlName="city_id"
+                                        [class.errors]="addressForm.get('city_id').invalid && addressForm.get('city_id').touched">
+                                    </ng-select>
+                                    <i *ngIf="addressForm.get('city_id').invalid && addressForm.get('city_id').touched"
+                                    class="erro-red">City required</i>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12 col-md-6">
+                                <div class="input-wrap">
+                                    <input class="rf-bg text-uppercase" type="text" placeholder=" " formControlName="pincode"
+                                    maxlength="6"
+                                    pattern="[0-9]{6}">
+                                    <label class="placeholder">Pincode*</label>
+                                    <i *ngIf="addressForm.get('pincode').invalid
+                                    && addressForm.get('pincode').touched
+                                    && !addressForm.get('pincode').errors?.pattern"
+                                    class="erro-red">Please enter Pincode</i>
+                                    <i *ngIf="addressForm.get('pincode').invalid
+                                    && addressForm.get('pincode').touched
+                                    && addressForm.get('pincode').errors?.pattern"
+                                    class="erro-red">Invalid Pincode</i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Phone & Email -->
+                        <div class="row gutter">
+                            <div class="col-sm-12 col-md-6">
+
+                                <div class="contact-info">
+                                    <div class="input-wrap" style="min-width: 48px;width: 48px;">
+                                      <ng-select class="disable-arrow disable-dropdown disable-clear-all"
+                                        [items]="dial_code" bindLabel="name" bindValue="code" placeholder=""
+                                        [clearable]="false" [searchable]="false" dropdownPosition="bottom"
+                                        formControlName="dial_code">
+                                      </ng-select>
+                                    </div>
+                                    <div class="input-wrap">
+                                        <input class="rf-bg text-uppercase" type="number" placeholder=" " formControlName="poc_mobile"
+                                        pattern="[0-9]{10}">
+                                        <label class="placeholder">Phone Number *</label>
+                                        <i *ngIf="addressForm.get('poc_mobile').invalid
+                                        && addressForm.get('poc_mobile').touched
+                                        && !addressForm.get('poc_mobile').errors?.pattern"
+                                        class="erro-red">Phone Number required</i>
+                                        <i *ngIf="addressForm.get('poc_mobile').invalid
+                                        && addressForm.get('poc_mobile').touched
+                                        && addressForm.get('poc_mobile').errors?.pattern"
+                                        class="erro-red">Invalid Phone Number</i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12 col-md-6">
+                                <div class="email-info">
+                                    <div class="input-wrap">
+                                        <input class="rf-bg text-uppercase" type="email" placeholder=" " formControlName="poc_email"
+                                        pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,3}$">
+                                        <label class="placeholder">Email *</label>
+                                        <i *ngIf="addressForm.get('poc_email').invalid
+                                    && addressForm.get('poc_email').touched
+                                    && !addressForm.get('poc_email').errors?.pattern"
+                                    class="erro-red">Email required</i>
+                                    <i *ngIf="addressForm.get('poc_email').invalid
+                                    && addressForm.get('poc_email').touched
+                                    && addressForm.get('poc_email').errors?.pattern"
+                                    class="erro-red">Invalid Email</i>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <h5 class="pointofCD">Point Of Contact details</h5>
+
+                        <!-- Profile Photo & Name -->
+                        <div class="row gutter">
+                            <div class="col-sm-12 col-md-6">
+                                <div class="input-wrap">
+                                  <input type="file"
+                                  [class.errors]="addressForm.get('poc_profile').invalid && addressForm.get('poc_profile').touched"
+                                  placeholder=" " formControlName="poc_profile" (change)="fileBrowseHandler($event)">
+                                  <label class="placeholder">Profile Photo </label>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12 col-md-6">
+                                <div class="input-wrap">
+                                    <input class="rf-bg text-uppercase" type="text" formControlName="poc_name">
+                                    <label class="placeholder">Name *</label>
+                                    <i *ngIf="addressForm.get('poc_name').invalid
+                                    && addressForm.get('poc_name').touched"
+                                    class="erro-red">Name required</i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Email & phone -->
+                        <!-- <div class="row gutter">
+                            <div class="col-sm-12 col-md-6">
+                                <div class="email-info">
+                                    <div class="input-wrap">
+                                        <input class="rf-bg text-uppercase" type="email" placeholder=" ">
+                                        <label class="placeholder">Email *</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12 col-md-6">
+                                <div class="input-wrap">
+                                    <input class="rf-bg text-uppercase" type="number" placeholder=" ">
+                                    <label class="placeholder">Phone Number *</label>
+                                </div>
+                            </div>
+                        </div> -->
+
+
+
+
+                        <div class="action-btn">
+                            <a class="cancel-oc" data-dismiss="modal">Cancel</a>
+                            <a class="ok-oc" href="javascript:void(0)" (click)="submitAddressForm()">Ok</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+</div>

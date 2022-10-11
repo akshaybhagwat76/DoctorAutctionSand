@@ -1,0 +1,187 @@
+
+<div class="main-wrap">
+
+  <div *ngIf="udLoading" class="loading-txt">Loading...</div>
+
+
+  <div *ngIf="!udLoading" class="content-wrap">
+
+      <div class="top-head">
+          <a (click)="back2List()">Accepted delivery challan</a>
+
+          <div>
+            <button class="btn btn-sm btn-outline-primary" (click)="submitAcceptedConsignment()">Update details</button>
+          </div>
+      </div>
+  </div>
+
+  <div class="container">
+    <div class="row" [formGroup]="consignmentForm" *ngIf="consignmentForm">
+
+      <div class="col-md-6">
+        <div class="row">
+          <div class="col-md-4">
+            Auction No.
+          </div>
+          <div class="col-md-8">
+            <div class="input-wrap">
+              <input type="text" formControlName="auction_number">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+
+        <div class="row">
+          <div class="col-md-4">
+            Order Confirmation No
+          </div>
+          <div class="col-md-8">
+            <div class="input-wrap">
+              <input type="text" formControlName="oc_number" >
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+
+        <div class="row">
+          <div class="col-md-4">
+            Delivery Challan
+          </div>
+          <div class="col-md-8">
+            <div class="input-wrap">
+              <!-- <input type="file"> -->
+              <a href="{{urlService.DCUrl(consignmentDetails?.dc_path, auctionDetails?.auction_number, consignmentDetails?.dc_number)}}" target="_blank" class="btn btn-sm btn-outline-primary mr-2">view file</a>
+              <a href="{{urlService.DCUrl(consignmentDetails?.dc_path, auctionDetails?.auction_number, consignmentDetails?.dc_number)}}" target="_blank">{{consignmentDetails?.dc_path}}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+
+        <div class="row">
+          <div class="col-md-4">
+            Total Tonnage
+          </div>
+          <div class="col-md-8">
+            <div class="input-wrap">
+              <input type="text" formControlName="tonnage">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+
+        <div class="row">
+          <div class="col-md-4">
+            Accepted Tonnage
+          </div>
+          <div class="col-md-8">
+            <div class="input-wrap">
+              <input type="text" formControlName="accepted_tonnage" (input)="onAcceptedTonnageInput()">
+              <i *ngIf="consignmentForm.controls.accepted_tonnage.invalid && consignmentForm.controls.accepted_tonnage.touched && consignmentForm.controls.accepted_tonnage.errors.required"
+              class="erro-red">Accepted Tonnage required</i>
+              <i *ngIf="consignmentForm.controls.accepted_tonnage.valid && consignmentForm.controls.accepted_tonnage.touched && inValidAcceptedTonnage && !consignmentForm.controls.accepted_tonnage.errors"
+              class="erro-red">Accepted Tonnage should be less than or equal to total tonnage</i>
+              <i *ngIf="consignmentForm.controls.accepted_tonnage.invalid && consignmentForm.controls.accepted_tonnage.touched && consignmentForm.controls.accepted_tonnage.errors && !consignmentForm.controls.accepted_tonnage.errors.required &&  consignmentForm.controls.accepted_tonnage.errors.pattern"
+              class="erro-red">Please enter only numeric input</i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+
+        <div class="row">
+          <div class="col-md-4">
+            Upload Accepted Delivery Challan
+          </div>
+          <div class="col-md-8">
+            <div class="input-wrap">
+              <input type="file" (change)="fileBrowseHandler($event)">
+              <i *ngIf="consignmentForm.controls.accepted_dc_path.invalid && consignmentForm.controls.accepted_dc_path.touched"
+              class="erro-red">Accepted DC File required</i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+
+        <div class="row">
+          <div class="col-md-4">
+            Remark
+          </div>
+          <div class="col-md-8">
+            <div class="input-wrap">
+              <input type="text" formControlName="remark">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+
+        <div class="row">
+          <div class="col-md-4">
+            Amount
+          </div>
+          <div class="col-md-8">
+            <div class="input-wrap">
+              <input type="text" formControlName="amount" [attr.disabled]="true">
+              <i *ngIf="consignmentForm.controls.amount.invalid && consignmentForm.controls.amount.touched"
+              class="erro-red">Amount required</i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div>Vehicle details:</div>
+
+    <div class="row">
+      <div class="col-12 table-responsive p-0">
+        <table class="list-table table">
+            <thead>
+                <tr>
+                    <th>Sr No.</th>
+                    <th>Vehicle Number</th>
+                    <th>Tonnage</th>
+                    <th>Driver Name</th>
+                    <th>Driver Number</th>
+                </tr>
+            </thead>
+
+            <tbody class="text-center" *ngIf="isListLoading">
+                <tr>
+                    <td colspan="6">Loading...</td>
+                </tr>
+            </tbody>
+
+            <tbody class="text-center" *ngIf="!isListLoading && truckList?.length === 0">
+                <tr>
+                    <td colspan="6">No result found</td>
+                </tr>
+            </tbody>
+
+            <tbody *ngIf="!isListLoading && truckList?.length !== 0">
+                <tr *ngFor="let item of truckList; let i = index;">
+                    <td>{{i + 1}}</td>
+                    <td>{{item.vehicle_number}}</td>
+                    <td>{{item.tonnage}}</td>
+                    <td>{{item.driver_name}}</td>
+                    <td>{{item.driver_number}}</td>
+                </tr>
+            </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>

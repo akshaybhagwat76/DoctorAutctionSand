@@ -1,0 +1,125 @@
+<div class="invoice-wrapper">
+    <!-- breadcrumbs -->
+    <div class="breadcrumbs">
+       <div class="container">
+           <a [routerLink]="['/user/auction/']">Dashboard</a>
+           <i> > </i>
+           <a href="javascript:void(0)">Auction Result</a>
+           <i> > </i>
+           <a href="javascript:void(0)">Invoices</a>
+       </div>
+   </div>
+
+   <!-- Top E-passbook -->
+   <div class="back-btn-wrap">
+       <div class="container">
+           <div class="back-btn">
+               <i class="b-arrow">Consignment</i>
+           </div>
+       </div>
+   </div>
+
+   <!-- Action Table -->
+   <div class="auction-tbl-warappr">
+       <div class="container">
+           <h4 class="auction-head">Invoice(s):</h4>
+           <div class="auction-tbl-scroll">
+               <table class="auction-tbl">
+                   <tr>
+                       <th>Sr No.</th>
+                       <th>Invoice No.</th>
+                       <th>Total Amount</th>
+                       <th>Seller Name</th>
+                       <th>Remark</th>
+                       <th>Invoice</th>
+                       <th>Payment</th>
+                           <!-- <span class="dot-circle">
+                               <i></i>
+                               <i></i>
+                               <i></i>
+                           </span> -->
+                       <!-- </th> -->
+                   </tr>
+
+                   <tr *ngFor="let item of invoiceList;let i = index;">
+                       <td>{{i+1}}</td>
+                       <td>{{item?.invoice_number}}</td>
+                       <td>₹ {{item?.total_amount | number:'1.2-2'}}</td>
+                       <td>{{item?.seller_name}}</td>
+                       <td><a>{{item?.remarks ? item?.remarks : '-'}}</a></td>
+                       <td><a target="_BLANK"
+                        href="{{urlService.ConsignmentInvoiceUrl(item?.invoice_path, item?.auction_number, item?.dc_number)}}">Invoice.pdf</a></td>
+                       <td class="action-links">
+                            <div *ngIf="item?.status == 2"><a>Complete</a></div>
+                            <div *ngIf="item?.status == 1"><a (click)="payRazor(item?.id)">Make payment</a></div>
+                            <div *ngIf="item?.status == 1"><a (click)="offlineDialog(item)">Offline payment</a></div>
+                        </td>
+                   </tr>
+               </table>
+           </div>
+       </div>
+
+   </div>
+</div>
+
+<div class="modal fade" id="confirmModel" tabindex="-1" role="dialog" aria-labelledby="confirmModel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header py-2">
+          <h6 class="modal-title font-weight-bold" id="confirmModel-title">Upload offline documents</h6>
+          <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button> -->
+        </div>
+        <div class="modal-body pt-0" [formGroup]="offlinePayForm" *ngIf="offlinePayForm">
+          <div class="row p-3">
+            <div class="col-md-12">
+                <!-- <div class="rang-input">
+                    <label>Transaction Id</label>
+                    <input type="number" formControlName="transaction_id" [attr.disabled]= "true">
+                </div> -->
+                <div class="rang-input">
+                    <label>Payment Mode</label>
+                    <ng-select [items]="paymentMode" bindLabel="name" bindValue="value"
+                      placeholder="Select" dropdownPosition="bottom" [multiple]="false" formControlName="payment_mode" [clearable]="false">
+                  </ng-select>
+                </div>
+                <div class="rang-input">
+                  <label>Bank Name *</label>
+                  <input type="text" placeholder="" formControlName="bank_name">
+                </div>
+                <div class="rang-input">
+                    <label>{{offlinePayForm.value.payment_mode == cheque ? 'Cheque No' : 'Transaction No'}} *</label>
+                    <input type="text" placeholder="" formControlName="cheque_no">
+                </div>
+                <div class="rang-input">
+                    <label>Net Amount *</label>
+                    <input type="number" placeholder="Enter net amount of trasaction" formControlName="net_amount">
+                </div>
+                <div class="rang-input">
+                    <label>Upload Payment Confirmation</label>
+                    <input type="file" (change)="fileBrowseHandler($event)">
+                </div>
+                <div class="rang-input" *ngIf="offlineFormError">
+                    <label style="color: red;">{{offlineFormError}}</label>
+                </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="row">
+              <div class="col-md-4 offset-2">
+                <button class="btn btn-outline-primary w-100" data-dismiss="modal" aria-label="Close">Cancel</button>
+              </div>
+              <div class="col-md-4">
+                <button class="btn btn-primary w-100" (click)="OfflinePayment()">Save</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="onSellerChange($event)">Save changes</button>
+        </div> -->
+      </div>
+    </div>
+</div>

@@ -1,0 +1,214 @@
+<div class="main-wrap">
+
+  <div *ngIf="udLoading" class="loading-txt">Loading...</div>
+
+
+  <div *ngIf="!udLoading" class="content-wrap">
+
+      <div class="top-head">
+          <a (click)="back2List()">{{sellerDetails?.companyName}} Inventory</a>
+          <!-- <span class="border px-3" style="padding-top: 5px; padding-bottom: 5px;">Available Inventory: <b>10,000 Tons</b></span> -->
+          <div class="input-wrap mb-0 w-25">
+            <ng-select [items]="dateList" bindLabel="name" bindValue="value"
+                  placeholder="Select" dropdownPosition="bottom" (change)="onDateChange($event)">
+            </ng-select>
+          </div>
+          <button class="btn btn-primary" data-toggle="modal" data-target="#addProductSidebar" (click)="newProductInventory()">Add product</button>
+      </div>
+
+      <div class="col-12 table-responsive p-0 pt-5">
+        <table class="list-table table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Product Name</th>
+                    <th>Description</th>
+                    <th>Grade</th>
+                    <th>Fm Value</th>
+                    <th>Total Tonnage</th>
+                    <th>Available Tonnage</th>
+                    <th>Price/Ton</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody class="text-center" *ngIf="isListLoading">
+                <tr>
+                    <td colspan="6">Loading...</td>
+                </tr>
+            </tbody>
+
+            <tbody class="text-center" *ngIf="!isListLoading && inventoryList?.length === 0">
+                <tr>
+                    <td colspan="6">No result found</td>
+                </tr>
+            </tbody>
+
+            <tbody *ngIf="!isListLoading && inventoryList?.length !== 0">
+                <tr *ngFor="let item of inventoryList">
+                    <td class="cell-registration-id">
+                      <img *ngIf="item" style="max-width: 40px; border-radius: 50%;" src="{{urlService.productDocumentUrl(item?.product_image)}}"/>
+                    </td>
+                    <td class="cell-company">{{item?.product_name}}</td>
+                    <td class="cell-phone">{{item?.product_des}}</td>
+                    <td class="cell-phone">{{item?.grade}}</td>
+                    <td class="cell-phone">{{item?.fineness_modulus}}</td>
+                    <td class="cell-phone">{{item?.tonnage}}</td>
+                    <td class="cell-phone">{{+item?.tonnage - +item?.used_tonnage}}</td>
+                    <td class="cell-phone">{{item?.price_per_ton}}</td>
+                    <td class="cell-status">
+                        <span (click)="getInventoryDetails(item?.id)" data-toggle="modal" data-target="#addProductSidebar">Edit</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+      </div>
+
+  </div>
+</div>
+
+<!-- Side Bar Modal -->
+<div class="modal fade" id="addProductSidebar" tabindex="-1" role="dialog" aria-labelledby="filter" aria-hidden="true">
+  <div class="modal-dialog modal-lg float-right m-0 h-100 w-50" role="document">
+    <div class="modal-content h-100 w-100" style="">
+      <div class="modal-header justify-content-start">
+        <button type="button" class="close ml-0 mr-1" data-dismiss="modal" aria-label="Close" id="modal-close-btn" (click)="initForm()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h5 class="modal-title" id="productSidebarTitle">{{productForm.value.id ? 'Update' : 'Create'}} Product</h5>
+        <button type="button" class="btn btn-primary ml-auto" (click)="createProduct()">Save</button>
+      </div>
+      <div class="modal-body" [formGroup]="productForm" *ngIf="productForm">
+        <div class="row py-2" style="background-color: #f9f9f9;">
+          <div class="col-md-12">
+            <span class="">Product Details</span>
+          </div>
+        </div>
+
+        <div class="row align-items-center py-2">
+          <div class="col-md-3"><span class="">Select month *</span></div>
+          <div class="col-md-5">
+            <div class="input-wrap m-0">
+              <ng-select [items]="month" bindLabel="name" bindValue="value"
+                  placeholder="Select" dropdownPosition="bottom" (change)="onMonthChange($event)" [formControl]="editDate">
+              </ng-select>
+              <i *ngIf="productForm.controls.date.invalid && productForm.controls.date.touched"
+              class="erro-red">Month required</i>
+            </div>
+          </div>
+        </div>
+
+        <div class="row align-items-center py-2">
+          <div class="col-md-3"><span class="">Select product *</span></div>
+          <div class="col-md-5">
+            <div class="input-wrap m-0">
+              <ng-select [items]="productList" bindLabel="name" bindValue="id"
+                  placeholder="Select" dropdownPosition="bottom" [multiple]="false" formControlName="auction_product_id" (change)="onProductChange($event)">
+              </ng-select>
+              <i *ngIf="productForm.controls.auction_product_id.invalid && productForm.controls.auction_product_id.touched"
+              class="erro-red">Product required</i>
+            </div>
+          </div>
+        </div>
+
+        <div class="row align-items-center py-2">
+          <div class="col-md-3"><span class="">Grade *</span></div>
+          <div class="col-md-5">
+            <div class="input-wrap m-0">
+              <ng-select [items]="gradeList" bindLabel="grade" bindValue="id"
+                  placeholder="Select" dropdownPosition="bottom" formControlName="grade_id">
+              </ng-select>
+              <i *ngIf="productForm.controls.grade_id.invalid && productForm.controls.grade_id.touched"
+              class="erro-red">Grade required</i>
+            </div>
+          </div>
+        </div>
+
+        <!-- <div class="row align-items-center py-2">
+          <div class="col-md-3"><span class="">Available monthly inventory *</span></div>
+          <div class="col-md-3">
+            <div class="input-wrap m-0">
+              <input type="text">
+            </div>
+          </div>
+        </div> -->
+
+        <div class="row align-items-center py-2">
+          <div class="col-md-3"><span class="">Tonnage *</span></div>
+          <div class="col-md-5">
+            <div class="input-wrap m-0">
+              <input type="text" formControlName="tonnage">
+              <i *ngIf="productForm.controls.tonnage.invalid && productForm.controls.tonnage.touched && !productForm.controls.tonnage.errors.pattern"
+              class="erro-red">Tonnage required</i>
+              <i *ngIf="productForm.controls.tonnage.invalid && productForm.controls.tonnage.touched && productForm.controls.tonnage.errors.pattern"
+              class="erro-red">Please enter only integer value</i>
+            </div>
+          </div>
+        </div>
+
+        <div class="row align-items-center py-2">
+          <div class="col-md-3"><span class="">Enter price/ton *</span></div>
+          <div class="col-md-5">
+            <div class="input-wrap m-0">
+              <input type="text" formControlName="price_per_ton">
+              <i *ngIf="productForm.controls.price_per_ton.invalid && productForm.controls.price_per_ton.touched && !productForm.controls.price_per_ton.errors.pattern"
+              class="erro-red">Price/ton required</i>
+              <i *ngIf="productForm.controls.price_per_ton.invalid && productForm.controls.price_per_ton.touched && productForm.controls.price_per_ton.errors.pattern"
+              class="erro-red">Please enter only integer value</i>
+            </div>
+          </div>
+        </div>
+
+        <div class="row align-items-center py-2">
+          <div class="col-md-3"><span class="">Sieve analysis report *</span></div>
+          <div class="col-md-5">
+            <div class="input-wrap m-0">
+              <input type="file" style="height: 39px;" id="a_report" (change)="fileBrowseAnalysisReportHandler($event)"
+              [class.errors]="productForm.controls.analysis_report.invalid && productForm.controls.analysis_report.touched" *ngIf="!analysisReport">
+              <i *ngIf="!productForm.controls['analysis_report'].value && productForm.controls.analysis_report.touched && !productForm.controls.analysis_report.size"
+              class="erro-red">Analysis Report required</i>
+              <i *ngIf="productForm.controls.analysis_report.touched && productForm.controls.analysis_report.size
+              && productForm.controls.analysis_report.size > 1024"
+              class="erro-red">File size should be less than 1024 kb.</i>
+              <a class="product-img-prev" alt="analysis_report" href="{{urlService.productDocumentUrl(analysis_report_url)}}" target="_blank" *ngIf="analysisReport">
+                {{analysis_report_url}}
+              </a>
+              <span class="ml-3 pointer" *ngIf="analysisReport" (click)="analysisReport = !analysisReport">change file</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="row align-items-center py-2">
+          <div class="col-md-3"><span class="">Concrete test report (optional)</span></div>
+          <div class="col-md-5">
+            <div class="input-wrap m-0">
+              <input type="file" style="height: 39px;" (change)="fileBrowseConcertReportHandler($event)" *ngIf="!concertReport" id="b_report">
+              <a class="product-img-prev" alt="concert_report" href="{{urlService.productDocumentUrl(concert_report_url)}}" target="_blank" *ngIf="concertReport">
+                {{concert_report_url}}
+              </a>
+              <span class="ml-3 pointer" *ngIf="concertReport" (click)="concertReport = !concertReport">change file</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="row align-items-center py-2">
+          <div class="col-md-3"><span class="">Other reports (optional)</span></div>
+          <div class="col-md-5">
+            <div class="input-wrap m-0">
+              <input type="file" style="height: 39px;" (change)="fileBrowseOtherReportHandler($event)" *ngIf="!otherReport" id="c_report">
+              <a class="product-img-prev" alt="other_report" href="{{urlService.productDocumentUrl(other_report_url)}}" target="_blank" *ngIf="otherReport">
+                {{other_report_url}}
+              </a>
+              <span class="ml-3 pointer" *ngIf="otherReport" (click)="otherReport = !otherReport">change file</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary rounded-0" data-dismiss="modal" (click)="initForm()">Close</button>
+        <button type="button" class="btn btn-primary" (click)="createProduct()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>

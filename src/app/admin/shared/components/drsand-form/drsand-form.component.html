@@ -1,0 +1,58 @@
+<ng-container *ngIf="formData">
+  <div class="row">
+    <div class="col-auto"></div>
+    <div class="col">
+      <div class="row" [formGroup]="drSandForm" *ngIf="drSandForm">
+        <div class="col-md-12" *ngFor="let item of formData">
+          <h6>{{item?.fieldName}}</h6>
+          <div class="input-wrap w-50">
+            <input *ngIf="item?.fieldType!=='file' && item?.fieldType!=='select'" [type]="item?.fieldType" placeholder=" " [formControlName]="item?.formControlName">
+            <input *ngIf="item?.fieldType=='file'" [type]="item?.fieldType" placeholder=" " (change)="fileBrowseHandler($event, item?.formControlName)">
+            <ng-select *ngIf="item?.fieldType=='select'" [multiple]="true" [items]="item?.value" bindLabel="name" bindValue="order_item_id"
+              placeholder="Select" dropdownPosition="bottom" formControlName="order_item_id" [clearable]="false" (change)="onProductChange($event)">
+            </ng-select>
+          </div>
+        </div>
+        <div class="col-md-6 border mb-2 mx-3">
+          <ng-container formArrayName="product_details" *ngIf="orderItems && orderItems.length > 0">
+            <h6>Product Details * <span class="text-danger" *ngIf="pDetails.controls.length === 0">(Please select product)</span></h6>
+            <div *ngFor="let item of pDetails.controls; index as i" class="">
+              <ng-container [formGroup]="item">
+                <div class="row">
+                  <div class="col-md-3">
+                    <span class="">{{item.value.name}}</span>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="input-wrap">
+                      <input type="text" placeholder=" " formControlName="tonnage" (input)="onTonnageChange()">
+                      <label class="placeholder">Tonnage *</label>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+          </ng-container>
+        </div>
+        <div class="col-md-12" *ngIf="orderItems && orderItems.length > 0">
+          <h6>Select Delivery Address</h6>
+          <div class="input-wrap w-50">
+            <ng-select [items]="deliveryAddressList" bindLabel="landmark" bindValue="id"
+              placeholder="Select" dropdownPosition="bottom" formControlName="delivery_address_id" [clearable]="false">
+            </ng-select>
+          </div>
+        </div>
+        <div class="col-md-12" *ngIf="orderItems && orderItems.length > 0">
+          <h6>Select Pickup Address</h6>
+          <div class="input-wrap w-50">
+            <ng-select [items]="pickupAddressList" bindLabel="landmark" bindValue="id"
+              placeholder="Select" dropdownPosition="bottom" formControlName="pickup_address_id" [clearable]="false">
+            </ng-select>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <h6>Total Tonnage: <b>{{drSandForm.value.tonnage}} Ton</b></h6>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

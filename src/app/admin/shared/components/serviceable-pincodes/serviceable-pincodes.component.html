@@ -1,0 +1,93 @@
+<div class="main-wrap">
+
+  <div *ngIf="udLoading" class="loading-txt">Loading...</div>
+
+
+  <div *ngIf="!udLoading" class="content-wrap">
+
+      <div class="top-head">
+          <a (click)="back2List()">Serviceable pincodes</a>
+      </div>
+      <div class="row p-3" style="background-color: #f9f9f9;">
+        <div class="col-md-12">
+          <span class="">Pincode</span>
+        </div>
+      </div>
+      <form class="form-inline" [formGroup]="pincodeForm" *ngIf="pincodeForm">
+        <div class="row w-100 px-3">
+          <div class="col-md-5">
+            <div class="row">
+              <div class="col-md-5">
+                <span>Pincode *</span>
+              </div>
+              <div class="col-md-7">
+                <div class="input-wrap">
+                  <!-- <input type="text" formControlName="pincode_id"> -->
+                  <ng-select [items]="allPinList" bindLabel="pincode" bindValue="id"
+                      placeholder="Select" dropdownPosition="bottom" formControlName="pincode_id">
+                  </ng-select>
+                  <i *ngIf="pincodeForm.controls.pincode_id.invalid && pincodeForm.controls.pincode_id.touched"
+                  class="erro-red">Pincode required</i>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-5">
+            <div class="row">
+              <div class="col-md-5">
+                <span>Logistic price/ton *</span>
+              </div>
+              <div class="col-md-7">
+                <div class="input-wrap">
+                  <input type="text" formControlName="logistic_price">
+                  <i *ngIf="pincodeForm.controls.logistic_price.invalid && pincodeForm.controls.logistic_price.touched"
+                  class="erro-red">Logistic price required</i>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <button class="btn btn-primary" (click)="createSellerPincode()">{{pincodeForm.value.id ? 'Update': 'Add'}} pincode</button>
+          </div>
+        </div>
+      </form>
+
+      <div class="col-12 table-responsive p-0">
+        <table class="list-table table">
+            <thead>
+                <tr>
+                    <th>Sr No.</th>
+                    <th>Pincode</th>
+                    <th>Logistic price/ton</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody class="text-center" *ngIf="isListLoading">
+                <tr>
+                    <td colspan="6">Loading...</td>
+                </tr>
+            </tbody>
+
+            <tbody class="text-center" *ngIf="!isListLoading && pinList?.length === 0">
+                <tr>
+                    <td colspan="6">No result found</td>
+                </tr>
+            </tbody>
+
+            <tbody *ngIf="!isListLoading && pinList?.length !== 0">
+                <tr *ngFor="let item of pinList; let i = index; ">
+                    <!-- <td class="cell-registration-id">{{item.id}}</td> -->
+                    <td class="cell-company">{{i+1}}</td>
+                    <td class="cell-phone">{{item?.pincode}}</td>
+                    <td class="cell-date">{{item?.logistic_price}}</td>
+                    <td class="cell-status">
+                        <span (click)="onEdit(item?.id)">Edit</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+      </div>
+  </div>
+</div>

@@ -1,0 +1,23 @@
+<div class="main-bg">
+  <div class="whole-container">
+      <div class="logo">
+          <img src="assets/img/logo1-doctor-sand.svg" alt="ss-logo">
+      </div>
+      <div class="form-container">
+          <div class="top-steps">
+              <div class="steps-wrap justify-content-center">
+                  <span class="active text-capitalize">
+                    <img src="assets/img/Icon-check-circle.svg" alt="circle">
+                    Registration {{response}}
+                </span>
+              </div>
+          </div>
+          <div class="form-wrap text-center">
+            <p *ngIf="response == 'successful'" class="p-5">You have successfully registered with Doctor Sand. We will notify you via email for further steps.</p>
+            <p *ngIf="response == 'successful'" class="p-5">
+              You wil be redirected to Doctor Sand website in {{secCount}} seconds. <a href="https://doctorsand.com">Click here</a> if you are not redirected within some time.</p>
+            <p *ngIf="response == 'failed'" class="p-5">Registration Failed.</p>
+          </div>
+      </div>
+  </div>
+</div>

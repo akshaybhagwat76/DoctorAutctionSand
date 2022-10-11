@@ -1,0 +1,44 @@
+<header class="layout-header">
+    <div class="row layout-header-row">
+      <div class="col-auto col-logo">
+        <a>
+          <img src="assets/img/logo.svg" alt="doctor sand logo" />
+        </a>
+      </div>
+
+      <div class="col col-search d-none">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <img src="assets/img/icon-list.svg" />
+          </div>
+          <input type="text" class="form-control" placeholder="Enter location to find auctions nearby" />
+          <div class="input-group-append">
+            <button class="btn btn-primary btn-block">Search</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col"></div>
+      <div class="option-menu">
+          <a href="javascript:void(0)" routerLinkActive="active">About us</a>
+          <a href="javascript:void(0)" routerLinkActive="active">Sand Types</a>
+          <a href="javascript:void(0)" routerLinkActive="active">Sand stories</a>
+          <a routerLink="/user/auction/dashboard" routerLinkActive="active">Auction</a>
+          <a routerLink="/user/fixed-fee" routerLinkActive="active">Fixed Price</a>
+          <a routerLink="/user/epassbook" routerLinkActive="active">ePassbook</a>
+          <a routerLink="/user/orders" routerLinkActive="active">Orders</a>
+          <a routerLink="/user/cart" routerLinkActive="active">Cart</a>
+      </div>
+
+      <div class="col-auto col-profile dropdown">
+        <a href="javascript:void(0)" id="filter-dropdown" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false" class="dropdown-toggle">
+          <img src="assets/img/icon-profile.svg" />
+          <span>{{profileData.name || ''}}</span>
+        </a>
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="filter-dropdown">
+          <button class="dropdown-item" (click)="handleLogout($event)">Logout</button>
+        </div>
+      </div>
+    </div>
+</header>

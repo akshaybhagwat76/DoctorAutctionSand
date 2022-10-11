@@ -1,0 +1,29 @@
+<div class="col-12 table-responsive p-0">
+  <table class="list-table table" >
+      <thead>
+          <tr>
+              <th *ngFor="let item of listFields">{{item?.fieldName}}</th>
+          </tr>
+      </thead>
+
+      <tbody class="text-center" *ngIf="isListLoading">
+          <tr>
+              <td colspan="6">Loading...</td>
+          </tr>
+      </tbody>
+
+      <tbody class="text-center" *ngIf="!isListLoading && dataList.length === 0">
+          <tr>
+              <td colspan="6">No result found</td>
+          </tr>
+      </tbody>
+
+      <tbody *ngIf="!isListLoading && dataList.length !== 0">
+          <tr *ngFor="let item of dataList">
+            <td *ngFor="let td of listFields" [ngClass]="{'cell-status': td?.field == 'status'}">
+              <span [innerHtml]="item[td?.field] ? item[td?.field] : 'N/A'"></span>
+            </td>
+          </tr>
+      </tbody>
+  </table>
+</div>

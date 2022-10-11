@@ -1,0 +1,331 @@
+<div class="main-bg">
+    <div class="whole-container">
+        <div class="logo">
+            <img src="assets/img/logo1-doctor-sand.svg" alt="ss-logo">
+        </div>
+        <div class="form-container">
+            <div class="top-steps">
+                <div class="steps-wrap">
+                    <span class="active">
+                        <img src="assets/img/Icon-check-circle.svg" alt="circle">
+                        Verify Details
+                    </span>
+                    <span>
+                        <img src="assets/img/Icon-check-circle-gray.svg" alt="circle">
+                        {{role_id == 1 ? 'Delivery Centre Details' : 'Pickup Centre Details'}}
+                    </span>
+                    <span>
+                        <img src="assets/img/Icon-check-circle-gray.svg" alt="circle">
+                        Registration Fees
+                    </span>
+                </div>
+            </div>
+            <div class="form-wrap" *ngIf="stepOneForm">
+                <form [formGroup]="stepOneForm" (submit)="submitStepOne()">
+                    <div class="rgt-form">
+
+                        <!-- Company Name -->
+                        <div class="input-wrap">
+                            <input class="rf-bg text-uppercase" type="text" formControlName="name">
+                            <label class="placeholder">Company Name *</label>
+                        </div>
+
+                        <!-- Address -->
+                        <div class="input-wrap">
+                            <input class="rf-bg text-uppercase" type="text" placeholder=" "
+                                formControlName="address_line_1">
+                            <label class="placeholder">Address *</label>
+                        </div>
+
+                        <!-- Landmark -->
+                        <div class="input-wrap">
+                            <input class="rf-bg text-uppercase" type="text" placeholder=" " formControlName="landmark">
+                            <label class="placeholder">Nearest Landmark *</label>
+                        </div>
+
+                        <!-- City & Country -->
+                        <div class="row gutter">
+                            <div class="col-sm-12 col-md-6">
+                                <div class="input-wrap">
+                                    <ng-select [items]="stateList" bindLabel="state_name" bindValue="id"
+                                        placeholder="State *" dropdownPosition="bottom" formControlName="state_id">
+                                    </ng-select>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12 col-md-6">
+                                <div class="input-wrap">
+                                    <ng-select [items]="cityList" bindLabel="city_name" bindValue="id"
+                                        placeholder="City *" dropdownPosition="bottom" formControlName="city_id">
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Country & Pincode -->
+                        <div class="row gutter">
+                            <div class="col-sm-12 col-md-6">
+                                <div class="input-wrap">
+                                    <ng-select [items]="country" bindLabel="name" bindValue="id" placeholder="Country *"
+                                        dropdownPosition="bottom" formControlName="country_id">
+                                    </ng-select>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-6">
+                                <div class="input-wrap">
+                                    <input class="rf-bg text-uppercase" type="text" placeholder=" "
+                                        formControlName="pincode">
+                                    <label class="placeholder">Pincode*</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- phone -->
+                        <div class="row gutter">
+                            <div class="col-sm-12 col-md-6">
+
+                                <div class="contact-info">
+                                    <div class="input-wrap" style="min-width: 48px;width: 48px;">
+                                        <ng-select class="disable-arrow disable-dropdown disable-clear-all"
+                                            [items]="dial_code" bindLabel="name" bindValue="code" placeholder=""
+                                            [clearable]="false" [searchable]="false" dropdownPosition="bottom"
+                                            formControlName="dial_code">
+                                        </ng-select>
+                                    </div>
+                                    <div class="input-wrap">
+                                        <input class="rf-bg text-uppercase" type="number" placeholder=" "
+                                            formControlName="mobile">
+                                        <label class="placeholder">Phone Number *</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-6 verify-cont">
+                                <img src="assets/img/Icon-check-circle.svg" alt="circle">
+                            </div>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="row gutter">
+                            <div class="col-sm-12 col-md-6">
+                                <div class="email-info">
+                                    <div class="input-wrap">
+                                        <input class="rf-bg text-uppercase" type="email" placeholder=" "
+                                            formControlName="email">
+                                        <label class="placeholder">Email *</label>
+                                        <!-- <i class="erro-blue">OTP has been sent to your phone</i> -->
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-12 col-md-6 verify-cont">
+                                <img src="assets/img/Icon-check-circle.svg" alt="circle">
+                            </div>
+                        </div>
+
+                        <!-- PAN & GST -->
+                        <div class="row gutter">
+                            <div class="col-sm-12 col-md-6">
+                                <div class="input-wrap">
+                                    <input type="text" class="text-uppercase" placeholder=" "
+                                        formControlName="pan_number">
+                                    <label class="placeholder">PAN Number *</label>
+                                    <!-- <i class="erro-red">PAN number not valid</i> -->
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-6">
+                                <div class="input-wrap">
+                                    <input type="text" class="text-uppercase" placeholder=" "
+                                        formControlName="gst_number">
+                                    <label class="placeholder">GST Number *</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- TIN & CIN -->
+                        <div class="row gutter">
+                            <div class="col-sm-12 col-md-6">
+                                <div class="input-wrap">
+                                    <input type="text" class="text-uppercase" placeholder=" "
+                                        formControlName="tin_number"
+                                        [class.errors]="stepOneForm.get('tin_number').invalid && stepOneForm.get('tin_number').touched || stepOneForm.get('tin_number').errors?.pattern"
+                                        maxlength="11">
+                                    <label class="placeholder">TIN Number</label>
+                                    <i *ngIf="stepOneForm.get('tin_number').invalid && stepOneForm.get('tin_number').touched || stepOneForm.get('tin_number').errors?.pattern"
+                                        class="erro-red">{{stepOneForm.get('tin_number').errors?.pattern ? "Invalid TIN
+                                        Number":"TIN Number required"}}</i>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-6">
+                                <div class="input-wrap">
+                                    <input type="text" class="text-uppercase" placeholder=" " [class.errors]="stepOneForm.get('cin_number').invalid && 
+                                    stepOneForm.get('cin_number').touched || 
+                                    stepOneForm.get('cin_number').errors?.pattern" formControlName="cin_number"
+                                        maxlength="21">
+                                    <label class="placeholder">CIN Number</label>
+                                    <i *ngIf="stepOneForm.get('cin_number').invalid && 
+                                    stepOneForm.get('cin_number').touched || 
+                                    stepOneForm.get('cin_number').errors?.pattern"
+                                        class="erro-red">{{stepOneForm.get('cin_number').errors?.pattern ? "Invalid CIN
+                                        Number":"CIN Number required"}}</i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- TAN -->
+                        <div class="row gutter">
+                            <div class="col-sm-12 col-md-6">
+                                <div class="input-wrap">
+                                    <input type="text" class="text-uppercase" placeholder=" "
+                                        formControlName="tan_number" maxlength="10" [class.errors]="stepOneForm.controls['tan_number'].invalid 
+                                     && stepOneForm.controls['tan_number'].touched
+                                     || stepOneForm.controls['tan_number'].errors?.pattern" maxlength="10">
+                                    <label class="placeholder">TAN Number </label>
+
+                                    <i *ngIf="stepOneForm.controls['tan_number'].invalid 
+                                    && stepOneForm.controls['tan_number'].touched
+                                    || stepOneForm.controls['tan_number'].errors?.pattern"
+                                        class="erro-red">{{stepOneForm.controls['tan_number'].errors?.pattern ? "Invalid
+                                        TAN Number":"TAN required"}}</i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Document -->
+                        <div class="row doc-wrap">
+                            <div class="col-sm-12 col-md-6">
+                                <h3>Supporting Documents</h3>
+                                <div *ngIf="!postData">
+                                    <img class="address_proof_img" *ngIf="posted_address_ext != 'pdf'"
+                                        src="{{urlService.registerDocumentUrl(posted_address_url)}}" />
+
+                                    <a *ngIf="posted_address_ext == 'pdf'"
+                                        href="{{urlService.registerDocumentUrl(posted_address_url)}}"
+                                        target="_blank">Click here to view document</a>
+
+                                </div>
+                                <div class="input-wrap" *ngIf="postData">
+                                    <!-- <input type="file" placeholder=" "> -->
+
+                                    <input type="file" [disabled]="stepOneForm.controls['address_proof'].value"
+                                        [class.errors]="stepOneForm.controls['address_proof'].invalid && stepOneForm.controls['address_proof'].touched"
+                                        placeholder=" " formControlName="address_proof"
+                                        (change)="fileBrowseHandler($event)">
+                                    <label class="placeholder">Company Address Proof * </label>
+                                </div>
+                                <p *ngIf="postData">Note: PAN / Trade License / Company Registration / GST Certificate
+                                </p>
+                                <p *ngIf="address_error !=''" class="addErr">{{address_error}}</p>
+                            </div>
+                        </div>
+
+
+                        <h3 style="font-size: 14px;
+                                font-weight: bold;
+                                margin-bottom: 15px;
+                                margin-top: 20px;
+                                border-bottom: 1px solid #e0e0e1;
+                                padding-bottom: 10px;">Bank Account Details</h3>
+                        <div class="row gutter">
+                            <!-- <div class="col-sm-12 col-md-6">
+                                        <div class="input-wrap">
+                                            <input type="text" class="text-uppercase" placeholder=" " formControlName="account_holder_name"
+                                             [class.errors]="stepOneForm.controls['account_holder_name'].invalid 
+                                             && stepOneForm.controls['account_holder_name'].touched
+                                             && stepOneForm.controls['account_holder_name'].errors?.pattern">
+                                            <label class="placeholder">Account Holder Name </label>
+                                        </div>
+                                    </div> -->
+                            <div class="col-sm-12 col-md-6">
+                                <div class="input-wrap">
+                                    <input type="text" class="text-uppercase" placeholder=" "
+                                        formControlName="bank_name">
+                                    <label class="placeholder">Bank Name</label>
+                                    <i *ngIf="stepOneForm.controls['bank_name'].invalid 
+                                            && stepOneForm.controls['bank_name'].touched" class="erro-red">Bank Name
+                                        required</i>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12 col-md-6">
+                                <div class="input-wrap">
+                                    <input type="text" class="text-uppercase" placeholder=" "
+                                        formControlName="ifsc_code">
+                                    <label class="placeholder">Bank IFSC Code</label>
+                                    <i *ngIf="stepOneForm.controls['ifsc_code'].invalid 
+                                            && stepOneForm.controls['ifsc_code'].touched
+                                            && !stepOneForm.controls['ifsc_code'].errors?.pattern"
+                                        class="erro-red">Bank IFSC Code required</i>
+                                    <i *ngIf="stepOneForm.controls['ifsc_code'].invalid 
+                                            && stepOneForm.controls['ifsc_code'].touched &&
+                                            stepOneForm.controls['ifsc_code'].errors?.pattern" class="erro-red">Invalid
+                                        Bank IFSC Code</i>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12 col-md-6">
+                                <div class="input-wrap">
+                                    <input type="password" class="text-uppercase" placeholder=" "
+                                        formControlName="account_number">
+                                    <label class="placeholder">Account Number</label>
+                                    <i *ngIf="stepOneForm.controls['account_number'].invalid 
+                                            && stepOneForm.controls['account_number'].touched" class="erro-red">Account
+                                        Number required</i>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12 col-md-6">
+                                <div class="input-wrap">
+                                    <input type="text" class="text-uppercase" placeholder=" "
+                                        formControlName="confirm_account_number">
+                                    <label class="placeholder">Confirm Account Number</label>
+                                    <!-- <i *ngIf="stepOneForm.controls['confirm_account_number'].invalid 
+                                            && stepOneForm.controls['confirm_account_number'].touched"
+                                            class="erro-red">Confirm Account Number required</i> -->
+                                    <i *ngIf="stepOneForm.controls['confirm_account_number'].touched && stepOneForm.controls['confirm_account_number'].value != stepOneForm.controls['account_number'].value && stepOneForm.controls['confirm_account_number'].valid"
+                                        class="erro-red">Account Number mismatch</i>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12 col-md-12">
+                                <div class="policy-text">
+                                    <input type="checkbox" id="understandingCheck" [checked]="ischecked"
+                                        [disabled]="!postData">
+                                    <div id="checkDiv">I have read and agree to the terms of the
+                                        <a target="_blank" href="{{memorandumUrl}}">Memorandum of Understanding</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="policy-error"><i class="erro-red">{{policy_check_error}}</i></div>
+                        </div>
+                    </div>
+
+
+                    <!-- Continue btn -->
+                    <div class="clearfix continue-btn">
+                        <button class="next" type="submit">Continue</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<div class="modal fade" id="reg-succ-modal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="reg-wrap">
+                    <img src="assets/img/Icon-check-circle.svg" alt="circle">
+                    <h3>Congratulations!</h3>
+                    <p>You are already registered.</p>
+                    <button type="button" data-dismiss="modal" (click)="gotoHome()">OK</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

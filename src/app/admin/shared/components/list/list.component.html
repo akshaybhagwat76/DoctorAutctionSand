@@ -1,0 +1,65 @@
+<div class="row registration-list">
+    <div class="col-12 filter-header dropdown">
+      <ng-select *ngIf="registStatusList.length > 0" [items]="registStatusList" bindLabel="name" bindValue="value"
+        placeholder="Select" dropdownPosition="bottom" (change)="handleStatusFilterClick($event)" class="w-25 mr-2">
+      </ng-select>
+        <a href="javascript:void()" id="filter-dropdown" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false">
+            <img src="assets/img/icon-more.svg" />
+        </a>
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="filter-dropdown">
+            <button class="dropdown-item" (click)="handleFilterClick($event, 'all')">All</button>
+            <button class="dropdown-item" (click)="handleFilterClick($event, 'pastHour')">Past hour</button>
+            <button class="dropdown-item" (click)="handleFilterClick($event, 'past24Hour')">Past 24 hours</button>
+            <button class="dropdown-item" (click)="handleFilterClick($event, 'pastWeek')">Past week</button>
+            <button class="dropdown-item" (click)="handleFilterClick($event, 'pastMonth')">Past month</button>
+            <button class="dropdown-item" (click)="handleFilterClick($event, 'pastYear')">Past year</button>
+            <!-- <button class="dropdown-item" (click)="handleFilterClick($event, 'customRange')">Custom range</button> -->
+        </div>
+    </div>
+    <div class="col-12 table-responsive p-0">
+        <table class="list-table table">
+            <thead>
+                <tr>
+                    <!-- <th>Registration Id</th> -->
+                    <th>Company Name</th>
+                    <th>Contact #</th>
+                    <th>Email</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody class="text-center" *ngIf="isListLoading">
+                <tr>
+                    <td colspan="6">Loading...</td>
+                </tr>
+            </tbody>
+
+            <tbody class="text-center" *ngIf="!isListLoading && listItemsTemp.length === 0">
+                <tr>
+                    <td colspan="6">No result found</td>
+                </tr>
+            </tbody>
+
+            <tbody *ngIf="!isListLoading && listItemsTemp.length !== 0">
+                <tr *ngFor="let item of listItemsTemp">
+                    <!-- <td class="cell-registration-id">{{ item.registrationId }}</td> -->
+                    <td class="cell-company">{{ item.companyName }}</td>
+                    <td class="cell-phone">{{ item.phoneNumber }}</td>
+                    <td class="cell-email">{{ item.email }}</td>
+                    <td class="cell-date">{{ item.date | date: "dd/MM/YYYY" }}</td>
+                    <td class="cell-status">
+                        <span>{{ item.status }}</span>
+                    </td>
+                    <td class="cell-status">
+                      <a title="View details" (click)="handleListItemClick(item)"><img src="assets/img/icon_view.svg"/></a>
+                      <a title="Manage seller inventory" *ngIf="item.roleId == 2" (click)="handleProductClick(item)"><img src="assets/img/icon_inventory.svg"/></a>
+                      <a title="Manage serviceable pincodes" *ngIf="item.roleId == 2" (click)="handlePinClick(item)"><img src="assets/img/icon_map.svg"/></a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

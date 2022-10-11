@@ -1,0 +1,262 @@
+<!-- <app-modal [isOpen]="isModalAddProductOpen" [fullscreen]='true' class="aside-panel"
+  [ngClass]="{'modal-open': isModalAddProductOpen}" (onClose)="handleModalClose($event)">
+  <header class="modal-header-container row">
+    <div class="col-auto">
+      <a class="btn-modal-close" href="javascript:void()" (click)="handleModalClose($event)">
+        <i class="icon-back"></i>
+      </a>
+    </div>
+    <div class="col">
+      <div class="modal-title-wrapper">
+        <span class="modal-title">
+          Add Prodcut
+        </span>
+      </div>
+    </div>
+    <div class="col text-right">
+      <button class="btn btn-primary mr-2">
+        Publish
+      </button>
+      <button class="btn btn-outline-primary">
+        Cancel
+      </button>
+    </div>
+  </header>
+  <app-modal-body>
+  </app-modal-body>
+</app-modal> -->
+<app-modal [isOpen]="isModalAddProductOpen" [fullscreen]='true' class="aside-panel"
+  [ngClass]="{'modal-open': isModalAddProductOpen}" (onClose)="handleModalClose($event)">
+  <app-modal-body>
+    <app-create-fixed-price-product *ngIf="isModalAddProductOpen"
+      (backToList)="handleModalClose($event)" [isEdit]="false">
+    </app-create-fixed-price-product>
+  </app-modal-body>
+</app-modal>
+
+
+
+
+<div class="orders-wrapper w-100">
+  <div class="container-fluid">
+    <div class="d-flex justify-content-between align-item-center py-2">
+      <h4 class="font-weight-bold">Orders</h4>
+      <div>
+        <a class="btn btn-outline-primary mr-2" routerLink="/admin/fixed-fee-products/list"
+          routerLinkActive="active">Product List</a>
+        <button class="btn btn-primary float-right" (click)="handleModalOpenClick()">Add Product</button>
+      </div>
+    </div>
+
+
+    <div class="aution-tab">
+      <!-- Aution Tab -->
+      <ul class="nav nav-tabs">
+        <li class="active"><a class="active" data-toggle="tab" href="#my-orders">Orders
+            <span class="badge bg-danger text-white">{{orderList.length}}</span></a></li>
+        <li class=""><a data-toggle="tab" href="#d-schedule">Delivery Schedule
+            <span class="badge bg-danger text-white">0</span></a></li>
+        <li class=""><a data-toggle="tab" href="#b-invoice">Billing/Invoices
+            <span class="badge bg-danger text-white">0</span>
+          </a></li>
+        <div class="auction-sort">
+          <div class="sort-type mr-2">
+
+            <!-- <input type="text" value="Mumbai"> -->
+            <ng-select [items]="orderStatusList" bindLabel="display_name" bindValue="value" placeholder="All status"
+              dropdownPosition="bottom" [clearable]="false" class="disable-clear-all" (change)="onStatusChange($event)">
+            </ng-select>
+          </div>
+        </div>
+        <div class="p-1">
+          <a href="javascript:void()" id="filter-dropdown" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false">
+            <img class="" src="assets/img/icon-search.svg" />
+          </a>
+        </div>
+        <div class="filter-header dropdown">
+          <a href="javascript:void()" id="filter-dropdown" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false">
+            <img class="w-75" src="assets/img/icon-more.svg" />
+          </a>
+          <!-- <div class="dropdown-menu dropdown-menu-right" aria-labelledby="filter-dropdown">
+              <button class="dropdown-item" [ngClass]="{'active': dateFilter == 'all'}" (click)="handleFilterClick('all')">All</button>
+              <button class="dropdown-item" [ngClass]="{'active': dateFilter == 'pastHour'}" (click)="handleFilterClick('pastHour')">Past hour</button>
+              <button class="dropdown-item" [ngClass]="{'active': dateFilter == 'past24Hour'}" (click)="handleFilterClick('past24Hour')">Past 24 hours</button>
+              <button class="dropdown-item" [ngClass]="{'active': dateFilter == 'pastWeek'}" (click)="handleFilterClick('pastWeek')">Past week</button>
+              <button class="dropdown-item" [ngClass]="{'active': dateFilter == 'pastMonth'}" (click)="handleFilterClick('pastMonth')">Past month</button>
+              <button class="dropdown-item" [ngClass]="{'active': dateFilter == 'pastYear'}" (click)="handleFilterClick('pastYear')">Past year</button>
+          </div> -->
+        </div>
+      </ul>
+
+      <div class="tab-content py-3">
+        <!-- Tab: 1 Sand -->
+        <div id="my-orders" class="tab-pane fade in active show">
+          <div class="col-12 table-responsive p-0">
+            <table class="list-table table">
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Order Date</th>
+                  <th>Seller</th>
+                  <th>Product</th>
+                  <th>Lot Size</th>
+                  <th>Order Value</th>
+                  <th>Delivery/Pickup Address</th>
+                  <th>Terms</th>
+                  <th>Status/Action</th>
+                </tr>
+              </thead>
+
+              <tbody class="text-center" *ngIf="isListLoading">
+                <tr>
+                  <td colspan="6">Loading...</td>
+                </tr>
+              </tbody>
+
+              <tbody class="text-center" *ngIf="!isListLoading && orderList?.length === 0">
+                <tr>
+                  <td colspan="9">No result found</td>
+                </tr>
+              </tbody>
+
+              <tbody *ngIf="!isListLoading && orderList?.length !== 0">
+                <tr *ngFor="let item of orderList">
+                  <td *ngIf="item?.status?.value < orderAccepted">{{item?.order_number}}</td>
+                  <td *ngIf="item?.status?.value >= orderAccepted"><a routerLink="/admin/orders/details/{{item?.id}}" routerLinkActive="active">{{item?.order_number}}</a></td>
+                  <td>
+                    <div class="date">
+                      {{item?.created_on | date: 'dd/MM/YYYY'}}
+                    </div>
+                    <div class="time">
+                      {{item?.created_on | date: 'hh:mm aa'}}
+                    </div>
+                  </td>
+                  <td>{{item?.seller?.name}}</td>
+                  <td>
+                    <div class="text-primary" *ngFor="let oItem of item?.buyer_order_items; let i = index;">
+                      {{i+1}}. {{oItem?.sale_products?.product?.name}}
+                    </div>
+                    <!-- <div class="p-detail">
+                      <div>Grade: {{item?.buyer_order_items?.sale_products?.grade?.grade}}
+                        ({{item?.buyer_order_items?.sale_products?.grade?.fineness_modulus}})</div>
+                      <div>Silt: {{item?.buyer_order_items?.sale_products?.silt}}%</div>
+                      <div>Source: {{item?.buyer_order_items?.sale_products?.source}}</div>
+                    </div> -->
+                  </td>
+                  <!-- <td>{{item?.total_tonnage}} Tons</td> -->
+                  <td>
+                    <div class="text-primary" *ngFor="let oItem of item?.buyer_order_items">
+                      {{oItem?.qty * oItem?.truck_size}} tons ({{oItem?.grand_total | currency: 'INR': 'symbol':'1.0-0'}})
+                    </div>
+                  </td>
+                  <td>
+                    <div>
+                      {{item?.grandtotal_amount |currency: 'INR': 'symbol':'1.0-0'}} <span
+                        class="ex-for-badge">{{item?.delivery_option == 2 ? 'Ex Works' : 'FOR'}}</span>
+                    </div>
+                    <div class="time">
+                      {{item?.price_per_ton | currency: 'INR': 'symbol':'1.0-0'}}
+                    </div>
+                  </td>
+                  <td>{{item?.address}}</td>
+                  <td>
+                    <div class="text-primary" *ngFor="let oItem of item?.buyer_order_items">
+                      {{oItem?.payment_term?.type_days ? 'Payment: ' + oItem?.payment_term?.type_days + ' Days' : '-'}}
+                    </div>
+                    <!-- <div>Delivery {{item?.buyer_order_items?.sale_products?.delivery_term?.type_days}} Days</div> -->
+                  </td>
+                  <td class="cell-status" *ngIf="item?.status?.value !== orderPlacedStatus">
+                    <span>{{item?.status?.display_name}}</span></td>
+                  <td *ngIf="item?.status?.value === orderPlacedStatus"><button class="btn btn-primary btn-sm"
+                      (click)="getSellerList(item)" data-toggle="modal"
+                      data-target="#sellerModal">Seller</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <!-- Tab: 2 Supplementry Products -->
+        <div id="d-schedule" class="tab-pane fade in active show">
+        </div>
+        <!-- Tab: 3 Sand Bags -->
+        <div id="b-invoice" class="tab-pane fade in active show">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade select-seller-modal" id="sellerModal" tabindex="-1" role="dialog" aria-labelledby="sellerModal"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">{{sellerList[0]?.product_name}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="col-12 table-responsive p-0">
+          <table class="list-table table">
+            <thead>
+              <tr>
+                <th>Action</th>
+                <th>Company</th>
+                <!-- <th>Sand Type</th>
+                      <th>Grade</th> -->
+                <th>Product</th>
+                <th>Available tonnage</th>
+                <th>This month tonnage</th>
+              </tr>
+            </thead>
+
+            <tbody *ngIf="sellerList?.length !== 0">
+              <tr *ngFor="let item of sellerList; let i = index">
+                <td class="cell-status">
+                  <input type="radio" name="seller_id" value="selectedSeller?.id" (change)="onSellerRadioChange(item)">
+                </td>
+                <td class="cell-company">
+                  <div>
+                    {{item.name}}
+                  </div>
+                </td>
+                <td class="cell-company">
+                  <div *ngFor="let p of item?.products">
+                    {{p.product_name}}
+                  </div>
+                </td>
+                <!-- <td class="cell-company">{{item.grade}}</td> -->
+                <td class="cell-company">
+
+                  <div *ngFor="let p of item?.products">
+                    {{p.total}}
+                  </div>
+                </td>
+                <td class="cell-company">
+
+                  <div *ngFor="let p of item?.products">
+                    {{p.tonnage}}
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+            <tbody *ngIf="sellerList?.length === 0">
+              <tr>
+                <td colspan="4" class="text-center">Product is out of stock.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="notifySeller()">Notify</button>
+      </div>
+    </div>
+  </div>
+</div>

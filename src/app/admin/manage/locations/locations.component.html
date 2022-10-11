@@ -1,0 +1,107 @@
+
+<section id="product-list" class="container-fluid pt-3">
+  <div class="d-flex justify-content-between align-item-center border-bottom pb-2">
+    <h4 class="font-weight-bold">Locations</h4>
+    <a class="btn btn-primary float-right" data-toggle="modal" data-target="#addLocationSidebar">Create Location</a>
+  </div>
+  <div class="col-12 table-responsive p-0">
+    <table class="list-table table">
+        <thead>
+            <tr>
+                <th>Location Name</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody class="text-center" *ngIf="isListLoading">
+            <tr>
+                <td colspan="6">Loading...</td>
+            </tr>
+        </tbody>
+
+        <tbody class="text-center" *ngIf="!isListLoading && locationList?.length === 0">
+            <tr>
+                <td colspan="6">No result found</td>
+            </tr>
+        </tbody>
+
+        <tbody *ngIf="!isListLoading && locationList?.length !== 0">
+            <tr *ngFor="let item of locationList">
+                <td class="cell-company">{{item?.location_name}}</td>
+                <td class="cell-status">
+                    <span (click)="onEditBtn(item?.id)" data-toggle="modal" data-target="#addLocationSidebar">Edit</span>
+                    <span (click)="deleteLocation(item?.id)">Delete</span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Side Bar Modal -->
+<div class="modal fade" id="addLocationSidebar" tabindex="-1" role="dialog" aria-labelledby="filter" aria-hidden="true">
+  <div class="modal-dialog modal-lg float-right m-0 h-100 w-50" role="document">
+    <div class="modal-content h-100 w-100" style="">
+      <div class="modal-header justify-content-start">
+        <button type="button" class="close ml-0 mr-1" data-dismiss="modal" aria-label="Close" (click)="initForm()" id="modal-close-btn">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h5 class="modal-title" id="productSidebarTitle">{{locationForm.value.id ? 'Update' : 'Create'}} Location</h5>
+        <button type="button" class="btn btn-primary ml-auto" (click)="createLocation()">Save</button>
+      </div>
+      <div class="modal-body" [formGroup]="locationForm" *ngIf="locationForm">
+        <div class="row py-2" style="background-color: #f9f9f9;">
+          <div class="col-md-12">
+            <span class="">Location Details</span>
+          </div>
+        </div>
+
+        <div class="row align-items-center py-2">
+          <div class="col-md-3"><span class="">Location Name *</span></div>
+          <div class="col-md-3">
+            <div class="input-wrap m-0">
+              <input type="text" formControlName="location_name">
+              <i *ngIf="locationForm.controls.location_name.invalid && locationForm.controls.location_name.touched"
+              class="erro-red">Location name required</i>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary rounded-0" data-dismiss="modal" (click)="initForm()">Close</button>
+        <button type="button" class="btn btn-primary" (click)="createLocation()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="confirmModel" tabindex="-1" role="dialog" aria-labelledby="confirmModel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header py-2">
+        <h6 class="modal-title font-weight-bold" id="confirmModel-title">Delete</h6>
+      </div>
+      <div class="modal-body pt-0">
+        <div class="row p-4">
+          <div class="col-md-12">
+
+            <div class="mb-3">
+              <span>Are you sure you want to delete location?</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-6">
+              <button class="btn btn-outline-primary w-100" data-dismiss="modal" aria-label="Close">No</button>
+            </div>
+            <div class="col-md-6">
+              <button class="btn btn-primary w-100" (click)="delete()">YES</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

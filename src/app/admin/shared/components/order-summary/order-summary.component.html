@@ -1,0 +1,141 @@
+                <!-- Amount Details table-->
+                <table class="payment-tbl mt-3" *ngIf="OrderData">
+                  <tr>
+                    <th style="border-right: none;">Order Details</th>
+                    <th style="border-left: none;"></th>
+                  </tr>
+                  <tr [ngClass]="{'d-none': !OrderData?.oc_date}">
+                    <td>Order Confirmation Date</td>
+                    <td>
+                      {{ OrderData?.oc_date | date: "dd-MM-YYYY" }},
+                      {{ OrderData?.oc_date | date: "hh:mm aa" }}
+                      <!-- {{ OrderData?.to_datetime | date: "hh:mm aa" }} -->
+                    </td>
+                  </tr>
+                  <tr [ngClass]="{'d-none': !OrderData?.payment_option}">
+                    <td>Payment Option</td>
+                    <td>{{OrderData?.payment_option}}</td>
+                  </tr>
+                  <tr [ngClass]="{'d-none': !OrderData?.lot_size}">
+                    <td>Total Tonnage</td>
+                    <td>{{OrderData?.lot_size}} tons </td>
+                  </tr>
+                  <tr [ngClass]="{'d-none': !OrderData?.price_per_ton}">
+                    <td>Price Per Ton</td>
+                    <td><span>₹</span> {{OrderData?.price_per_ton | number: '1.2-2'}}</td>
+                  </tr>
+                  <tr [ngClass]="{'d-none': !OrderData?.net_amount}">
+                    <td>Net Amount</td>
+                    <td><span>₹</span> {{OrderData?.net_amount | number: '1.2-2'}}</td>
+                  </tr>
+                  <tr [ngClass]="{'d-none': !OrderData?.gst_amount}">
+                    <td>GST</td>
+                    <td><span>₹</span> {{OrderData?.gst_amount | number: '1.2-2'}}</td>
+                  </tr>
+                  <!-- <tr>
+                    <td>Logistics with GST</td>
+                    <td><span>₹</span> {{+OrderData?.logistic_amount + +OrderData?.gst_amount | number: '1.2-2'}}</td>
+                  </tr> -->
+                  <tr [ngClass]="{'d-none': !OrderData?.gross_amount}">
+                    <th>Order Value</th>
+                    <th><span>₹</span> {{OrderData?.gross_amount | number: '1.2-2'}}</th>
+                  </tr>
+                </table>
+
+                <!-- Delivery center details table -->
+                <!-- <table class="payment-tbl" *ngIf="OrderData?.OrderData">
+                  <tr>
+                    <th style="border-right: none;">Delivery Center Details</th>
+                    <th style="border-left: none;"></th>
+                  </tr>
+                  <tr>
+                    <td>Address</td>
+                    <td>{{OrderData?.shipping_details?.line_1 ? OrderData?.shipping_details?.line_1 + ',' : ''}}
+                      {{OrderData?.shipping_details?.line_2 ? OrderData?.shipping_details?.line_2 + ',' : ''}}
+                      {{OrderData?.shipping_details?.landmark ? OrderData?.shipping_details?.landmark + ',' : ''}}
+                      {{OrderData?.shipping_details?.city_name ? OrderData?.shipping_details?.city_name + ',' : ''}}
+                      {{OrderData?.shipping_details?.state_name ? OrderData?.shipping_details?.state_name + ',' : ''}}
+                      {{OrderData?.shipping_details?.country_name ? OrderData?.shipping_details?.country_name + ',' :
+                      ''}}
+                      Pincode - {{OrderData?.shipping_details?.pincode}}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Point of Contact</td>
+                    <td>{{OrderData?.shipping_details?.name}}</td>
+                  </tr>
+                  <tr>
+                    <td>Email ID</td>
+                    <td>{{OrderData?.shipping_details?.email}}</td>
+                  </tr>
+                  <tr>
+                    <td>Phone Number</td>
+                    <td>{{OrderData?.shipping_details?.mobile}}</td>
+                  </tr>
+                </table> -->
+
+                <!-- seller details table -->
+                <table class="payment-tbl" *ngIf="OrderData?.pickup_details">
+                  <tr>
+                    <th style="border-right: none;">Seller Details</th>
+                    <th style="border-left: none;"></th>
+                  </tr>
+                  <tr>
+                    <td>Company Name</td>
+                    <td>{{OrderData?.pickup_details?.name}}</td>
+                  </tr>
+                  <tr>
+                    <td>Pickup Center Details</td>
+
+                    <td>{{OrderData?.pickup_details?.line_1 ? OrderData?.pickup_details?.line_1 + ',' : ''}}
+                      {{OrderData?.pickup_details?.line_2 ? OrderData?.pickup_details?.line_2 + ',' : ''}}
+                      {{OrderData?.pickup_details?.landmark ? OrderData?.pickup_details?.landmark + ',' : ''}}
+                      {{OrderData?.pickup_details?.city_name ? OrderData?.pickup_details?.city_name + ',' : ''}}
+                      {{OrderData?.pickup_details?.state_name ? OrderData?.pickup_details?.state_name + ',' : ''}}
+                      {{OrderData?.pickup_details?.country_name ? OrderData?.pickup_details?.country_name + ',' : ''}}
+                      Pincode - {{OrderData?.pickup_details?.pincode}}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Point Of Contact</td>
+                    <td>{{OrderData?.pickup_details?.poc}}</td>
+                  </tr>
+                  <tr>
+                    <td>Email</td>
+                    <td>{{OrderData?.pickup_details?.email}}</td>
+                  </tr>
+                  <tr>
+                    <td>Phone</td>
+                    <td>{{OrderData?.pickup_details?.phone}}</td>
+                  </tr>
+                </table>
+
+                <!-- product details table -->
+                <div *ngIf="OrderData?.product_details">
+                  <table class="payment-tbl" *ngFor="let item of OrderData?.product_details; let i = index;">
+                    <tr>
+                      <th style="border-right: none;">Product {{i+1}} Details</th>
+                      <th style="border-left: none;"></th>
+                    </tr>
+                    <tr>
+                      <td>Product Name</td>
+                      <td>{{item?.name}}</td>
+                    </tr>
+                    <tr>
+                      <td>Grade</td>
+                      <td>{{item?.grade}} ({{item?.fm}})</td>
+                    </tr>
+                    <tr>
+                      <td>Silt</td>
+                      <td>{{item?.silt}} %</td>
+                    </tr>
+                    <tr>
+                      <td>Source</td>
+                      <td>{{item?.source}}</td>
+                    </tr>
+                    <tr>
+                      <td>Documents</td>
+                      <td>{{item?.name}}</td>
+                    </tr>
+                  </table>
+                </div>

@@ -1,0 +1,83 @@
+.auction-id{
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+
+/* file pdf */
+.sieve-pdf{
+    border: 1px solid #EAEAEA;
+    padding: 15px;
+    min-height: 160px;
+    margin-bottom: 25px;
+}
+.file-wrap{
+    display: inline-block;
+    margin-right: 25px;
+    margin-top: 10px;
+}
+.file-wrap img{
+    width: 16px;
+    height: auto;
+    margin-right: 13px;
+    transform: translateY(-3px);
+}
+.file-wrap a{
+    color: #000000 !important;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+
+/* Auction  lost table */
+ .lost-head{
+    margin: 22px 0px;
+    font-size: 20px;
+    font-weight: bold;
+ }
+.payment-tbl{
+    width: 100%;
+    border: 1px solid #E7E7E7;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+.payment-tbl tr td{
+    border: 1px solid #E7E7E7;
+    padding: 8px 10px;
+}
+.payment-tbl tr td:first-child{
+    width: 230px;
+    background-color: #fbfbfb;
+    vertical-align: top;
+}
+.payment-tbl tr th{
+    background-color: #fbfbfb;
+    border: 1px solid #E7E7E7;
+    padding: 8px 10px;
+}
+
+/* Auction Tab */
+.auction-tab{
+    width: 100%;
+}
+.auction-tab .nav-tabs{
+    padding-bottom: 13px;
+    border-bottom: 0px;
+}
+.auction-tab .nav-tabs li{
+    margin-top: 17px;
+}
+.auction-tab .nav-tabs li a{
+    color: #000;
+    padding: 13px 0px;
+    margin-right: 35px;
+    margin-bottom: 10px;
+    font-weight: 500;
+    text-decoration: none;
+}
+.auction-tab .nav-tabs li a.active{
+    border-bottom: 2px solid #0988CE;
+    color: #0988CE;
+}

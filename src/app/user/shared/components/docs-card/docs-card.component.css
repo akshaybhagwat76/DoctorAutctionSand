@@ -1,0 +1,11 @@
+.text-primary {
+  color: #0988CE !important;
+}
+
+.docs-card {
+  background: #FFFFFF 0% 0% no-repeat padding-box;
+  box-shadow: 0px 1px 2px #72727269;
+  border-radius: 10px;
+  opacity: 1;
+  border: none;
+}

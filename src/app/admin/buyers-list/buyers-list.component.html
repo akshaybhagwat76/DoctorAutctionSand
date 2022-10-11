@@ -1,0 +1,12 @@
+<section id="buyers-list" class="container-fluid">
+    <app-list [listType]="'BUYER'" (onListItemClick)="handleListItemClick($event)"></app-list>
+
+    <app-modal [isOpen]="isModalOpen" [fullscreen]='true' class="aside-panel" [ngClass]="{'modal-open': isModalOpen}"
+        (onClose)="handleModalClose($event)">
+        <app-modal-body>
+            <app-reg-details *ngIf="isModalOpen" [selectedData]="selectedData" (backToList)="handleModalClose($event)"
+                [listType]="'BUYER'" [stateList]="stateList">
+            </app-reg-details>
+        </app-modal-body>
+    </app-modal>
+</section>

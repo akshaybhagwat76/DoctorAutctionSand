@@ -1,0 +1,279 @@
+<div class="main-bg">
+    <div class="whole-container">
+        <div class="logo">
+            <img src="assets/img/logo1-doctor-sand.svg" alt="ss-logo">
+        </div>
+        <div class="form-container">
+            <div class="top-steps">
+                <div class="steps-wrap">
+                    <span class="active">
+                        <img src="assets/img/Icon-check-circle-green.svg" alt="circle">
+                        Verify Details
+                    </span>
+                    <span>
+                        <img src="assets/img/Icon-check-circle.svg" alt="circle">
+                        {{user.role_id == 1 ? 'Delivery Center Details' : 'Pickup Center Details'}}
+                        
+                    </span>
+                    <span>
+                        <img src="assets/img/Icon-check-circle-gray.svg" alt="circle">
+                        Registration Fees
+                    </span>
+                </div>
+            </div>
+            <div class="form-wrap">
+                <!--error-message -->
+                <!-- <span class="error" *ngIf="error_message">{{error_message}}</span> -->
+                <form>
+                    <div class="rgt-form" *ngFor="let group of form.controls;let i = index">
+                        <ng-container [formGroup]="group">
+                            <!-- Section head -->
+                            <div class="section-head">
+                                <h5>   {{user.role_id == 1 ? 'Delivery Center' : 'Pickup Center'}} {{i+1}} Details</h5>
+                                <span class="remove-poc" *ngIf="i>0 && !postData" (click)="removePOC(i)">Remove</span>
+                            </div>
+
+                            <!-- Address -->
+                            <div class="input-wrap">
+                                <input class="text-uppercase" formControlName="address" type="text"
+                                placeholder=" ">
+                                <label   class="placeholder">Address *</label>
+                                <i *ngIf="group.get('address').invalid 
+                                    && group.get('address').touched"
+                                    class="erro-red">Please enter Address</i>
+                            </div>
+                    
+                            <!-- Landmark & State-->
+                            <div class="row gutter">
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="input-wrap">
+                                        <input class="text-uppercase" type="text" placeholder=" " 
+                                        formControlName="landmark">
+                                        <label class="placeholder">Nearest Landmark *</label>
+                                        <i *ngIf="group.get('landmark').invalid 
+                                        && group.get('landmark').touched"
+                                        class="erro-red">Please enter Nearest Landmark</i>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="input-wrap">
+                                    <ng-select [items]="stateList" 
+                                                (change)="getCityList(group.controls['state_id'].value,i)"
+                                                bindLabel="state_name" 
+                                                bindValue="id"
+                                                placeholder="State *"
+                                                [clearable]="false"
+                                                formControlName="state_id"
+                                                [class.errors]="group.get('state_id').invalid && group.get('state_id').touched"
+                                                dropdownPosition="bottom" >
+                                    </ng-select>
+                                    <i *ngIf="group.get('state_id').invalid && group.get('state_id').touched"
+                                    class="erro-red">State required</i>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                    
+                            <!-- City & PinCode -->
+                            <div class="row gutter">
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="input-wrap">
+                                        <input *ngIf="hideCityDrop" class="text-uppercase" type="text" placeholder=" " formControlName="city_id"
+                                        >
+                                    <ng-select [items]="cityList" 
+                                                *ngIf="!hideCityDrop"
+                                                bindLabel="city_name" 
+                                                bindValue="id"
+                                                placeholder="City *"
+                                                [clearable]="false"
+                                                formControlName="city_id"
+                                                [class.errors]="group.get('city_id').invalid && group.get('city_id').touched"
+                                                dropdownPosition="bottom" >
+                                    </ng-select>
+                                    <i *ngIf="group.get('city_id').invalid && group.get('city_id').touched"
+                                    class="erro-red">City required</i>
+                                    </div>
+                                </div>
+                    
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="input-wrap">
+                                    <input class="text-uppercase" type="text" placeholder=" " formControlName="pincode"
+                                    maxlength="6"
+                                    pattern="[0-9]{6}"
+                                    >
+                                    <label class="placeholder">Pincode*</label>
+                                    <i *ngIf="group.get('pincode').invalid 
+                                    && group.get('pincode').touched
+                                    && !group.get('pincode').errors?.pattern"
+                                    class="erro-red">Please enter Pincode</i>
+                                    <i *ngIf="group.get('pincode').invalid 
+                                    && group.get('pincode').touched
+                                    && group.get('pincode').errors?.pattern"
+                                    class="erro-red">Invalid Pincode</i>
+                                    </div>
+                                </div>
+                            </div>
+                    
+                            <!-- phone & Email-->
+                            <!-- <div class="row gutter">
+                                <div class="col-sm-12 col-md-6">
+                                
+                                    <div class="contact-info">
+                                        <div class="input-wrap">
+                                            <ng-select [items]="phonePin" 
+                                                        bindLabel="name" 
+                                                        bindValue="id"
+                                                        placeholder=""
+                                                        [clearable]= false
+                                                        dropdownPosition="bottom" >
+                                            </ng-select>
+                                        </div>
+                                        <div class="input-wrap">
+                                            <input type="number" placeholder=" " formControlName="mobile">
+                                            <label class="placeholder">Phone Number *</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="email-info">
+                                        <div class="input-wrap">
+                                        <input type="email" placeholder=" ">
+                                        <label class="placeholder">Email *</label>
+                                        <i class="erro-blue">OTP has been sent to your phone</i>
+                                        </div>
+                                    </div>
+                            
+                                </div>
+                            </div>
+                    -->
+
+                            <!-- Date -->
+                            <!-- <div class="row gutter">
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="input-wrap">
+                                        <input type="date" placeholder=" "
+                                        [class.errors]="group.get('poc_reg_date').invalid && group.get('poc_reg_date').touched"
+                                        formControlName="poc_reg_date">
+                                        <label class="placeholder">Date of Registration *</label>
+                                    </div>
+                                </div>
+                            </div> -->
+                    
+                            <!-- Section head -->
+                            <div class="section-head">
+                                <h5>  {{user.role_id == 1 ? 'Delivery Center' : 'Pickup Center'}} {{i+1}} - Point Of Contact</h5>
+                            </div>
+
+                            
+                            <!-- Document & Name -->
+                            <div class="row gutter photo-wrap">
+                                <div class="col-sm-12 col-md-6">
+                                    <div *ngIf="group.get('display_poc_profile').value">
+                                        <span>Profile Photo </span>
+                                        <img class="poc_profile_img" src="{{urlService.documentUrl(userId, group.get('display_poc_profile').value)}}"/>
+                                    </div>
+                                    <div class="input-wrap" *ngIf="!group.get('display_poc_profile').value">
+                                        <input type="file" [disabled]="postData"
+                                        [class.errors]="group.get('poc_profile').invalid && group.get('poc_profile').touched" 
+                                        placeholder=" " formControlName="poc_profile" (change)="fileBrowseHandler($event,i)">
+                                        <label class="placeholder">Profile Photo </label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="email-info">
+                                        <div class="input-wrap">
+                                        <input class="text-uppercase" type="email" placeholder=" " 
+                                        formControlName="poc_name">
+                                        <label class="placeholder">Name *</label>
+                                        <i *ngIf="group.get('poc_name').invalid 
+                                    && group.get('poc_name').touched"
+                                    class="erro-red">Name required</i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Email & Phone -->
+                            <div class="row gutter">
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="input-wrap">
+                                        <input class="text-uppercase" type="text" placeholder=" " 
+                                        pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,3}$"
+                                        formControlName="poc_email">
+                                        <label class="placeholder">E-mail*</label>
+                                        <i *ngIf="group.get('poc_email').invalid 
+                                    && group.get('poc_email').touched
+                                    && !group.get('poc_email').errors?.pattern"
+                                    class="erro-red">Email required</i>
+                                    <i *ngIf="group.get('poc_email').invalid 
+                                    && group.get('poc_email').touched
+                                    && group.get('poc_email').errors?.pattern"
+                                    class="erro-red">Invalid Email</i>
+                                    </div>
+                                </div>
+                    
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="contact-info">
+                                        <div class="input-wrap" style="min-width: 48px;width: 48px;margin-right: 15px;">
+                                            <ng-select [items]="dial_code" bindLabel="name" bindValue="code" formControlName="dial_code"
+                                              placeholder="Dial Code *" [clearable]="false" [searchable]="false" dropdownPosition="bottom" class="disable-arrow disable-dropdown disable-clear-all">
+                                            </ng-select>
+                                          </div>
+                                        <div class="input-wrap">
+                                            <input class="text-uppercase" type="text" placeholder=" "
+                                            formControlName="poc_mobile" maxlength="10" pattern="[0-9]{10}">
+                                            <label class="placeholder">Phone Number*</label>
+                                            <i *ngIf="group.get('poc_mobile').invalid 
+                                            && group.get('poc_mobile').touched
+                                            && !group.get('poc_mobile').errors?.pattern"
+                                            class="erro-red">Phone Number required</i>
+                                            <i *ngIf="group.get('poc_mobile').invalid 
+                                            && group.get('poc_mobile').touched
+                                            && group.get('poc_mobile').errors?.pattern"
+                                            class="erro-red">Invalid Phone Number</i>
+                                        </div>
+                                    </div>                                    
+                                </div>
+                            </div>
+
+                            <!-- br line -->
+                            <span class="hr-line"></span>
+
+                        </ng-container>
+                    </div>
+                    <div *ngIf="!postData" class="add-add-btn">
+                        <button (click)="addPickeupPoint()"><span>+</span>    Add Another {{user.role_id == 1 ? 'Delivery Center' : 'Pickup Center'}}</button>
+                    </div>
+                    <!-- Continue btn -->
+                    <span class="error" *ngIf="error_message"><i>{{error_message}}</i></span>
+                    <div class="clearfix continue-btn">
+                        <button class="next" type="submit" (click)="addPickupData()">Continue</button>
+                        <button class="prev" (click)="goToPreviousPage(0)">Previous</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+   
+
+</div>
+
+<div class="modal fade" id="warning-modal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div class="reg-wrap">
+            <!-- <img src="assets/img/Icon-check-circle.svg" alt="circle"> -->
+            <h3>Are you sure?</h3>
+            <p>Going back to previous page will loose current page data</p>
+            <button type="button" data-dismiss="modal">No</button>
+            <button type="button" data-dismiss="modal" (click)="goToPreviousPage(1)">Yes</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>

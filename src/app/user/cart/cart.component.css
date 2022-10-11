@@ -1,0 +1,35 @@
+.bid-details{
+    margin: 10px 0;
+    /* background-color: #f8f8f8; */
+    padding: 10px 8px;
+    width: 100%;
+  }
+  .bid-details td,
+  .bid-details th{
+    padding: 8px;
+  }
+  
+  .bid-details td:first-child{
+    width: 140px;
+  }
+  
+  .bid-details td:first-child img{
+    float: right;
+    margin-top: 6px;
+  }
+  .bid-details td:last-child,
+  .bid-details th:last-child{
+    text-align: right;
+  }
+  .bid-details tr:last-child{
+    border-top: 1px dashed #D0D0D8;
+  }
+
+  .border-primary {
+    border-color: #0988CE !important;
+  }
+
+  .confirmOrderModal .OCForm-head{
+    font-size: 17px;
+    font-weight: bold;
+    }

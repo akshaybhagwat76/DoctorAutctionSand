@@ -1,0 +1,457 @@
+<app-modal-confirm [modalId]="confirmOrderModalId" [mdata]="confirmOrderModalData" (confirm)="onConfirmOrderConfirmation($event)"></app-modal-confirm>
+<app-modal-confirm [modalId]="pincodeModalId" [mdata]="pincodeModalData"></app-modal-confirm>
+
+<div class="bidder-wrapper">
+  <!-- breadcrumbs -->
+  <div class="breadcrumbs">
+    <div class="container">
+      <a [routerLink]="['/user/fixed-fee/']">Fixed Price</a>
+      <i> > </i>
+      <a href="javascript:void(0)">{{productDetails.name}}</a>
+    </div>
+  </div>
+
+  <!-- Back btn -->
+  <div class="back-btn-wrap d-none">
+    <div class="container">
+      <div class="back-btn">
+        <a [routerLink]="['/user/fixed-fee/']">
+          <i class="b-arrow"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Lot Details -->
+  <div class="lot-details">
+    <div class="container">
+      <div class="aution-tab">
+        <ul class="nav nav-tabs mb-4">
+          <li><a class="active" data-toggle="tab" href="#p-details">Product Details</a></li>
+          <li><a data-toggle="tab" href="#payment">Delivery & Payment Terms</a></li>
+          <li><a data-toggle="tab" href="#tnc">Terms & Conditions</a></li>
+          <!-- <li><a data-toggle="tab" href="#history">My bid history</a></li> -->
+          <div class="auction-id">Product ID : {{productDetails.product_number}}</div>
+        </ul>
+
+        <div class="row">
+          <div class="col-lg-8">
+            <div class="tab-content">
+
+              <!-- Tab: 1 : Lot Details -->
+              <div id="p-details" class="tab-pane fade in active show">
+                <!-- auction Vertical card -->
+                <app-auction-hcard [auctionDetail]="productDetails" *ngIf="productDetails"></app-auction-hcard>
+
+                <!-- PDF -->
+                <div class="sieve-pdf">
+                  <div class="file-wrap" *ngIf="analysisReport">
+                    <img src="assets/img/file-icon.png" alt="file">
+                    <a href="{{urlService.productDocumentUrl(analysisReport)}}" target="_blank">Sieve Analysis
+                      Report.pdf</a>
+                  </div>
+                  <div class="file-wrap" *ngIf="concertReport">
+                    <img src="assets/img/file-icon.png" alt="file">
+                    <a href="{{urlService.productDocumentUrl(concertReport)}}" target="_blank">Concrete Test
+                      Report.pdf</a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tab: 2 : Payment terms -->
+              <div id="payment" class="tab-pane fade">
+                <div class="payment-wrap mt-0">
+                  <!-- <h2 class="head">Delivery & Payment Terms</h2> -->
+                  <!-- <div class="theme-cont">Updated December 2020</div> -->
+                  <div class="pay-cont">
+                    <h5 class="hl-head mt-0">Delivery Terms<i></i></h5>
+                    <div [innerHTML]="deliveryText"></div>
+                    <h5 class="hl-head">Payment Terms<i></i></h5>
+                    <div [innerHTML]="paymentText"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tab: 3 : T&C -->
+              <div id="tnc" class="tab-pane fade">
+                <div class="payment-wrap mt-0">
+                  <!-- <h2 class="head">Terms & Condition Of Service</h2> -->
+                  <!-- <div class="theme-cont">Updated December 2020</div> -->
+                  <div class="pay-cont">
+                    <h5 class="hl-head mt-0">Terms & Conditions<i></i></h5>
+                    <div [innerHTML]="tncText"></div>
+                  </div>
+                </div>
+              </div>
+
+
+
+            </div>
+          </div>
+
+
+          <!-- rgt: Time Start/end -->
+          <div class="col-xs-12 col-lg-4">
+
+            <!-- locatin -->
+            <div class="auction-location" [formGroup]="deliveryDetailsForm">
+
+              <!-- <div class="d-flex justify-content-between">
+                <div class="py-1 w-75">
+                  <div>Quantity</div>
+                  <div class="input-wrap mb-1">
+                    <ng-select [items]="quantityList" bindLabel="name" bindValue="id"
+                      placeholder="Select" dropdownPosition="bottom" formControlName="quantity" [clearable]="false" (change)="onQtyChange()">
+                    </ng-select>
+                    <i class="text-muted">Minimum order quantity {{productDetails.min_order_qnty}}</i>
+                  </div>
+                </div>
+                <div class="py-1 w-25 pl-2">
+                  <div>Truck Size</div>
+                  <div class="input-wrap mb-1">
+                    <input type="text" placeholder=" " formControlName="truck_size" readonly>
+                  </div>
+                </div>
+              </div> -->
+              <div class="py-1">
+                <div>Total Tonnage</div>
+                <div class="input-wrap mb-0">
+                  <input type="text" placeholder=" " formControlName="total_tonnage" (input)="onTonnageChange()">
+                  <i *ngIf="deliveryDetailsForm.controls.total_tonnage.invalid && deliveryDetailsForm.controls.total_tonnage.touched && deliveryDetailsForm.controls.total_tonnage.errors"
+                    class="erro-red">Tonnage required</i>
+                </div>
+              </div>
+              <div class="py-1">
+                <div>Payment Option:</div>
+                <div class="row m-0">
+                  <div class="col-md-6 border text-center p-1 pointer rounded"
+                    [ngClass]="{'border-primary': selectedPaymentOption=='1'}"
+                    (click)="setPaymentOption('1')">
+                    Cash
+                  </div>
+                  <div class="col-md-6 border text-center p-1 pointer rounded credit"
+                    [ngClass]="{'border-primary': selectedPaymentOption=='2'}" (click)="setPaymentOption('2')"
+                    >
+
+                    Credit
+                  </div>
+                  <!-- <div *ngIf="!isCreditEnabled" class="credit disabled col-md-6 border text-center p-1 pointer rounded" title="Order value exceeds your credit limit, Please update your passbook to continue.">
+                    Credit
+                  </div> -->
+                </div>
+              </div>
+              <div class="py-1" *ngIf="deliveryDetailsForm.value.payment_option == '2' && productDetails?.credit_payment_term && productDetails?.credit_payment_term.length > 0">
+                <div>Payment Terms (days) :</div>
+                <div class="input-wrap mb-0">
+                    <ng-select [items]="productDetails?.credit_payment_term" bindLabel="payment_term_days" bindValue="payment_term_id"
+                      placeholder="Select" dropdownPosition="bottom" formControlName="payment_term_id" [clearable]="false" (change)="calcAmounts()">
+                    </ng-select>
+                </div>
+              </div>
+              <div class="py-1">
+                <div>Delivery Option:</div>
+                <div class="row m-0">
+                  <div class="col-md-6 border text-center p-1 pointer rounded"
+                    [ngClass]="{'border-primary': selectedDeliveryOption=='1'}"
+                    (click)="setDeliveryOption('1')">
+                    FOR
+                  </div>
+                  <div class="col-md-6 border text-center p-1 pointer rounded"
+                    [ngClass]="{'border-primary': selectedDeliveryOption=='2'}" (click)="setDeliveryOption('2')">
+                    Ex works
+                  </div>
+                </div>
+              </div>
+              <table class="bid-details border">
+                <tr *ngIf="deliveryDetailsForm.value.payment_option == '1'; else elseCredit">
+                  <td style="width: 60%;">Price/ Ton </td>
+                  <td>₹ {{deliveryDetailsForm.controls['price_per_ton'].value | number:'1.2-2'}}</td>
+                </tr>
+                <ng-template #elseCredit>
+                  <tr>
+                    <td style="width: 60%;">Price/ Ton </td>
+                    <td>₹ {{deliveryDetailsForm.controls['price_per_ton'].value + deliveryDetailsForm.controls['credit_charge'].value | number:'1.2-2'}}</td>
+                  </tr>
+                </ng-template>
+                <!-- <tr *ngIf="deliveryDetailsForm.value.payment_option == '2'">
+                  <td style="width: 60%;">Credit Charge </td>
+                  <td>₹ {{deliveryDetailsForm.controls['credit_charge'].value | number:'1.2-2'}}</td>
+                </tr>
+                <tr *ngIf="deliveryDetailsForm.value.payment_option == '2'">
+                  <td style="width: 60%;">Price with credit/ Ton </td>
+                  <td>₹ {{deliveryDetailsForm.controls['credit_total'].value | number:'1.2-2'}}</td>
+                </tr> -->
+                <tr *ngIf="!IsExWorks">
+                  <td>Logistics Price/ Ton</td>
+                  <td>₹ {{deliveryDetailsForm.controls['logistics_price'].value | number:'1.2-2'}}</td>
+                </tr>
+                <tr *ngIf="!IsExWorks && deliveryDetailsForm.value.payment_option == '1'">
+                  <th>FOR Price/ Ton</th>
+                  <th>₹ {{deliveryDetailsForm.controls['for_price_per_ton'].value | number:'1.2-2'}}</th>
+                </tr>
+                <tr *ngIf="!IsExWorks && deliveryDetailsForm.value.payment_option == '2'">
+                  <th>FOR Price/ Ton</th>
+                  <th>₹ {{deliveryDetailsForm.controls['for_price_per_ton'].value + deliveryDetailsForm.controls['credit_charge'].value | number:'1.2-2'}}</th>
+                </tr>
+              </table>
+              <table class="bid-details border">
+                <tr>
+                  <td *ngIf="!IsExWorks">Net FOR Amount</td>
+                  <td *ngIf="IsExWorks">Net Amount</td>
+                  <td>₹ {{deliveryDetailsForm.controls['net_for_price'].value | number:'1.2-2'}}</td>
+                </tr>
+                <tr>
+                  <td>GST</td>
+                  <td>₹ {{deliveryDetailsForm.controls['gst_applied'].value | number:'1.2-2'}}</td>
+                </tr>
+                <tr>
+                  <th>Order Value</th>
+                  <td>₹ {{deliveryDetailsForm.controls['grand_total'].value | number:'1.2-2'}}</td>
+                </tr>
+              </table>
+              <div class="location">
+                <img src="assets/img/location-blue.png" alt="location">
+                <span data-toggle="modal" data-target="#OCModal" class="pointer"
+                  (click)="getAddressList()">{{selectedAddress ? selectedAddress?.city_name + ', - ' + selectedAddress?.pincode: 'Please select delivery address'}}</span>
+                <!-- <img class="check-pins ml-3 pointer" src="assets/img/info.png" alt="pins"
+                  title="Check serviceable pincodes" (click)="getServicePincodes()"> -->
+              </div>
+              <p class="erro-red px-3" *ngIf="isDeliverable == 'false' && selectedAddress">Not deliverable to this location
+              </p>
+              <div class="check-agree px-2">
+                <input type="checkbox" name="" id="" formControlName="isTermChecked">
+                <span>I agree to
+                  <a (click)="goToTab('tab-tnc')">Terms & Conditions</a>
+                </span>
+              </div>
+              <!-- <input type="submit" class="place-bid-btn" value="BUY NOW" > -->
+              <!-- <button class="btn btn-primary w-100" (click)="onPlaceOrder()" [ngClass]="{'d-none': selectedPaymentOption == '2'}">BUY NOW</button>
+              <button class="btn btn-primary w-100" (click)="onPlaceOrder()" [ngClass]="{'d-none': selectedPaymentOption == '1'}">PLACE ORDER</button> -->
+              <button class="btn btn-primary w-100" (click)="onConfirmOrderConfirmation(true)">ADD TO CART</button>
+            </div>
+          </div>
+
+        </div>
+
+
+      </div>
+
+
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal: 1 Ordering center -->
+<div class="modal fade OCModal" id="OCModal">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <div class="ordering-wrap">
+          <h4>Choose your delivery location</h4>
+          <p>Select an delivery location to see availability. </p>
+          <address *ngFor="let item of addressList" [ngClass]="{'selected': selectedAddress?.id == item?.id}"
+            (click)="onAddressChange(item)">
+            {{item?.line_1 ? item?.line_1 + ',' : ''}} {{item?.line_2 ? item?.line_2 + ',' : ''}}
+            {{item?.landmark ? item?.landmark + ',' : ''}} {{item?.city_name ? item?.city_name + ',' : ''}}
+            {{item?.state_name ? item?.state_name + ',' : ''}}. Pincode - {{item?.pincode ? item?.pincode : ''}}
+          </address>
+          <!-- <address>
+                          Brigade Gateway, 8th floor, 26/1, Dr. Rajkumar Road, Malleshwaram(W), Maharashtra-560055, Mumbai, India.
+                      </address> -->
+          <a class="add-oc" data-toggle="modal" data-dismiss="modal" data-target="#OCFormModal"
+            (click)="getStateList()">+ Add delivery location</a>
+          <div class="action-btn">
+            <a class="cancel-oc" data-dismiss="modal">Cancel</a>
+            <a class="ok-oc" (click)="onConfirmServiceAddress()">Ok</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Modal: 2 Ordering center Form -->
+<div class="modal fade OCFormModal" id="OCFormModal">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <div class="ordering-wrap" [formGroup]="addressForm" *ngIf="addressForm">
+          <h4 class="OCForm-head">Enter ordering center details</h4>
+
+          <!-- Address -->
+          <div class="input-wrap">
+            <input class="rf-bg text-uppercase" type="text" placeholder=" " formControlName="address">
+            <label class="placeholder">Address *</label>
+            <i *ngIf="addressForm.get('address').invalid
+                          && addressForm.get('address').touched" class="erro-red">Please enter Address</i>
+          </div>
+
+
+          <!-- Landmark & State -->
+          <div class="row gutter">
+            <div class="col-sm-12 col-md-6">
+              <div class="input-wrap">
+                <input class="rf-bg text-uppercase" type="text" placeholder=" " formControlName="landmark">
+                <label class="placeholder">Nearest Landmark *</label>
+                <i *ngIf="addressForm.get('landmark').invalid
+                                  && addressForm.get('landmark').touched" class="erro-red">Please enter Nearest
+                  Landmark</i>
+              </div>
+            </div>
+
+            <div class="col-sm-12 col-md-6">
+              <div class="input-wrap">
+                <ng-select [items]="stateList" bindLabel="state_name" bindValue="id" placeholder="State *"
+                  dropdownPosition="bottom" formControlName="state_id"
+                  [class.errors]="addressForm.get('state_id').invalid && addressForm.get('state_id').touched"
+                  (change)="getCityList()">
+                </ng-select>
+                <i *ngIf="addressForm.get('state_id').invalid && addressForm.get('state_id').touched"
+                  class="erro-red">State required</i>
+              </div>
+            </div>
+          </div>
+
+          <!-- City & PIN -->
+          <div class="row gutter">
+            <div class="col-sm-12 col-md-6">
+              <div class="input-wrap">
+                <ng-select [items]="cityList" bindLabel="city_name" bindValue="id" placeholder="City *"
+                  dropdownPosition="bottom" formControlName="city_id"
+                  [class.errors]="addressForm.get('city_id').invalid && addressForm.get('city_id').touched">
+                </ng-select>
+                <i *ngIf="addressForm.get('city_id').invalid && addressForm.get('city_id').touched"
+                  class="erro-red">City required</i>
+              </div>
+            </div>
+
+            <div class="col-sm-12 col-md-6">
+              <div class="input-wrap">
+                <input class="rf-bg text-uppercase" type="text" placeholder=" " formControlName="pincode" maxlength="6"
+                  pattern="[0-9]{6}">
+                <label class="placeholder">Pincode*</label>
+                <i *ngIf="addressForm.get('pincode').invalid
+                                  && addressForm.get('pincode').touched
+                                  && !addressForm.get('pincode').errors?.pattern" class="erro-red">Please enter
+                  Pincode</i>
+                <i *ngIf="addressForm.get('pincode').invalid
+                                  && addressForm.get('pincode').touched
+                                  && addressForm.get('pincode').errors?.pattern" class="erro-red">Invalid Pincode</i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Phone & Email -->
+          <div class="row gutter">
+            <div class="col-sm-12 col-md-6">
+
+              <div class="contact-info">
+                <div class="input-wrap" style="min-width: 48px;width: 48px;">
+                  <ng-select class="disable-arrow disable-dropdown disable-clear-all" [items]="dial_code"
+                    bindLabel="name" bindValue="code" placeholder="" [clearable]="false" [searchable]="false"
+                    dropdownPosition="bottom" formControlName="dial_code">
+                  </ng-select>
+                </div>
+                <div class="input-wrap">
+                  <input class="rf-bg text-uppercase" type="text" placeholder=" " formControlName="poc_mobile"
+                    maxlength="10" pattern="[0-9]{10}">
+                  <label class="placeholder">Phone Number *</label>
+                  <i *ngIf="addressForm.get('poc_mobile').invalid
+                                      && addressForm.get('poc_mobile').touched
+                                      && !addressForm.get('poc_mobile').errors?.pattern" class="erro-red">Phone Number
+                    required</i>
+                  <i *ngIf="addressForm.get('poc_mobile').invalid
+                                      && addressForm.get('poc_mobile').touched
+                                      && addressForm.get('poc_mobile').errors?.pattern" class="erro-red">Invalid Phone
+                    Number</i>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-12 col-md-6">
+              <div class="email-info">
+                <div class="input-wrap">
+                  <input class="rf-bg text-uppercase" type="email" placeholder=" " formControlName="poc_email"
+                    pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,3}$">
+                  <label class="placeholder">Email *</label>
+                  <i *ngIf="addressForm.get('poc_email').invalid
+                                  && addressForm.get('poc_email').touched
+                                  && !addressForm.get('poc_email').errors?.pattern" class="erro-red">Email required</i>
+                  <i *ngIf="addressForm.get('poc_email').invalid
+                                  && addressForm.get('poc_email').touched
+                                  && addressForm.get('poc_email').errors?.pattern" class="erro-red">Invalid Email</i>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <h5 class="pointofCD">Point Of Contact details</h5>
+
+          <!-- Profile Photo & Name -->
+          <div class="row gutter">
+            <div class="col-sm-12 col-md-6">
+              <div class="input-wrap">
+                <input type="file"
+                  placeholder=" " (change)="fileBrowseHandler($event)">
+                <label class="placeholder">Profile Photo </label>
+              </div>
+            </div>
+
+            <div class="col-sm-12 col-md-6">
+              <div class="input-wrap">
+                <input class="rf-bg text-uppercase" type="text" formControlName="poc_name">
+                <label class="placeholder">Name *</label>
+                <i *ngIf="addressForm.get('poc_name').invalid
+                                  && addressForm.get('poc_name').touched" class="erro-red">Name required</i>
+              </div>
+            </div>
+          </div>
+
+          <div class="action-btn">
+            <a class="cancel-oc" data-dismiss="modal">Cancel</a>
+            <a class="ok-oc" href="javascript:void(0)" (click)="submitAddressForm()">Ok</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="creditExceedModal" tabindex="-1" role="dialog" aria-labelledby="creditExceedModal" aria-hidden="true">
+  <div class="modal-dialog w-25" role="document">
+    <div class="modal-content">
+      <div class="modal-body pt-0">
+        <div class="row">
+          <div class="col-md-12">
+            <button type="button" class="close mt-2" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        </div>
+        <div class="row px-4">
+          <div class="col-md-12 my-2 font-weight-bolder text-center">
+            Sorry
+          </div>
+          <div class="col-md-12 my-2 text-center">
+            Sorry. This order can't be placed, as the order value exceeds your Credit Limit.
+          </div>
+        </div>
+        <div class="col-md-12 text-center">
+          <button class="btn btn-sm btn-primary w-25 my-3" data-dismiss="modal">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <app-toasts aria-live="polite" aria-atomic="true"></app-toasts> -->

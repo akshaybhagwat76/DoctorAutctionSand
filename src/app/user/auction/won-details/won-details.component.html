@@ -1,0 +1,481 @@
+
+<!-- Modal: 1 Confirm PR -->
+
+<app-modal-confirm (confirm)=onConfirmPO($event) [mdata]="modalPRData" modalId="modalConfirm">
+</app-modal-confirm>
+
+<!-- Modal: 2 Reject PR -->
+<app-modal-confirm (confirm)=onRejectPO($event) [mdata]="modalPRejectData" modalId="modalReject">
+</app-modal-confirm>
+<!-- Modal: 3 Confirm ORDER CONFIRMATION generate -->
+<app-modal-confirm (confirm)=generateOC($event) [mdata]="modalConfirmOCgenerate" modalId="modalConfirmOC">
+</app-modal-confirm>
+<div class="upcoming-wrapper">
+  <!-- breadcrumbs -->
+  <div class="breadcrumbs">
+    <div class="container">
+      <a [routerLink]="['/user/auction/']">Auctions</a>
+      <i> > </i>
+      <a href="javascript:void(0)">Auction Result</a>
+    </div>
+  </div>
+
+  <!-- Back btn -->
+  <div class="back-btn-wrap d-none">
+    <div class="container">
+      <div class="back-btn">
+        <i class="b-arrow"></i>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Lot Details -->
+  <div class="lot-details">
+    <div class="container">
+
+      <!-- Lot Details -->
+      <div class="auction-tab">
+        <ul class="nav nav-tabs mb-3">
+          <li><a class="active" data-toggle="tab" href="#l-details">Lot Details</a></li>
+          <li><a data-toggle="tab" href="#payment">Delivery & Payment Terms</a></li>
+          <li><a data-toggle="tab" href="#tnc" id="tab-tnc">Terms & Conditions</a></li>
+
+          <li><a data-toggle="tab" href="#bid-history">My Bid History</a></li>
+
+          <div class="auction-id">Auction No. : {{bidDetails?.auction_number}}</div>
+        </ul>
+
+        <div class="row">
+          <div class="col-lg-8">
+            <div class="tab-content">
+
+              <!-- Tab: 1 : Lot Details -->
+              <div id="l-details" class="tab-pane fade in active show">
+
+
+                <!-- auction Vertical card -->
+                <app-auction-hcard [auctionDetail]="auctionDetails"></app-auction-hcard>
+
+                <!-- Left PDF Link -->
+                <div class="sieve-pdf">
+                  <div class="file-wrap" *ngIf="analysisReport">
+                    <img src="assets/img/file-icon.png" alt="file">
+                    <a href="{{urlService.productDocumentUrl(analysisReport)}}" target="_blank">Sieve Analysis
+                      Report.pdf</a>
+                  </div>
+                  <div class="file-wrap" *ngIf="concertReport">
+                    <img src="assets/img/file-icon.png" alt="file">
+                    <a href="{{urlService.productDocumentUrl(concertReport)}}" target="_blank">Concrete Test
+                      Report.pdf</a>
+                  </div>
+                </div>
+
+                <!-- Amount Details table-->
+                <table class="payment-tbl mt-3" *ngIf="bidDetails">
+                  <tr>
+                    <th style="border-right: none;">Transaction Details</th>
+                    <th style="border-left: none;"></th>
+                  </tr>
+                  <tr>
+                    <td>Date & time</td>
+                    <td>
+                      {{ auctionDetails?.from_datetime | date: "dd-MM-YYYY" }},
+                      {{ auctionDetails?.from_datetime | date: "hh:mm aa" }} -
+                      {{ auctionDetails?.to_datetime | date: "hh:mm aa" }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Lot Size</td>
+                    <td>{{auctionData?.lot_size}} tons </td>
+                  </tr>
+                  <tr>
+                    <td>Your Winning Bid</td>
+                    <td><span>₹</span> {{bidAmount | number: '1.2-2'}}</td>
+                  </tr>
+                  <tr>
+                    <td>Total Lot Price</td>
+                    <td><span>₹</span> {{auctionData?.lot_size * bidAmount | number: '1.2-2'}}</td>
+                  </tr>
+                  <tr>
+                    <td>GST</td>
+                    <td><span>₹</span> {{+gstAmount | number: '1.2-2'}}</td>
+                  </tr>
+                  <tr>
+                    <td>Logistics with GST</td>
+                    <td><span>₹</span> {{+logisticAmout + +gstAmount | number: '1.2-2'}}</td>
+                  </tr>
+                  <tr>
+                    <th>Total Transaction Value</th>
+                    <th><span>₹</span> {{+grossAmount | number: '1.2-2'}}</th>
+                  </tr>
+                </table>
+
+                <!-- Delivery center details table -->
+                <table class="payment-tbl" *ngIf="bidDetails">
+                  <tr>
+                    <th style="border-right: none;">Delivery Center Details</th>
+                    <th style="border-left: none;"></th>
+                  </tr>
+                  <tr>
+                    <td>Address</td>
+                    <td>{{bidDetails?.shipping_details?.line_1 ? bidDetails?.shipping_details?.line_1 + ',' : ''}}
+                      {{bidDetails?.shipping_details?.line_2 ? bidDetails?.shipping_details?.line_2 + ',' : ''}}
+                      {{bidDetails?.shipping_details?.landmark ? bidDetails?.shipping_details?.landmark + ',' : ''}}
+                      {{bidDetails?.shipping_details?.city_name ? bidDetails?.shipping_details?.city_name + ',' : ''}}
+                      {{bidDetails?.shipping_details?.state_name ? bidDetails?.shipping_details?.state_name + ',' : ''}}
+                      {{bidDetails?.shipping_details?.country_name ? bidDetails?.shipping_details?.country_name + ',' :
+                      ''}}
+                      Pincode - {{bidDetails?.shipping_details?.pincode}}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Point of Contact</td>
+                    <td>{{bidDetails?.shipping_details?.name}}</td>
+                  </tr>
+                  <tr>
+                    <td>Email ID</td>
+                    <td>{{bidDetails?.shipping_details?.email}}</td>
+                  </tr>
+                  <tr>
+                    <td>Phone Number</td>
+                    <td>{{bidDetails?.shipping_details?.mobile}}</td>
+                  </tr>
+                </table>
+
+                <!-- seller details table -->
+                <table class="payment-tbl" *ngIf="bidDetails">
+                  <tr>
+                    <th style="border-right: none;">Seller Details</th>
+                    <th style="border-left: none;"></th>
+                  </tr>
+                  <tr>
+                    <td>Name</td>
+                    <td>{{bidDetails?.pickup_details?.name}}</td>
+                  </tr>
+                  <tr>
+                    <td>Pickup Center Details</td>
+
+                    <td>{{bidDetails?.pickup_details?.line_1 ? bidDetails?.pickup_details?.line_1 + ',' : ''}}
+                      {{bidDetails?.pickup_details?.line_2 ? bidDetails?.pickup_details?.line_2 + ',' : ''}}
+                      {{bidDetails?.pickup_details?.landmark ? bidDetails?.pickup_details?.landmark + ',' : ''}}
+                      {{bidDetails?.pickup_details?.city_name ? bidDetails?.pickup_details?.city_name + ',' : ''}}
+                      {{bidDetails?.pickup_details?.state_name ? bidDetails?.pickup_details?.state_name + ',' : ''}}
+                      {{bidDetails?.pickup_details?.country_name ? bidDetails?.pickup_details?.country_name + ',' : ''}}
+                      Pincode - {{bidDetails?.pickup_details?.pincode}}
+                    </td>
+                  </tr>
+                </table>
+
+              </div>
+
+              <!-- Tab: 2 : Payment terms -->
+              <div id="payment" class="tab-pane fade">
+                <div class="payment-wrap m-0">
+                  <!-- <h2 class="head">Delivery & Payment Terms</h2> -->
+                  <!-- <div class="theme-cont">Updated December 2020</div> -->
+                  <div class="pay-cont">
+                    <h2 class="head mb-1">Delivery Terms
+                      <!-- <i class="hline"></i> -->
+                    </h2>
+                    <div [innerHTML]="deliveryText"></div>
+                    <hr class="mt-5 mb-5">
+                    <h5 class="head mb-1">Payment Terms
+                      <!-- <i class="hline"></i> -->
+                    </h5>
+                    <div [innerHTML]="paymentText"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tab: 3 : T&C -->
+              <div id="tnc" class="tab-pane fade">
+                <div class="payment-wrap m-0">
+                  <!-- <h2 class="head mt-3">Terms & Condition Of Service</h2> -->
+                  <!-- <div class="theme-cont">Updated December 2020</div> -->
+                  <div class="pay-cont">
+                    <h2 class="head mb-1">Terms & Conditions
+                      <!-- <i class="hline"></i> -->
+                    </h2>
+                    <div [innerHTML]="tncText"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tab: 4 : history -->
+              <div id="bid-history" class="tab-pane fade">
+                <div class="payment-wrap history-wrap mt-0">
+                  <h2 class="head mt-0">My Bid History
+                    <!-- <i class="hline"></i> -->
+                  </h2>
+                  <!-- <div class="theme-cont">Updated December 2020</div> -->
+                  <div class="row">
+                    <!-- Table -->
+                    <div class="col-md-12">
+                      <div class="bidder-tbl">
+                        <table>
+                          <tr class="tr-head">
+                            <th class="position-th">Position</th>
+                            <th>Bidder name</th>
+                            <th>Bid/ton</th>
+                            <th>Time</th>
+                          </tr>
+                          <tr class="tr-blue tr-bold" *ngIf="!bidList || bidList.length == 0">
+                            <td colspan="4" class="text-center">No bid placed</td>
+                          </tr>
+                        </table>
+                        <div class="scrll-tbl">
+
+                          <table>
+
+                            <tr class="{{i==0 ? 'tr-orang' : ''}} {{item.delete ?'d-none':''}}"
+                              *ngFor="let item of bidList; let i = index">
+                              <td class="position-td">
+                                <img *ngIf="i==0" src="assets/img/H1.png" /> #{{i+1}}
+                              </td>
+                              <td>
+                                <img src="" alt="">
+                                {{item?.name =='0' ? '************':item?.name}}
+                              </td>
+                              <td> &#x20B9; {{item?.bid}} </td>
+                              <td>{{item?.created_on}}</td>
+                            </tr>
+                          </table>
+
+
+                        </div>
+
+                        <!-- Awaiting Overlay -->
+                        <!-- <div class="overlay" *ngIf="show_overlay">
+                                                <span>Awaiting result...</span>
+                                            </div> -->
+                      </div>
+                    </div>
+
+                  </div>
+
+                </div>
+              </div>
+
+
+
+            </div>
+
+          </div>
+          <div class="col-lg-4">
+
+
+            <!-- Right pdf -->
+            <div class="rgt-won-details m-0">
+              <!-- <div class="won-status">
+                <img src="assets/img/win-icon.png" alt="won">
+                WON
+              </div> -->
+              <div class=""
+                [ngClass]="bidDetails?.state_name=='WON' ? 'won-status':'awaiting-status'">
+                <img *ngIf="bidDetails?.state_name=='WON'" src="assets/img/win-icon.png" alt="win"> {{bidDetails?.state_name? bidDetails?.state_name : 'AWAITING RESULT'}}
+              </div>
+              <div class="pdf-card" *ngIf="show_await">
+                <div class="pdf-head">Order Request</div>
+                <div class="pdf-file-wrap">
+                  Awaiting order request
+                </div>
+              </div>
+              <div class="pdf-card" *ngIf="show_await">
+                <h6 class="font-weight-bold pdf-head text-center">Awaiting...</h6>
+              </div>
+
+              <!-- PDF Logistic -->
+              <div class="pdf-card" *ngIf="isORComplete">
+                <div class="pdf-head">Order Request</div>
+                <div class="pdf-file-wrap">
+                  <a href="{{urlService.OROCUrl(ORUrl, auctionDetails?.auction_number)}}" target="_blank">
+                    <img src="assets/img/file-icon.png" alt="file">View Order Request
+                  </a>
+                </div>
+              </div>
+
+              <div class="pdf-card" *ngIf="show_await_oc">
+                <div class="pdf-head">Order Confirmation</div>
+                <div class="pdf-file-wrap">
+                  <a href="{{urlService.OROCUrl(OCUrl, auctionDetails?.auction_number)}}" target="_blank">
+                    <img src="assets/img/file-icon.png" alt="file" />View Order Confirmation </a>
+                  <div>
+                    Awaiting...
+                  </div>
+                </div>
+              </div>
+
+              <!-- Confirm PR -->
+              <!-- <a *ngIf="!show_await" class="action-pr action-pr-blue" data-toggle="modal" data-target="#modalConfirm">CONFIRM PURCHASE REQUEST</a> -->
+              <a *ngIf="show_confirm_or" class="action-pr action-pr-blue" href="javascript:void(0)"
+                (click)="confirmWinner()">Confirm Order Request</a>
+              <!-- Reject PR -->
+              <a *ngIf="show_confirm_or" class="action-pr action-pr-red" data-toggle="modal"
+                data-target="#modalReject">Reject Order Request</a>
+
+              <div class="pdf-card" *ngIf="show_generate_oc">
+                <div class="pdf-head">Order Confirmation</div>
+                <div class="pdf-file-wrap">
+                  No file generated
+                </div>
+              </div>
+
+              <button class="btn btn-primary w-100 mb-2" *ngIf="show_generate_oc"
+                (click)="openOCgenerateModal()">Generate Order Confirmation</button>
+              <!-- <button class="btn btn-outline-primary w-100" *ngIf="show_upload_oc" data-toggle="modal"
+                data-target="#uploadOcModal">Upload Order Confirmation</button> -->
+
+              <div class="pdf-card" *ngIf="show_send_oc">
+                <div class="pdf-head">Order Confirmation</div>
+                <div class="pdf-file-wrap p-3">
+                  <a href="{{urlService.OROCUrl(OCUrl, auctionDetails?.auction_number)}}" target="_blank">
+                    <img src="assets/img/file-icon.png" alt="file" />View Order Confirmation </a>
+                </div>
+              </div>
+
+              <div class="pdf-card" *ngIf="buyerOCUrl && bidDetails?.state_name != 'OC REJECTED BY SELLER' && bidDetails?.state_name != 'LOST'">
+                <div class="pdf-head">Buyer Order Confirmation</div>
+                <div class="pdf-file-wrap p-3">
+                  <a href="{{urlService.buyerOCUrl(buyerOCUrl, auctionDetails?.auction_number)}}" target="_blank">
+                    <img src="assets/img/file-icon.png" alt="file" />Buyer Order Confirmation </a>
+                  <div class="text-success pb-2" *ngIf="buyerOCApproved">
+                    <img src="assets/img/Check.png" style="width: 20px; margin-right: 12px;" /> Approved
+                  </div>
+                  <div class="text-info pb-2" *ngIf="!buyerOCApproved">
+                    <img src="assets/img/info.png" style="width: 20px; margin-right: 12px;" /> Waiting For Approval
+                  </div>
+                </div>
+              </div>
+
+              <button class="btn btn-primary w-100 mb-2" *ngIf="show_send_oc" (click)="sendOC()">Send Order Confirmation
+                To Seller</button>
+
+              <div class="pdf-card" *ngIf="isOCComplete">
+                <div class="pdf-head">Order Confirmation</div>
+                <div class="pdf-file-wrap p-3">
+                  <a href="{{urlService.OROCUrl(OCUrl, auctionDetails?.auction_number)}}" target="_blank">
+                    <img src="assets/img/file-icon.png" alt="file" />View Order Confirmation </a>
+                  <div class="text-success">
+                    <img src="assets/img/Check.png" class="width: 18px;" /> <span class="ml-2">Accepted</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="pdf-card" *ngIf="bidDetails?.state_name == 'OC REJECTED BY SELLER' || bidDetails?.state_name == 'LOST'">
+                <div class="pdf-head">Documents</div>
+                <div class="pdf-file-wrap">
+                  <a *ngIf="ORUrl" href="{{urlService.OROCUrl(ORUrl, auctionDetails?.auction_number)}}" target="_blank">
+                    <img src="assets/img/file-icon.png" alt="file">View Order Request
+                  </a>
+                  <a *ngIf="OCUrl" href="{{urlService.OROCUrl(OCUrl, auctionDetails?.auction_number)}}" target="_blank">
+                    <img src="assets/img/file-icon.png" alt="file" />View Order Confirmation </a>
+                  <a *ngIf="buyerOCUrl" href="{{urlService.buyerOCUrl(buyerOCUrl, auctionDetails?.auction_number)}}" target="_blank">
+                    <img src="assets/img/file-icon.png" alt="file" />Buyer Order Confirmation </a>
+                </div>
+              </div>
+
+              <button class="btn btn-outline-primary w-100 mb-2" *ngIf="show_upload_oc" data-toggle="modal"
+              data-target="#uploadOcModal">Upload Order Confirmation</button>
+
+              <div class="pdf-card"
+                *ngIf="isOCComplete && ((consignmentList?.length && consignmentList?.length == 0) || !consignmentList)">
+                <div class="pdf-head">Consignment 1</div>
+                <div class="pdf-file-wrap">
+                  Awaiting...
+                </div>
+              </div>
+
+              <div class="pdf-card"
+                *ngIf="isOCComplete && isORComplete && consignmentList?.length && consignmentList.length > 0">
+                <div class="pdf-head">Logistic details</div>
+                <div class="pdf-file-wrap" *ngFor="let item of consignmentList; let i = index;">
+                  <div>
+                    <h6 class="">Consignment {{i+1}}</h6>
+                    <hr class="mb-2 mt-2">
+                    <div class="">
+                      <p class="mb-1">Date : {{item?.date | date: 'dd-MM-YYYY'}}</p>
+                      <p class="mb-1">Number of trucks : {{item?.no_of_trucks}}</p>
+                      <p class="mb-1">Total tonnage : {{item?.tonnage}}</p>
+                    </div>
+                    <hr class="mb-2 mt-2">
+                    <div class="" *ngIf="item?.accepted_tonnage">
+                      <p class="mb-1">Accepted date : {{item?.accepted_dc_date | date: 'dd-MM-YYYY'}}</p>
+                      <p class="mb-1">Number of trucks : {{item?.no_of_trucks}}</p>
+                      <p class="mb-1">Accepted tonnage : {{item?.accepted_tonnage}}</p>
+                    </div>
+                    <hr class="mb-2 mt-2" *ngIf="item?.accepted_tonnage">
+
+                    <div>
+                    <a *ngIf="item?.dc_path"
+                      href="{{urlService.DCUrl(item?.dc_path, auctionDetails?.auction_number, item?.dc_number)}}"
+                      target="_blank">
+                      <img src="assets/img/file-icon.png" alt="file" />View Delivery Challan
+                    </a>
+
+
+                      <a class="" *ngIf="item?.status == invoiceGenerated"
+                        routerLink="/user/auction/invoices/{{item?.id}}" routerLinkActive="active">
+                        <img src="assets/img/file-icon.png" alt="file" />View Invoices
+                      </a>
+                    </div>
+                  </div>
+                  <!-- <button class="btn btn-primary w-100 mt-2" *ngIf="item?.status == consignmentAdded" (click)="openConfirmModalDC(item?.id)">GENERATE DC</button> -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+</div>
+
+<div class="modal fade" id="uploadOcModal" tabindex="-1" role="dialog" aria-labelledby="uploadOcModal"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header py-2">
+        <h6 class="modal-title font-weight-bold" id="uploadOcModal-title">UPLOAD ORDER CONFIRMATION</h6>
+      </div>
+      <div class="modal-body pt-0">
+        <div class="row p-4">
+          <div class="col-md-12">
+            <div class="mb-3">
+              <div class="input-wrap">
+                <input type="file" (change)="fileBrowseHandlerOC($event)" placeholder=" ">
+                <label class="placeholder">Order Confirmation</label>
+              </div>
+              <div class="input-wrap">
+                <input type="text" id="oc_number" placeholder=" ">
+                <label class="placeholder">Order confirmation number</label>
+              </div>
+              <div class="input-wrap">
+                <input type="date" id="oc_date" placeholder=" ">
+                <label class="placeholder">Order confirmation date</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-3">
+              <button class="btn btn-xsm btn-outline-primary w-100" data-dismiss="modal" aria-label="Close"
+                (click)="onCancelOCOR()">CANCEL</button>
+            </div>
+            <div class="col-md-9">
+              <button class="btn btn-xsm btn-primary w-100" (click)="uploadBuyerOc()" [disabled]="!OCFile">UPLOAD ORDER
+                CONFIRMATION</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,16 @@
+<!-- <ng-container *ngIf="orderData"> -->
+  <app-view-pdf height="800px" width="100%" [pdfUrl]="urlService.orderOROCUrl(orderData?.attachment_o_r?.path, orderData?.order_number)"></app-view-pdf>
+<!-- </ng-container> -->
+<div class="container fixed-bottom">
+  <div class="row pb-2">
+    <div class="col-md-6 text-right">
+      <button class="btn btn-outline-primary btn-sm">Kindly review the order request and confirm your order</button>
+    </div>
+    <div class="col-md-3 text-right">
+      <button class="btn btn-outline-primary btn-sm" (click)="confirmBuyerOrder(false)">CANCEL</button>
+    </div>
+    <div class="col-md-3">
+      <button class="btn btn-primary btn-sm" (click)="confirmBuyerOrder(true)">ACCEPT</button>
+    </div>
+  </div>
+</div>

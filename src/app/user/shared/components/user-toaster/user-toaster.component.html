@@ -1,0 +1,17 @@
+<div role="alert" aria-live="assertive" aria-atomic="true" class="toast hide my-toast" data-autohide="true" data-delay="3000" id="my-toast">
+  <div class="toast-header">
+    <!-- <i id="toast-icon" class="mdi mdi-check mr-2"></i> -->
+    <img *ngIf="!toastType || toastType == 1" src="assets/img/Check.png" />
+    <img *ngIf="toastType == 2" src="assets/img/Cross.png" />
+    <img *ngIf="toastType == 3" src="assets/img/warning.png" />
+    <img *ngIf="toastType == 4" src="assets/img/info.png" />
+    <span class="mr-auto ml-1" id="toast-title">{{title}}</span>
+    <small id="toast-time"></small>
+    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="toast-body" id="toast-body">
+      {{body}}
+  </div>
+</div>

@@ -1,0 +1,43 @@
+<div class="row">
+  <!-- Table -->
+  <div class="col-md-12">
+      <div class="bidder-tbl">
+          <table>
+              <tr class="tr-head" >
+                  <th class="position-th">Position</th>
+                  <th>Bidder name</th>
+                  <th>Bid/ton</th>
+                  <th>Time<img src="assets/img/refresh.png" (click)="refreshBid()" class="refresh-img" title="Refresh" *ngIf="isLive"/></th>
+              </tr>
+              <tr class="tr-blue tr-bold" *ngIf="!bidList || bidList.length == 0">
+                <td colspan="4" class="text-center">No bid placed</td>
+              </tr>
+          </table>
+          <div class="scrll-tbl">
+
+              <table>
+
+                  <tr class="{{i==0 ? 'tr-orang' : ''}} {{item.delete ?'d-none':''}}" *ngFor="let item of bidList; let i = index">
+                      <td class="position-td">
+                          <img *ngIf="i==0" src="assets/img/H1.png"/> #{{i+1}}
+                      </td>
+                      <td>
+                          <img src="" alt="">
+                          {{item?.name}}
+                      </td>
+                      <td> &#x20B9; {{item?.bid}}  </td>
+                      <td>{{item?.created_on}}</td>
+                  </tr>
+              </table>
+
+
+          </div>
+
+          <!-- Awaiting Overlay -->
+          <!-- <div class="overlay" *ngIf="show_overlay">
+              <span>Awaiting result...</span>
+          </div> -->
+      </div>
+  </div>
+
+</div>

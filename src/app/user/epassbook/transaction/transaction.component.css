@@ -1,0 +1,30 @@
+
+.trans-scroll{
+    overflow: auto;
+}
+.trans-tbl{
+    width: 100%;
+    min-width: 800px;
+    font-size: 14px;
+
+}
+.trans-tbl tr:first-child{
+    background-color: #F9F9F9;
+}
+.trans-tbl tr{
+    border-bottom: 1px solid #f1f1f1;
+}
+.trans-tbl th,
+.trans-tbl td
+{
+    padding: 10px 15px;
+}
+.trans-tbl .trans-th{
+    min-width: 130px;
+}
+.trans-tbl .type-td{
+    color: #0988CE;
+}
+.trans-tbl .amount-th{
+    min-width: 130px;
+}

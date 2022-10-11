@@ -1,0 +1,149 @@
+<div class="winner-wrapper">
+    <!-- breadcrumbs -->
+    <div class="breadcrumbs">
+        <div class="container">
+            <a [routerLink]="['/user/auction/']">Auction</a>
+            <i> > </i>
+            <a href="javascript:void(0)">Result</a>
+        </div>
+    </div>
+
+    <!-- Back btn -->
+    <div class="back-btn-wrap d-none">
+        <div class="container">
+            <div class="back-btn">
+                <i class="b-arrow"></i>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="winner-wrap">
+        <div class="container">
+            <div class="winner-head">
+                <h4>Auction Results</h4>
+                <span>Auction No. : {{bidDetails?.auction_number}}</span>
+            </div>
+
+            <!-- Bid Winner -->
+            <div class="res-wrap" *ngIf="show_winner">
+                <div class="res-bdr">
+                    <div class="res-card">
+                        <div class="top-img">
+                            <img src="assets/img/win-orang.png" alt="Win-img">
+                            Auction won #1
+                        </div>
+                        <h4 class="cong-msg">
+                            Congratulations! You Have Won the Auction Bid
+                        </h4>
+
+                        <p class="starting-range">Select delivery options:</p>
+                        <div class="radio-select">
+                            <span><input type="radio" name="type" checked (change)="displayForType()"> FOR</span>
+                            <span><input type="radio" name="type" (change)="displayExType()"> Ex Works</span>
+                        </div>
+                        <table class="bid-details">
+                            <tr>
+                                <td>Bid/ton <img src="assets/img/bid-details.png" alt="circle"></td>
+                                <td>₹ {{bidAmount}}</td>
+                            </tr>
+                            <tr *ngIf="!isExWorks">
+                                <td>Logistics/ton <img src="assets/img/bid-details.png" alt="circle"></td>
+                                <td>₹ {{logisticAmout}}</td>
+                            </tr>
+                            <tr *ngIf="!isExWorks">
+                                <th>FOR price/ton</th>
+                                <th>₹ {{forAmount}}</th>
+                            </tr>
+                        </table>
+                        <table class="bid-details">
+                            <tr>
+                                <td>Net FOR amount</td>
+                                <td>₹ {{netAmount}}</td>
+                            </tr>
+                            <tr>
+                                <td>GST</td>
+                                <td>₹ {{gstAmount}}</td>
+                            </tr>
+                            <tr>
+                                <th>Gross amount</th>
+                                <th>₹ {{grossAmount}}</th>
+                            </tr>
+                        </table>
+
+                    </div>
+
+                    <div class="btm-btns">
+
+                        <a *ngIf="this.bidDetails.status != 2" class="confirm" (click)="confirmWinner()"> Confirm</a>
+                        <!-- <a class="not-won"> if not won</a> -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Thank you msg -->
+            <div class="thankmsg-wrap" *ngIf="show_success">
+                <div class="thankmsg-bdr">
+                    <div class="thankmsg-card">
+
+                        <div class="position">
+                            Position #{{bidDetails?.position}}
+                        </div>
+                        <h4 class="cong-msg">
+                            Thank you for participation in the Auction.
+                        </h4>
+
+                        <div class="you-bid">
+                            Your Bid : ₹ {{bidDetails?.your_bid}}
+                        </div>
+
+                        <div class="winning-bid">
+                            Winning Bid : ₹ {{bidDetails?.winning_bid}}
+                        </div>
+
+                        <a class="okbtn" [routerLink]="['/user/auction']">OK</a>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Awaiting Result -->
+            <div class="thankmsg-wrap" *ngIf="show_await">
+                <div class="thankmsg-bdr">
+                    <div class="thankmsg-card" *ngIf="bidDetails?.position">
+
+                        <div class="position">
+                            Current Position #{{bidDetails?.position}}
+                        </div>
+                        <h4 class="cong-msg">
+                            Thank you for participation in the Auction.
+                        </h4>
+
+                        <div class="you-bid">
+                            Your Bid : ₹ {{bidDetails?.your_bid}}
+                        </div>
+
+                        <div class="winning-bid">
+                            Results are not declared yet.
+                        </div>
+
+                        <a class="okbtn" [routerLink]="['/user/auction']">OK</a>
+                    </div>
+
+                    <div class="thankmsg-card" *ngIf="!bidDetails?.position">
+
+                      <div class="position">
+                        You havent bid on this auction.
+                      </div>
+                      <a class="okbtn" [routerLink]="['/user/auction']">OK</a>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+</div>

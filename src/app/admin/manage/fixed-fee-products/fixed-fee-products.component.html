@@ -1,0 +1,181 @@
+<section id="product-list" class="container-fluid pt-3">
+  <div class="d-flex justify-content-between align-item-center border-bottom pb-2">
+    <h4 class="font-weight-bold">Products</h4>
+    <a class="btn btn-primary float-right" data-toggle="modal" data-target="#addProductSidebar" (click)="newProduct()">Create Product</a>
+  </div>
+  <div class="col-12 table-responsive p-0">
+    <table class="list-table table">
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Location</th>
+                <th>Source Of Sand</th>
+                <th>Silt %</th>
+                <th>MOQ (Tons)</th>
+                <th>Available Qty (Tons)</th>
+                <th>Price/ton</th>
+            </tr>
+        </thead>
+
+        <tbody class="text-center" *ngIf="isListLoading">
+            <tr>
+                <td colspan="6">Loading...</td>
+            </tr>
+        </tbody>
+
+        <tbody class="text-center" *ngIf="!isListLoading && productList?.length === 0">
+            <tr>
+                <td colspan="6">No result found</td>
+            </tr>
+        </tbody>
+
+        <tbody *ngIf="!isListLoading && productList?.length !== 0">
+            <tr *ngFor="let item of productList">
+                <td class="cell-company">{{item?.name}}</td>
+                <td class="cell-registration-id"><span *ngFor="let item2 of item?.location_names; let i = index">{{item2?.location_name}} <span>{{i+1 == item?.location_names.length ? '' : ', '}}</span></span></td>
+                <td class="cell-registration-id">{{item?.source}}</td>
+                <td class="cell-registration-id">{{item?.silt}} %</td>
+                <td class="cell-registration-id">{{item?.min_order_qty | number}}</td>
+                <td class="cell-registration-id">{{item?.available_qty | number}}</td>
+                <td class="cell-registration-id">{{item?.per_ton_price | currency: 'INR': 'symbol'}}</td>
+                <!-- <td class="cell-status">
+                  <span (click)="onEditBtn(item?.id)" data-toggle="modal" data-target="#addProductSidebar">Edit</span>
+                  <span (click)="deleteProduct(item?.id)">Delete</span>
+                </td> -->
+            </tr>
+        </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Side Bar Modal -->
+<div class="modal fade" id="addProductSidebar" tabindex="-1" role="dialog" aria-labelledby="filter" aria-hidden="true">
+  <div class="modal-dialog modal-lg float-right m-0 h-100 w-50" role="document">
+    <div class="modal-content h-100 w-100" style="">
+      <div class="modal-header justify-content-start">
+        <button type="button" class="close ml-0 mr-1" data-dismiss="modal" aria-label="Close" id="modal-close-btn" (click)="initForm()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h5 class="modal-title" id="productSidebarTitle">{{productForm.value.id ? 'Update' : 'Create'}} Fixed Fee Product</h5>
+        <button type="button" class="btn btn-primary ml-auto" (click)="createProduct()">Save</button>
+      </div>
+      <div class="modal-body" [formGroup]="productForm" *ngIf="productForm">
+        <div class="row py-2" style="background-color: #f9f9f9;">
+          <div class="col-md-12">
+            <span class="">Product Details</span>
+          </div>
+        </div>
+
+        <div class="row align-items-center py-2">
+          <div class="col-md-3"><span class="">Name *</span></div>
+          <div class="col-md-5">
+            <div class="input-wrap m-0">
+              <input type="text" formControlName="name">
+              <i *ngIf="productForm.controls.name.invalid && productForm.controls.name.touched"
+              class="erro-red">Name required</i>
+            </div>
+          </div>
+        </div>
+
+        <div class="row align-items-center py-2">
+          <div class="col-md-3"><span class="">Min Order Qty *</span></div>
+          <div class="col-md-5">
+            <div class="input-wrap m-0">
+              <input type="text" formControlName="min_order_qty">
+              <i *ngIf="productForm.controls.min_order_qty.invalid && productForm.controls.min_order_qty.touched"
+              class="erro-red">Minimum order qty required</i>
+            </div>
+          </div>
+        </div>
+
+        <div class="row align-items-center py-2">
+          <div class="col-md-3"><span class="">Available Qty *</span></div>
+          <div class="col-md-5">
+            <div class="input-wrap m-0">
+              <input type="text" formControlName="available_qty">
+              <i *ngIf="productForm.controls.available_qty.invalid && productForm.controls.available_qty.touched"
+              class="erro-red">Available Qty required</i>
+            </div>
+          </div>
+        </div>
+
+        <div class="row align-items-center py-2">
+          <div class="col-md-3"><span class="">per_ton_price *</span></div>
+          <div class="col-md-5">
+            <div class="input-wrap m-0">
+              <input type="text" formControlName="per_ton_price">
+              <i *ngIf="productForm.controls.per_ton_price.invalid && productForm.controls.per_ton_price.touched"
+              class="erro-red">Per ton price required</i>
+            </div>
+          </div>
+        </div>
+
+        <div class="row align-items-center py-2">
+          <div class="col-md-3"><span class="">Location *</span></div>
+          <div class="col-md-5">
+            <div class="input-wrap m-0">
+              <ng-select [items]="locationList" bindLabel="location_name" bindValue="id"
+                  placeholder="Select" dropdownPosition="bottom" [multiple]="true" formControlName="location_id">
+              </ng-select>
+              <i *ngIf="productForm.controls.location_id.invalid && productForm.controls.location_id.touched"
+              class="erro-red">Location required</i>
+            </div>
+          </div>
+        </div>
+
+        <div class="row align-items-center py-2">
+          <div class="col-md-3"><span class="">Source</span></div>
+          <div class="col-md-5">
+            <div class="input-wrap m-0">
+              <input type="text" formControlName="source">
+            </div>
+          </div>
+        </div>
+
+        <div class="row align-items-center py-2">
+          <div class="col-md-3"><span class="">Silt</span></div>
+          <div class="col-md-5">
+            <div class="input-wrap m-0">
+              <input type="text" formControlName="silt">
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary rounded-0" data-dismiss="modal" (click)="initForm()">Close</button>
+        <button type="button" class="btn btn-primary" (click)="createProduct()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="confirmModel" tabindex="-1" role="dialog" aria-labelledby="confirmModel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header py-2">
+        <h6 class="modal-title font-weight-bold" id="confirmModel-title">Delete</h6>
+      </div>
+      <div class="modal-body pt-0">
+        <div class="row p-4">
+          <div class="col-md-12">
+
+            <div class="mb-3">
+              <span>Are you sure you want to delete product?</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-6">
+              <button class="btn btn-outline-primary w-100" data-dismiss="modal" aria-label="Close">No</button>
+            </div>
+            <div class="col-md-6">
+              <button class="btn btn-primary w-100" (click)="delete()">YES</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,75 @@
+<section id="terms" class="container-fluid pt-3">
+  <div class="d-flex justify-content-between align-item-center border-bottom pb-2">
+    <h4 class="font-weight-bold">Terms</h4>
+  </div>
+  <div class="pt-2">
+    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+      <li class="nav-item" role="presentation">
+        <a class="nav-link text-dark active" id="pills-general-term-tab" data-toggle="pill" href="#pills-general-term" role="tab" aria-controls="pills-general-term" aria-selected="true">General Term</a>
+      </li>
+      <li class="nav-item" role="presentation">
+        <a class="nav-link text-dark" id="pills-payment-term-tab" data-toggle="pill" href="#pills-payment-term" role="tab" aria-controls="pills-payment-term" aria-selected="false">Payment Term</a>
+      </li>
+      <li class="nav-item" role="presentation">
+        <a class="nav-link text-dark" id="pills-delivery-term-tab" data-toggle="pill" href="#pills-delivery-term" role="tab" aria-controls="pills-delivery-term" aria-selected="false">Delivery Term</a>
+      </li>
+    </ul>
+    <div class="tab-content" id="pills-tabContent">
+      <div class="tab-pane fade show active" id="pills-general-term" role="tabpanel" aria-labelledby="pills-general-term-tab">
+        <button type="button" class="btn btn-primary ml-auto mb-2" (click)="updateTerm('general')">Save</button>
+        <editor
+          [init]="{
+            height: 500,
+            menubar: false,
+            plugins: [
+              'advlist autolink lists link image charmap print preview anchor',
+              'searchreplace visualblocks code fullscreen',
+              'insertdatetime media table paste code help wordcount'
+            ],
+            toolbar:
+              'undo redo | formatselect | bold italic backcolor | \
+              alignleft aligncenter alignright alignjustify | \
+              bullist numlist outdent indent | removeformat | help'
+          }" [(ngModel)]="generalTerm"
+        ></editor>
+
+      </div>
+      <div class="tab-pane fade" id="pills-payment-term" role="tabpanel" aria-labelledby="pills-payment-term-tab">
+        <button type="button" class="btn btn-primary ml-auto mb-2" (click)="updateTerm('payment')">Save</button>
+        <editor
+          [init]="{
+            height: 500,
+            menubar: false,
+            plugins: [
+              'advlist autolink lists link image charmap print preview anchor',
+              'searchreplace visualblocks code fullscreen',
+              'insertdatetime media table paste code help wordcount'
+            ],
+            toolbar:
+              'undo redo | formatselect | bold italic backcolor | \
+              alignleft aligncenter alignright alignjustify | \
+              bullist numlist outdent indent | removeformat | help'
+          }" [(ngModel)]="paymentTerm"
+        ></editor>
+      </div>
+      <div class="tab-pane fade" id="pills-delivery-term" role="tabpanel" aria-labelledby="pills-delivery-term-tab">
+        <button type="button" class="btn btn-primary ml-auto mb-2" (click)="updateTerm('delivery')">Save</button>
+        <editor
+          [init]="{
+            height: 500,
+            menubar: false,
+            plugins: [
+              'advlist autolink lists link image charmap print preview anchor',
+              'searchreplace visualblocks code fullscreen',
+              'insertdatetime media table paste code help wordcount'
+            ],
+            toolbar:
+              'undo redo | formatselect | bold italic backcolor | \
+              alignleft aligncenter alignright alignjustify | \
+              bullist numlist outdent indent | removeformat | help'
+          }" [(ngModel)]="deliveryTerm"
+        ></editor>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,337 @@
+<div class="dashboard-wrapper">
+  <div class="container">
+    <h3 class="dash-head">Auction</h3>
+
+    <div class="aution-tab">
+      <!-- Aution Tab -->
+      <ul class="nav nav-tabs">
+        <li [class.active]="!isCompleted"><a [class.active]="!isCompleted" data-toggle="tab" href="#live"
+            (click)="getBuyerAuctionList(locationId, 0)">Upcoming/Live</a></li>
+        <li [class.active]="isCompleted"><a [class.active]="isCompleted" data-toggle="tab" href="#completed"
+            (click)="getBuyerAuctionList(locationId, 1)">Completed</a></li>
+        <div class="auction-sort">
+          <div class="sort-type mr-2">
+
+            <!-- <input type="text" value="Mumbai"> -->
+            <ng-select [items]="locationList" bindLabel="location_name" bindValue="id" placeholder="Select Location"
+              dropdownPosition="bottom" [clearable]="false" class="disable-clear-all" [(ngModel)]="locationId"
+              (change)="getBuyerAuctionList(locationId, isCompleted)">
+            </ng-select>
+          </div>
+          <div class="sort-type">
+            <ng-select [items]="sandTypeList" bindLabel="name" bindValue="id" placeholder="Select Sand Type"
+              dropdownPosition="bottom" [clearable]="false" class="disable-clear-all" [(ngModel)]="selectedSandType"
+              (change)="getBuyerAuctionList(locationId, isCompleted)">
+            </ng-select>
+          </div>
+        </div>
+      </ul>
+
+      <div class="tab-content mb-5">
+        <!-- Tab: 1 Upcoming/live -->
+        <div id="live" [ngClass]="(!isCompleted)?'tab-pane fade in active show':'tab-pane fade'" *ngIf="!isCompleted">
+          <div class="upcoming-wrap">
+            <!-- <div
+              *ngIf="auctionList?.Registered?.length == 0 && auctionList?.live?.length == 0 && auctionList?.upcoming?.length ==0"
+              class="pt-5">
+              No auctions found
+            </div> -->
+            <div
+              *ngIf="auctionList?.Registered?.length == 0 && !liveAuctionExists && !upcomingAuctionExists"
+              class="pt-5">
+              No auctions found
+            </div>
+            <!-- Registered -->
+            <div class="auction-vcard-wrap registered-wrap" *ngIf="auctionList?.Registered?.length > 0">
+              <h4>Registered</h4>
+              <a *ngFor="let item of auctionList?.Registered">
+                <div class="auction-scroll">
+                  <div class="auction-vcard">
+                    <div class="auction-img">
+                      <img src="{{urlService.productDocumentUrl(item?.image)}}" alt="auction-img">
+                    </div>
+                    <div class="auction-content w-100">
+                      <!-- <div class="content-top">
+                        <h3 class="d-flex justify-content-between">
+                          <div>
+                            {{item?.product_name}}
+                          </div>
+                          <div class="font-small px-5">
+                            <span class="px-4"><span class="text-secondary font-weight-light">Auction No : </span>
+                              {{item?.auction_number}} </span>
+                            <span><span class="text-secondary font-weight-light"> Lot Size : </span>
+                              <b>{{item?.lot_size}} tons</b></span>
+                          </div>
+                          <img src="assets/img/auction-label.png" alt="label">
+                        </h3>
+                        <div class="content-wrap justify-content-between align-items-center">
+                          <div class="lft-text">
+                            {{item?.product_desc}}
+                          </div>
+                          <div class="rgt-time">
+                            <span class="count-down">
+                              <p>Auction starts in:</p>
+                              <i>{{item?.timer}}</i>
+                            </span>
+                          </div>
+                        </div>
+                        <div class="content-wrap justify-content-between align-items-end">
+                          <div class="lft-text days">
+                            <span>Delivery Within : {{item?.delivery_days}} days</span>
+                            <span>Payment Terms : {{item?.payment_days}} days</span>
+                            <span>Security Deposit : ₹ {{item?.security_deposit}}</span>
+                          </div>
+                          <div class="rgt-time">
+                            <span class="action-btn registered">
+                              REGISTERED
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="content-btm">
+                        <span>Grade : <b>{{item?.grade}} (FM {{item?.fm_value}})</b></span>
+                        <span>Silt : <b>{{item?.silt ? item?.silt + '%' : '-'}}</b></span>
+                        <span>Source : <b>{{item?.source_of_sand}}</b></span>
+                      </div> -->
+                      <div class="content-top">
+                        <h3 class="justify-content-between d-flex">
+                          <div>
+                            {{item?.product_name}}
+                          </div>
+                          <div class="font-small">
+                            <span class="px-4"><span class="text-secondary font-weight-light">Auction No : </span>
+                              {{item?.auction_number}} </span>
+                            <span><span class="text-secondary font-weight-light"> Lot Size : </span>
+                              <b>{{item?.lot_size}} tons</b></span>
+                          </div>
+                        </h3>
+                        <div class="content-wrap justify-content-between align-items-center">
+                          <div class="lft-text">
+                            {{item?.product_desc}}
+                          </div>
+                          <div class="rgt-time">
+                            <span class="count-down">
+                              <p>Auction starts in:</p>
+                              <i>{{item?.timer}}</i>
+                            </span>
+                            <span class="action-btn registered">
+                              REGISTERED
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="content-bottom">
+                        <div class="content-wrap justify-content-between align-items-end">
+                          <div class="lft-text days">
+                            <span>Delivery Within : {{item?.delivery_days}} days</span>
+                            <span class="m-4">Payment Terms : {{item?.payment_days}} days</span>
+                            <span>Security Deposit : ₹ {{item?.security_deposit}}</span>
+                          </div>
+                        </div>
+
+
+                        <div class="content-highlight">
+                          <span>Grade : <b>{{item?.grade}}</b> (FM {{item?.fm_value}})</span>
+                          <span>Silt : <b>{{item?.silt ? item?.silt + '%' : '-'}}</b></span>
+                          <span>Source : <b>{{item?.source_of_sand}}</b></span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </a>
+            </div>
+
+            <!-- Live Auctions -->
+            <div class="auction-vcard-wrap live-wrap" *ngIf="auctionList?.live?.length > 0 && liveAuctionExists">
+              <h4>Live Auctions</h4>
+              <a *ngFor="let item of auctionList?.live" (click)="liveLinkClick(item)">
+                <div class="auction-scroll" *ngIf="((item?.is_private && item?.is_invited)||!item?.is_private)">
+                  <div class="auction-vcard">
+                    <div class="auction-img">
+                      <img src="{{urlService.productDocumentUrl(item?.image)}}" alt="auction-img">
+                    </div>
+                    <div class="auction-content w-100">
+                      <div class="content-top">
+                        <h3 class="justify-content-between d-flex">
+                          <div>
+                            {{item?.product_name}}
+                          </div>
+                          <div class="font-small">
+                            <span class="px-4"><span class="text-secondary font-weight-light">Auction No : </span>
+                              {{item?.auction_number}} </span>
+                            <span><span class="text-secondary font-weight-light"> Lot Size : </span>
+                              <b>{{item?.lot_size}} tons</b></span>
+                          </div>
+                        </h3>
+                        <div class="content-wrap justify-content-between align-items-center">
+                          <div class="lft-text">
+                            {{item?.product_desc}}
+                          </div>
+                          <div class="rgt-time">
+                            <span class="count-down">
+                              <p>Auction ends in:</p>
+                              <i class="ends-in">{{item?.timer}}</i>
+                            </span>
+                            <span class="action-btn bid-now">
+                              BID NOW
+                            </span>
+                          </div>
+
+                          <!-- <div class="rgt-time"> -->
+
+                          <!-- </div> -->
+                        </div>
+                      </div>
+                      <div class="content-bottom">
+                        <div class="content-wrap justify-content-between align-items-end">
+                          <div class="lft-text days">
+                            <span>Delivery Within : {{item?.delivery_days}} days</span>
+                            <span class="m-4">Payment Terms : {{item?.payment_days}} days</span>
+                            <span>Security Deposit : ₹ {{item?.security_deposit}}</span>
+                          </div>
+                        </div>
+
+
+                        <div class="content-highlight">
+                          <span>Grade : <b>{{item?.grade}}</b> (FM {{item?.fm_value}})</span>
+                          <span>Silt : <b>{{item?.silt ? item?.silt + '%' : '-'}}</b></span>
+                          <span>Source : <b>{{item?.source_of_sand}}</b></span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </a>
+
+            </div>
+
+            <!-- Upcoming Actions -->
+            <div class="upcoming-main" *ngIf="auctionList?.upcoming?.length > 0 && upcomingAuctionExists">
+              <h4>Upcoming Auctions</h4>
+
+              <div class="row">
+
+                <!-- hcard: 1 -->
+                <div class="col-lg-3 col-md-4 col-sm-6" *ngFor="let item of auctionList?.upcoming">
+                  <div class="auction-hcard-wrap" *ngIf="((item?.is_private && item?.is_invited)||!item?.is_private)">
+                    <a [routerLink]="['/user/auction/upcoming', item?.id]">
+                      <div class="hcard-img">
+                        <img src="{{urlService.productDocumentUrl(item?.image)}}" alt="auction-img">
+                        <div class="ovrelay-img"><span class="text-dark">Auction starts in :
+                          </span><span>{{item?.timer}}</span></div>
+                      </div>
+                      <div class="hcard-cont">
+                        <div class="hcard-head text-dark">
+                          {{item?.product_name}}
+                        </div>
+                        <div class="hcard-detail">
+                          <div>Auction No : <b>{{item?.auction_number}}</b></div>
+                          <div>Lot Size : <b>{{item?.lot_size}} tons</b>
+                            <!-- ({{item?.lot_size/item?.truck_size | number }} tons/truck) -->
+                          </div>
+                        </div>
+                        <div class="hcard-detail">
+                          <div>Grade : <b>{{item?.grade}}</b></div>
+                          <div>FM Value : <b>{{item?.fm_value}}</b></div>
+                          <div>Silt : <b>{{item?.silt ? item?.silt + '%' : '-'}}</b></div>
+                          <div>Source : <b>{{item?.source_of_sand}}</b></div>
+                        </div>
+                        <div class="hcard-detail border-0">
+                          <div>Delivery Within : {{item?.delivery_days}} days</div>
+                          <div>Payment Terms : {{item?.payment_days}} days</div>
+                          <div>Security Deposit : ₹ {{item?.security_deposit}}</div>
+                        </div>
+                      </div>
+                      <div class="hcard-btn">
+                        <a href="javascript:void(0)">REGISTER</a>
+                      </div>
+                    </a>
+                  </div>
+                </div>
+
+
+
+
+
+              </div>
+
+            </div>
+
+
+
+
+
+          </div>
+        </div>
+
+        <!-- Tab: 2 Completed -->
+        <div id="completed" [ngClass]="(isCompleted)?'tab-pane fade in active show':'tab-pane fade'"
+          *ngIf="isCompleted">
+
+          <div class="auction-vcard-wrap registered-wrap">
+            <div *ngIf="auctionList?.length == 0" class="pt-5">
+              No auctions found
+            </div>
+            <!-- Completed : Won -->
+            <div class="auction-scroll" *ngIf="auctionList?.length > 0">
+              <a *ngFor="let item of auctionList" (click)="completedLinkClick(item)" style="cursor: pointer;">
+                <div class="auction-vcard">
+                  <div class="auction-img">
+                    <img src="{{urlService.productDocumentUrl(item?.image)}}" alt="auction-img">
+                  </div>
+                  <div class="auction-content w-100">
+                    <div class="content-top">
+                      <h3 class="justify-content-between d-flex">
+                        <div>
+                          {{item?.product_name}}
+                        </div>
+                        <div class="font-small">
+                          <span class="px-4"><span class="text-secondary font-weight-light">Auction No : </span>
+                            {{item?.auction_number}} </span>
+                          <span><span class="text-secondary font-weight-light"> Lot Size : </span> <b>{{item?.lot_size}}
+                              tons</b></span>
+                        </div>
+                      </h3>
+                      <div class="content-wrap justify-content-between align-items-center">
+                        <div class="lft-text">
+                          {{item?.product_desc}}
+                        </div>
+                        <div class="rgt-time">
+                          <span class="action-btn"
+                            [ngClass]="item?.status=='WON' ? 'auction-won-btn':'bg-secondary text-white'">
+                            <img *ngIf="item?.status=='WON'" src="assets/img/win-icon.png" alt="win"> {{item?.status}}
+                          </span>
+                        </div>
+                      </div>
+
+                    </div>
+                    <div class="content-bottom">
+                      <div class="content-wrap justify-content-between align-items-end">
+                        <div class="lft-text days">
+                          <span>Delivery Within : {{item?.delivery_days}} days</span>
+                          <span class="m-4">Payment Terms : {{item?.payment_days}} days</span>
+                          <span>Security Deposit : ₹ {{item?.security_deposit}}</span>
+                        </div>
+                      </div>
+                      <div class="content-highlight">
+                        <span>Grade : <b>{{item?.grade}} (FM {{item?.fm_value}})</b></span>
+                        <span>Silt : <b>{{item?.silt ? item?.silt + '%' : '-'}}</b></span>
+                        <span>Source : <b>{{item?.source_of_sand}}</b></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+
+  </div>
+</div>

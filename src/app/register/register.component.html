@@ -1,0 +1,306 @@
+<div class="container-fluid">
+  <div class="row">
+
+    <!-- Left Logo -->
+    <div class="col-sm-5 col-md-4">
+      <div class="left-wrap">
+        <div class="ss-logo">
+          <img src="assets/img/logo1-doctor-sand.svg" alt="ss-logo">
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Form -->
+    <div class="col-sm-7 col-md-8">
+      <div class="rgt-form">
+        <form [formGroup]="registerForm">
+
+          <!-- Heading -->
+          <div class="register-user">
+            <h4>Sign up to doctorsand</h4>
+            <p>Fill in details to get started with the registration process. Registered user? <a href="auth">Login Here</a>
+            </p>
+          </div>
+
+          <!-- user Typer -->
+          <div class="radio-wrap">
+            <div class="radio-btn">
+              <input #userSeller type="radio" name="user-type" checked>
+              <span (click)="userSeller.click(); setRole(2)">Seller</span>
+            </div>
+
+            <div class="radio-btn">
+              <input #userBuyer type="radio" name="user-type">
+              <span (click)="userBuyer.click();setRole(1)">Buyer</span>
+            </div>
+          </div>
+
+          <!-- Company Name -->
+          <div class="input-wrap inputDiv">
+            <input type="text" class="text-uppercase" formControlName="name" placeholder=" ">
+            <label class="placeholder">Company Name *</label>
+            <i *ngIf="registerForm.controls.name.invalid && registerForm.controls.name.touched"
+              class="erro-red">Company name required</i>
+          </div>
+
+          <!-- Address -->
+          <div class="input-wrap">
+            <input type="text" class="text-uppercase" formControlName="address_line_1" placeholder=" ">
+            <label class="placeholder">Address *</label>
+            <i *ngIf="registerForm.controls.address_line_1.invalid && registerForm.controls.address_line_1.touched"
+              class="erro-red">Address required</i>
+          </div>
+
+          <!-- Landmark -->
+          <div class="input-wrap">
+            <input type="text" class="text-uppercase" formControlName="landmark" placeholder=" ">
+            <label class="placeholder">Nearest Landmark</label>
+            <!-- <i *ngIf="registerForm.controls.landmark.invalid && registerForm.controls.landmark.touched"
+              class="erro-red">Nearest Landmark required</i> -->
+          </div>
+
+          <!-- City & Country -->
+          <div class="row gutter">
+            <div class="col-sm-12 col-md-6">
+              <div class="input-wrap">
+                <ng-select [items]="country" bindLabel="name" bindValue="id" formControlName="country_id"
+                  placeholder="Country *" [clearable]="false" [searchable]="false" dropdownPosition="bottom" class="disable-arrow disable-dropdown disable-clear-all">
+                </ng-select>
+                <i *ngIf="registerForm.controls.country_id.invalid && registerForm.controls.country_id.touched"
+                  class="erro-red">Country required</i>
+              </div>
+            </div>
+
+            <div class="col-sm-12 col-md-6">
+              <div class="input-wrap">
+                <ng-select [items]="stateList" bindLabel="state_name" bindValue="id" formControlName="state_id" [clearable]="false"
+                  placeholder="State *" dropdownPosition="bottom" (change)="loadCityList(registerForm.controls['state_id'].value)">
+                </ng-select>
+                <i *ngIf="registerForm.controls.state_id.invalid && registerForm.controls.state_id.touched"
+                  class="erro-red">State required</i>
+              </div>
+            </div>
+
+           
+          </div>
+
+          <!-- City & Pincode -->
+          <div class="row gutter">
+            <div class="col-sm-12 col-md-6">
+              <div class="input-wrap">
+                <ng-select [items]="cityList" bindLabel="city_name" bindValue="id" formControlName="city_id"
+                  [clearable]="false" placeholder="City *" dropdownPosition="bottom">
+                </ng-select>
+                <i *ngIf="registerForm.controls.city_id.invalid && registerForm.controls.city_id.touched"
+                  class="erro-red">City required</i>
+              </div>
+            </div>
+            <div class="col-sm-12 col-md-6">
+              <div class="input-wrap">
+                <input type="text" class="text-uppercase" formControlName="pincode" placeholder=" " maxlength="6" pattern="[0-9]{6}">
+                <label class="placeholder">Pincode *</label>
+                <i *ngIf="registerForm.controls.pincode.invalid && registerForm.controls.pincode.touched
+                 && !registerForm.get('pincode').errors?.pattern"
+                  class="erro-red">
+                  Pincode required
+                </i>
+                <i *ngIf="registerForm.controls.pincode.invalid && registerForm.controls.pincode.touched 
+                  && registerForm.get('pincode').errors?.pattern"
+                  class="erro-red">
+                  Pincode Invalid
+                </i>
+                
+              </div>
+            </div>
+          </div>
+
+          <!-- PAN & GST -->
+          <div class="row gutter">
+            <div class="col-sm-12 col-md-6">
+              <div class="input-wrap">
+                <input type="text" class="text-uppercase" formControlName="pan_number" placeholder=" " maxlength="10">
+                <label class="placeholder">PAN Number *</label>
+                <i *ngIf="registerForm.controls.pan_number.invalid && registerForm.controls.pan_number.touched 
+                   && !registerForm.get('pan_number').errors?.pattern"
+                  class="erro-red">PAN Number required</i>
+                  <i *ngIf="registerForm.controls.pan_number.touched && registerForm.get('pan_number').errors?.pattern"
+                  class="erro-red">PAN Number invalid</i>
+              </div>
+            </div>
+            <div class="col-sm-12 col-md-6">
+              <div class="input-wrap">
+                <input type="text" class="text-uppercase" formControlName="gst_number" placeholder=" " maxlength="15">
+                <label class="placeholder">GST Number *</label>
+                <i *ngIf="registerForm.controls.gst_number.invalid && registerForm.controls.gst_number.touched 
+                   && !registerForm.get('gst_number').errors?.pattern"
+                  class="erro-red">GST Number required</i>
+                  <i *ngIf="registerForm.controls.gst_number.touched && registerForm.get('gst_number').errors?.pattern"
+                  class="erro-red">GST Number invalid</i>
+              </div>
+            </div>
+          </div>
+
+          <!-- phone -->
+          <div class="row gutter">
+            <div class="col-sm-12 col-md-6">
+
+              <div class="contact-info">
+                <div class="input-wrap" style="min-width: 48px;width: 48px;margin-right: 15px;">
+                  <ng-select [items]="dial_code" bindLabel="name" bindValue="code" formControlName="dial_code"
+                    placeholder="Dial Code *" [clearable]="false" [searchable]="false" dropdownPosition="bottom" class="disable-arrow disable-dropdown disable-clear-all">
+                  </ng-select>
+                  <i *ngIf="registerForm.controls.dial_code.invalid && registerForm.controls.dial_code.touched"
+                    class="erro-red">Dial Code required</i>
+                </div>
+                <div class="input-wrap">
+                  <input type="text" class="text-uppercase" formControlName="mobile" maxlength="10" pattern="[0-9]{10}" placeholder=" " [readOnly]="registerForm.controls.mobile.valid && phone_otp_sent && verified_mobile">
+                  <label class="placeholder">Mobile Number *</label>
+                  <i *ngIf="registerForm.controls.mobile.invalid && registerForm.controls.mobile.touched && !mobileExists && !registerForm.get('mobile').errors?.pattern"
+                    class="erro-red">Mobile Number required</i>
+                    <i *ngIf="registerForm.controls.mobile.invalid && registerForm.controls.mobile.touched && !mobileExists && registerForm.get('mobile').errors?.pattern"
+                    class="erro-red">Invalid Mobile Number</i>
+                    <i *ngIf="mobileExists"
+                    class="erro-red">Mobile Already Registered</i>
+                  <i *ngIf="registerForm.controls.mobile.valid && phone_otp_sent && !verified_mobile && !mobileExists" 
+                      [class.erro-blue]="otp_error_mobile !='Incorrect OTP'" [class.erro-red]="otp_error_mobile == 'Incorrect OTP'" >{{otp_error_mobile}}</i>
+                </div>
+              </div>
+
+            </div>
+            <div class="col-sm-12 col-md-6">
+              <div *ngIf="!(registerForm.controls.mobile.valid && phone_otp_sent && !verified_mobile) && !verified_mobile" class="phone-otp">
+                <span class="otp-btn" (click)="sendOtp('phone')">Send OTP</span>
+                <!-- <span class="msg" *ngIf="otpCountDownPhone" style="width: 77px;">{{otpCountDownPhone}} </span> -->
+              </div>
+              <div *ngIf="registerForm.controls.mobile.valid && phone_otp_sent && !verified_mobile" class="verify-wrap">
+                <div class="input-wrap">
+                  <input type="Enter OTP" [class.otp_error]="otp_error_mobile=='Incorrect OTP'" formControlName="phone_otp" placeholder=" " maxlength="6">
+                  <label class="placeholder" [class.erro-red]="otp_error_mobile=='Incorrect OTP'">Enter OTP *</label>
+                  <i *ngIf="otp_invalid_mobile!=''" class="erro-red">{{otp_invalid_mobile}}</i>
+                </div>
+
+                <span class="otp-btn" (click)="verify_otp(1)">Verify</span>
+                <span class="msg" *ngIf="otpCountDownPhone && !showResendPhone" style="margin-top: 9px;">{{otpCountDownPhone}}</span>
+                <span class="msg" *ngIf="showResendPhone" (click)="sendOtp('phone')"><u>Resend OTP</u> </span>
+              </div>
+              <div *ngIf="registerForm.controls.mobile.valid && phone_otp_sent && verified_mobile" class="phone-otp">
+                <img src="assets/img/Icon-check-circle.svg" alt="ss-logo" style="width: 20px;">
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Email -->
+          <div class="row gutter">
+            <div class="col-sm-12 col-md-6">
+              <div class="email-info">
+                <div class="input-wrap">
+                  <input type="email" class="text-uppercase" formControlName="email" placeholder=" " [readOnly]="registerForm.controls.email.valid && email_otp_sent && verified_email">
+                  <label class="placeholder">Email *</label>
+                  <i *ngIf="registerForm.controls.email.invalid && registerForm.controls.email.touched && 
+                    !registerForm.get('email').errors?.pattern  && !emailExists"  
+                    class="erro-red">Email required</i>
+                    <i *ngIf="registerForm.controls.email.touched && registerForm.get('email').errors?.pattern && !emailExists"
+                    class="erro-red">Invalid Email</i>
+                    <i *ngIf="emailExists"
+                    class="erro-red">Email Already Registered</i>
+                  <i *ngIf="registerForm.controls.email.valid && email_otp_sent && 
+                    !verified_email &&!emailExists" 
+                    [class.erro-blue]="otp_error_email !='Incorrect OTP'" [class.erro-red]="otp_error_email == 'Incorrect OTP'" 
+                    >{{otp_error_email}}</i>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-12 col-md-6">
+              <div *ngIf="!(registerForm.controls.email.valid && email_otp_sent && !verified_email) && !verified_email" class="phone-otp">
+                <span class="otp-btn" (click)="sendOtp('email')">Send OTP</span>
+              </div>
+              <div *ngIf="registerForm.controls.email.valid && email_otp_sent && !verified_email" class="verify-wrap">
+                <div class="input-wrap">
+                  <input type="Enter OTP" formControlName="email_otp" [class.otp_error]="otp_error_email=='Incorrect OTP'" placeholder=" " maxlength="6">
+                  <label class="placeholder" [class.erro-red]="otp_error_email=='Incorrect OTP'">Enter OTP *</label>
+                  <i *ngIf="otp_invalid_email!=''" class="erro-red">{{otp_invalid_email}}</i>
+                </div>
+                <span class="otp-btn" (click)="verify_otp(2)">Verify</span>
+                <span class="msg" *ngIf="otpCountDownEmail && !showResendEmail" style="margin-top: 9px;">{{otpCountDownEmail}}</span>
+                <span class="msg" *ngIf="showResendEmail" (click)="sendOtp('email')"><u>Resend OTP</u> </span>
+                
+              </div>
+              <div *ngIf="registerForm.controls.email.valid && email_otp_sent && verified_email" class="phone-otp">
+                <img src="assets/img/Icon-check-circle.svg" alt="ss-logo" style="width: 20px;">
+              </div>
+            </div>
+          </div>
+
+          <!-- PWD -->
+          <div class="row">
+            <div class="col-sm-12 col-md-6">
+              <div class="input-wrap">
+                <input [type]="showPass ? 'text' : 'password'" formControlName="password" placeholder=" ">
+                <label class="placeholder">Create Password*</label>
+                <svg *ngIf="showPass" class="pass-eye open" (click)="showPass=false" viewBox="0 0 22 20"><path fill="currentColor" fill-rule="nonzero" d="M13.835 2.343L11.637 4.54a5.002 5.002 0 0 0-5.597 5.597l-3.395 3.396A11.872 11.872 0 0 1 0 9.5C1.73 5.11 6 2 11 2c.977 0 1.927.119 2.835.343zm5.44 3.045A11.873 11.873 0 0 1 22 9.5c-1.73 4.39-6 7.5-11 7.5-1.023 0-2.016-.13-2.962-.375l2.185-2.185a5.002 5.002 0 0 0 5.717-5.717l3.335-3.335zm-5.778 5.778l-.831.831c.329-.22.612-.502.831-.831zM18.217.16l2.122 2.121-16.97 16.971-2.122-2.121L18.217.162z"></path></svg>
+                <svg *ngIf="!showPass" class="pass-eye closed" (click)="showPass=true" viewBox="0 0 22 15"><path fill="currentColor" fill-rule="nonzero" d="M11 0C6 0 1.73 3.11 0 7.5 1.73 11.89 6 15 11 15s9.27-3.11 11-7.5C20.27 3.11 16 0 11 0zm0 12.5c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path></svg>
+                <i *ngIf="registerForm.controls.password.invalid && registerForm.controls.password.touched"
+                  class="erro-red">Password required</i>
+              </div>
+            </div>
+
+            <div class="col-sm-12 col-md-6">
+              <div class="input-wrap">
+                <input [type]="showCnfPass ? 'text' : 'password'" formControlName="confirm_password" placeholder=" ">
+                <label class="placeholder">Confirm Password</label>
+                <svg *ngIf="showCnfPass" class="pass-eye open" (click)="showCnfPass=false" viewBox="0 0 22 20"><path fill="currentColor" fill-rule="nonzero" d="M13.835 2.343L11.637 4.54a5.002 5.002 0 0 0-5.597 5.597l-3.395 3.396A11.872 11.872 0 0 1 0 9.5C1.73 5.11 6 2 11 2c.977 0 1.927.119 2.835.343zm5.44 3.045A11.873 11.873 0 0 1 22 9.5c-1.73 4.39-6 7.5-11 7.5-1.023 0-2.016-.13-2.962-.375l2.185-2.185a5.002 5.002 0 0 0 5.717-5.717l3.335-3.335zm-5.778 5.778l-.831.831c.329-.22.612-.502.831-.831zM18.217.16l2.122 2.121-16.97 16.971-2.122-2.121L18.217.162z"></path></svg>
+                <svg *ngIf="!showCnfPass" class="pass-eye closed" (click)="showCnfPass=true" viewBox="0 0 22 15"><path fill="currentColor" fill-rule="nonzero" d="M11 0C6 0 1.73 3.11 0 7.5 1.73 11.89 6 15 11 15s9.27-3.11 11-7.5C20.27 3.11 16 0 11 0zm0 12.5c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path></svg>
+                <i *ngIf="registerForm.get('confirm_password').touched && registerForm.get('confirm_password').value != registerForm.get('password').value"
+                  class="erro-red">Password mismatch</i>
+              </div>
+            </div>
+          </div>
+
+          <!-- check policy -->
+          <div class="policy-text">
+            <input type="checkbox" id="policyCheck">
+            <div>I have read and agree to the
+              <a target="_blank" href="https://www.doctorsand.com/privacy-policy">Privacy Policy</a> and
+              <a target="_blank" href="https://www.doctorsand.com/terms-and-conditions">General Terms and Conditions</a> and
+              <a target="_blank" href="https://www.doctorsand.com/auction-terms-conditions">E-Auction Terms and Conditions</a>
+            </div>
+          </div>
+          <div class="policy-error"><i class="erro-red">{{policy_check_error}}</i></div>
+
+          <!-- Appy button -->
+
+          <div class="apply-btn">
+            <input type="submit" class="" value="Apply for Registration" [disabled]="!registerForm.valid"
+              (click)="register()">
+          </div>
+
+        </form>
+
+
+      </div>
+    </div>
+
+  </div>
+
+
+
+
+  <!-- The Modal -->
+  <div class="modal fade" id="reg-succ-modal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div class="reg-wrap">
+            <img src="assets/img/Icon-check-circle.svg" alt="circle">
+            <h3>Congratulations!</h3>
+            <p>You have successfully filled the registration details. Please check your email for next steps</p>
+            <button type="button" data-dismiss="modal" (click)="gotoHome()">OK</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>

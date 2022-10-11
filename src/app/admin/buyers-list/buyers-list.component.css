@@ -1,0 +1,8 @@
+app-buyers-list {
+  background-color: white;
+  border-radius: 3px;
+  position: relative;
+  display: flex;
+  flex: 1 1 auto;
+  margin: 15px;
+}
